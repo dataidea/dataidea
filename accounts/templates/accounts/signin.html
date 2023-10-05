@@ -1,0 +1,66 @@
+<!-- Signin Page -->
+{% extends 'components/base.html' %}
+<!-- Page Content -->
+{% block content %}
+<main id="main">
+  <!-- ======= Breadcrumbs ======= -->
+  <section id="breadcrumbs" class="breadcrumbs">
+    <div class="container">
+      <div class="d-flex justify-content-between align-items-center">
+        <h2 class="p-2">Welcome back, login</h2>
+      </div>
+    </div>
+  </section>
+  <!-- End Breadcrumbs -->
+
+  <!-- ======= Portfolio Details Section ======= -->
+  <section id="portfolio-details" class="portfolio-details">
+    <div class="container">
+      <div class="d-flex flex-column align-items-center">
+        <form
+          action="{% url 'accounts:signin'%}"
+          method="POST"
+          class="login rounded d-flex flex-column shadow p-5"
+        >
+          <!-- Show Error Message -->
+          {% if error %}
+          <div class="error p-3 rounded mb-2" style="background: orange">
+            {{error}}
+          </div>
+          {% endif %}
+          <!-- End Error Message -->
+          {% csrf_token %} {{form}} {% if request.GET.next %}
+          <input type="hidden" name="next" value="{{ request.GET.next }}" />
+          {% endif %}
+          <div class="checkbox mb-3">
+            <label>
+              <input type="checkbox" value="remember-me" /> Remember me
+            </label>
+          </div>
+          <button
+            class="w-100 btn"
+            style="background-color: #6610f2; color: #fff"
+            type="submit"
+          >
+            Let me in
+          </button>
+        </form>
+        <div class="d-flex text-center p-3">
+          <p>Don't have account?</p>
+          <a href="{% url 'accounts:signup'%}"> Let's sign you up</a>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- End Portfolio Details Section -->
+</main>
+<!-- End #main -->
+
+<!-- JavaScript -->
+<script>
+  header = document.querySelector("#header");
+  header.style.background = "rgba(24, 6, 185, 0.8)";
+  document.querySelector(".helptext").style.display = "none";
+</script>
+
+{% endblock %}

@@ -1,0 +1,198 @@
+{% extends 'components/base.html' %}
+<!-- Page Content -->
+{% block content %}
+<main id="main">
+  <!-- ======= Breadcrumbs ======= -->
+  <section id="breadcrumbs" class="breadcrumbs">
+    <div class="container">
+      <div class="d-flex justify-content-between align-items-center">
+        <h2 class="p-2">{{blog.title}}</h2>
+        <ol>
+          <li><a href="/">Home</a></li>
+          <li><a href="{% url 'blog:blogs' %}">Blogs</a></li>
+          <li><span>{{blog.title}}</span></li>
+        </ol>
+      </div>
+    </div>
+  </section>
+  <!-- End Breadcrumbs -->
+
+  <!-- ======= Portfolio Details Section ======= -->
+  <section id="portfolio-details" class="portfolio-details">
+    <div class="container">
+      <div class="row gy-4">
+        <div class="col-lg-8">
+          <div class="portfolio-details-slider swiper">
+            <div class="swiper-wrapper align-items-center">
+              <div class="swiper-slide">
+                <img src="{{blog.cover_image}}" alt="" />
+              </div>
+            </div>
+            <div class="swiper-pagination"></div>
+          </div>
+          <div class="portfolio-description">
+            <!-- <h2>Project Description</h2> -->
+            {{details|safe}}
+          </div>
+          <!-- Comments -->
+          <div class="portfolio-info">
+            <h3>Comments</h3>
+            <ul>
+              {% for comment in comments %}
+              <li>
+                <strong>
+                  <!-- End of staff -->
+                  {{comment.user}}
+                  <!-- If usesr is verified -->
+                  {% for group in comment.user.groups.all %}
+                  <!-- Check for Verified -->
+                  {% if group.name == 'Verified' %}
+                  <i class="bi bi-patch-check"></i>
+                  {% endif %} {% endfor %}
+                  <!-- If usesr is staff -->
+                  {% if comment.user.is_staff %}
+                  <!-- staff -->
+                  (staff) {% endif %}
+                </strong>
+                {{comment.comment}}
+              </li>
+              {% endfor %}
+            </ul>
+            <form
+              action="{% url 'blog:comment' %}"
+              method="post"
+              class="d-flex flex-column"
+            >
+              {% csrf_token %}
+              <input type="hidden" name="slug" value="{{blog.slug}}" />
+              <label for="comment" class="w-100">
+                <input
+                  type="text"
+                  name="comment"
+                  id=""
+                  class="w-100 rounded border p-2"
+                  placeholder="&#64;{{user}} write your comment here"
+                />
+              </label>
+              <input
+                type="submit"
+                value="Comment"
+                class="btn p-2 mt-2"
+                style="background-color: #6610f2; color: #fff"
+              />
+            </form>
+          </div>
+          <!-- End of Comments -->
+        </div>
+        <div class="col-lg-4">
+          <div class="portfolio-info">
+            <h3>Blog information</h3>
+            <ul>
+              <li><strong>Title</strong>: {{blog.title}}</li>
+              <li><strong>Author</strong>: {{blog.author}}</li>
+              <li><strong>Category</strong>: {{blog.category}}</li>
+            </ul>
+          </div>
+          <!-- Similar -->
+          <div class="">
+            <h3
+              class="mt-3"
+              style="
+                padding: 30px;
+                font-size: 22px;
+                font-weight: 700;
+                margin-bottom: 20px;
+                padding-bottom: 20px;
+                border-bottom: 1px solid #eee;
+              "
+            >
+              You may also like:
+            </h3>
+            {% if related %}
+            <!-- For Each Relative -->
+            {% for relative in related %}
+            <!-- If not self -->
+            {% if not relative.id == blog.id %}
+            <div
+              class="mt-3"
+              style="
+                padding: 30px;
+                box-shadow: 0px 0 30px rgba(44, 73, 100, 0.08);
+              "
+              data-aos="fade-up"
+              data-aos-delay="100"
+            >
+              <a href="{% url 'blog:blog_details'%}?slug={{relative.slug}}"
+                class="nav-link">
+                  <img src="{{relative.cover_image}}"
+                  class="img-fluid rounded"
+                  alt="" />
+                  <h5 class="mt-3">{{ relative.title }}</h5>
+                </a>
+            </div>
+            {% endif %} {% endfor %}
+            <!-- Otherwise -->
+            {% else %}
+            <h5>No related found</h5>
+            {% endif %}
+
+            <div>
+              <form
+                action="{% url 'blog:search'%}"
+                method="post"
+                class="d-flex mt-3"
+              >
+                {% csrf_token %}
+                <label for="query" class="">
+                  <input
+                    hidden
+                    type="text"
+                    name="query"
+                    id=""
+                    class="w-100 rounded border p-2"
+                    value="{{blog.category.id}}"
+                  />
+                </label>
+                <input
+                  type="submit"
+                  value="See more"
+                  class="btn p-2 w-100"
+                  style="background-color: #6610f2; color: #fff"
+                />
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- End Portfolio Details Section -->
+</main>
+<!-- End #main -->
+
+<!-- JavaScript -->
+<script>
+  header = document.querySelector("#header");
+  header.style.background = "rgba(24, 6, 185, 0.8)";
+
+  // Wait for the DOM to be fully loaded
+  document.addEventListener("DOMContentLoaded", function () {
+    // Get the image element
+    var imgs = document.querySelectorAll("img");
+
+    // Check if the image element exists
+    if (imgs) {
+      imgs.forEach((img) => {
+        // Get the original src attribute
+        var originalSrc = img.getAttribute("src");
+        // Remove everything from 'align' onwards
+        var newSrc = originalSrc.split(" align=")[0];
+        // Set the new src attribute
+        img.setAttribute("src", newSrc);
+        img.classList.add("img-fluid");
+      });
+    }
+  });
+</script>
+
+{% endblock %}

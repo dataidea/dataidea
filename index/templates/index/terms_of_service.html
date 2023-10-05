@@ -1,0 +1,45 @@
+{% extends 'components/base.html' %}
+<!-- Page Content -->
+{% block content %}
+<main id="main">
+  <!-- ======= Breadcrumbs ======= -->
+  <section class="breadcrumbs">
+    <div class="container">
+      <div class="d-flex justify-content-between align-items-center">
+        <h2>Terms of Service</h2>
+        <ol>
+          <li><a href="{% url 'index:home' %}">Home</a></li>
+          <li>Terms of Service</li>
+        </ol>
+      </div>
+    </div>
+  </section>
+  <!-- End Breadcrumbs -->
+
+  <section class="inner-page container mt-3" style="padding: 0">
+    <!-- Terms of Service -->
+    {% if terms_of_service %}
+    <!-- Display Term -->
+    {% for term in terms_of_service %}
+    <ul class="">
+      <li>
+        <h5 class="">{{term.name}}</h5>
+        <p>{{term.description}}</p>
+      </li>
+    </ul>
+    {% endfor %}
+    <!-- End Term -->
+    {% else %}
+    <div>No Terms Found!</div>
+    {% endif %}
+  </section>
+</main>
+<!-- End #main -->
+
+<!-- JavaScript -->
+<script>
+  document.querySelector("#header").style.background = "rgba(24, 6, 185, 0.8)";
+
+  document.querySelector(".school").classList.add("active");
+</script>
+{% endblock %}

@@ -1,0 +1,113 @@
+{% extends 'components/base.html' %}
+<!-- Page Content -->
+{% block content %}
+<main id="main">
+  <!-- ======= Breadcrumbs ======= -->
+  <section class="breadcrumbs">
+    <div class="container">
+      <div class="d-flex justify-content-between align-items-center">
+        <h2>Notes List</h2>
+        <ol>
+          <li><a href="/">Home</a></li>
+          <li><span>Services</span></li>
+          <li><span>Tools</span></li>
+          <li><span>Notes</span></li>
+          <li><span>List</span></li>
+        </ol>
+      </div>
+    </div>
+  </section>
+  <!-- End Breadcrumbs -->
+
+  <!-- Add Notes -->
+  <div class="container mt-3">
+    <!-- Add Notes -->
+    <div class="accordion" id="accordionExample">
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="headingOne">
+          <button
+            class="accordion-button fw-medium"
+            type="button"
+            style="color: #6610f2"
+            data-bs-toggle="collapse"
+            data-bs-target="#collapseOne"
+            aria-expanded="true"
+            aria-controls="collapseOne"
+          >
+            Add Note <i class="bi bi-pencil-square px-2"></i>
+          </button>
+        </h2>
+        <div
+          id="collapseOne"
+          class="accordion-collapse collapse"
+          aria-labelledby="headingOne"
+          data-bs-parent="#accordionExample"
+        >
+          <div class="accordion-body d-flex row">
+            <form
+              action="{% url 'tools:add_note' %}"
+              method="post"
+              class="d-flex flex-column"
+            >
+              {% csrf_token %}
+              <label for="title" class="w-100">
+                <input
+                  required
+                  type="text"
+                  name="title"
+                  id=""
+                  class="w-100 rounded border p-2"
+                  placeholder="write note title"
+                />
+              </label>
+              <label for="note" class="w-100 mt-2">
+                <textarea
+                  required
+                  name="detail"
+                  id=""
+                  cols="0"
+                  rows="5"
+                  class="w-100 rounded border p-2"
+                  placeholder="write your note detail here"
+                ></textarea>
+              </label>
+              <input
+                type="submit"
+                value="Save Note"
+                class="btn p-2 mt-2"
+                style="background-color: #6610f2; color: #fff"
+              />
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- End Notes -->
+    {% for note in notes %}
+    <div class="d-flex rounded mt-3 p-2 border justify-content-between">
+      <span>
+        <a class="" href="{% url 'tools:one_note' note.id%}">{{note.title}}</a>
+      </span>
+      <span>
+        <a class="btn btn-danger" href="{% url 'tools:delete_note' note.id %}">
+          Delete
+        </a>
+      </span>
+    </div>
+    {% endfor %}
+    <br />
+  </div>
+  <!-- End Notes -->
+</main>
+<!-- End #main -->
+
+<!-- JavaScript -->
+<script>
+  const header = document.querySelector("#header");
+  header.style.background = "rgba(24, 6, 185, 0.8)";
+  const detailLoader = (content) => {
+    document.querySelector(".detail").value = content;
+  };
+</script>
+
+{% endblock %}

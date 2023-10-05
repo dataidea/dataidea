@@ -1,0 +1,56 @@
+{% extends 'components/base.html' %}
+<!-- Page Content -->
+{% block content %}
+<main id="main">
+  <!-- ======= Breadcrumbs ======= -->
+  <section class="breadcrumbs">
+    <div class="container">
+      <div class="d-flex justify-content-between align-items-center">
+        <h2>Transcriber</h2>
+        <ol>
+          <li><a href="/">Home</a></li>
+          <li><span>Tools</span></li>
+          <li><span>Transcriber</span></li>
+        </ol>
+      </div>
+    </div>
+  </section>
+  <!-- End Breadcrumbs -->
+
+  <!-- Add Notes -->
+  <div class="d-flex justify-content-center">
+    <div class="container m-3 ">
+        <h1>Upload an Audio File</h1>
+        <form method="post" enctype="multipart/form-data">
+          {% csrf_token %} {{ audio_form.as_p }} {{ options_form.as_p }}
+          <input
+          id="submit-btn"
+            type="submit"
+            onclick="dis"
+            value="Upload and Transcribe"
+            class="btn p-2 mt-2"
+            style="background-color: #6610f2; color: #fff"
+                  />
+        </form>
+      </div>
+  </div>
+</div>
+<!-- End Notes -->
+</main>
+<!-- End #main -->
+
+<!-- JavaScript -->
+<script>
+const header = document.querySelector("#header");
+header.style.background = "rgba(24, 6, 185, 0.8)";
+const detailLoader = (content) => {
+  document.querySelector(".detail").value = content;
+};
+
+document.querySelector('#submit-btn').addEventListener('click', () => {
+    alert("Processing, it may take 15%-30% of the file's duration, eg a 10 minute file takes 90-180 seconds to complete. After that, your transcription will automatically be downloaded.")
+})
+</script>
+
+{% endblock %}
+

@@ -1,0 +1,628 @@
+<!-- Base Template -->
+{% extends 'components/base.html' %}
+<!-- Static -->
+{% load static %}
+<!-- Page Content -->
+{% block content %}
+<!-- ======= Hero Section ======= -->
+<section id="hero" class="d-flex align-items-center">
+  <div class="container-fluid" data-aos="fade-up">
+    <div class="row justify-content-center">
+      <div
+        class="col-xl-5 col-lg-6 pt-3 pt-lg-0 order-2 order-lg-1 d-flex flex-column justify-content-center"
+      >
+        <h1>Better Digital Experience With Data Idea</h1>
+        <h2>
+          We are team of talented researchers and developers providing quality software solutions
+          by laveraging the latest tech
+        </h2>
+        <div>
+          <a href="{% url 'accounts:signin' %}" class="btn-get-started scrollto">Get Started</a>
+        </div>
+      </div>
+      <div
+        class="col-xl-4 col-lg-6 order-1 order-lg-2 hero-img"
+        data-aos="zoom-in"
+        data-aos-delay="150"
+      >
+        <img
+          src="{% static 'img/hero-img.png' %}"
+          class="img-fluid animated"
+          alt=""
+        />
+      </div>
+    </div>
+  </div>
+</section>
+<!-- End Hero -->
+
+<main id="main">
+    <!-- ======= About Section ======= -->
+  <section id="about" class="about">
+    <div class="container">
+      <div class="row">
+        <div
+          class="col-lg-6 order-1 order-lg-2"
+          data-aos="zoom-in"
+          data-aos-delay="150"
+        >
+          <img src="{% static 'img/about.jpg' %}" class="img-fluid" alt="" />
+        </div>
+        <div
+          class="col-lg-6 pt-4 pt-lg-0 order-2 order-lg-1 content"
+          data-aos="fade-right"
+        >
+          <h3>We offer versatility but with robustness to ensure integrity</h3>
+          <p class="fst-italic">
+            At Data Idea, we are committed to helping businesses harness the
+            power of data to drive growth and innovation. Our team of skilled
+            professionals specializes in providing comprehensive data-driven software
+            solutions using AI tools that empower organizations to make informed decisions or operate faster and
+            achieve their goals.
+          </p>
+          <p class="fst-italic">Key Features of Data Idea</p>
+          <ul>
+            <li>
+              <i class="bi bi-check-circle"></i> Tailored software solutions to meet the
+              unique needs of each client.
+            </li>
+            <li>
+              <i class="bi bi-check-circle"></i>Laverage advanced ML and AI technologies to develop predictive models, automate processes, and improve decision making.
+            </li>
+          </ul>
+          <a href="#features" class="read-more"
+            >Read More <i class="bi bi-long-arrow-right"></i
+          ></a>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- End About Section -->
+
+  <!-- ======= Counts Section ======= -->
+  <section id="counts" class="counts">
+    {% if companyinfo %}
+    <div class="container">
+      <div class="row counters">
+        <div class="col-lg-3 col-6 text-center">
+          <span
+            data-purecounter-start="0"
+            data-purecounter-end="{{companyinfo.clients}}"
+            data-purecounter-duration="1"
+            class="purecounter"
+          ></span>
+          <p>Clients</p>
+        </div>
+
+        <div class="col-lg-3 col-6 text-center">
+          <span
+            data-purecounter-start="0"
+            data-purecounter-end="{{companyinfo.projects}}"
+            data-purecounter-duration="1"
+            class="purecounter"
+          ></span>
+          <p>Projects</p>
+        </div>
+
+        <div class="col-lg-3 col-6 text-center">
+          <span
+            data-purecounter-start="0"
+            data-purecounter-end="{{companyinfo.hours_of_support}}"
+            data-purecounter-duration="1"
+            class="purecounter"
+          ></span>
+          <p>Hours Of Support</p>
+        </div>
+
+        <div class="col-lg-3 col-6 text-center">
+          <span
+            data-purecounter-start="0"
+            data-purecounter-end="{{companyinfo.workers}}"
+            data-purecounter-duration="1"
+            class="purecounter"
+          ></span>
+          <p>Hard Workers</p>
+        </div>
+      </div>
+    </div>
+    {% endif %}
+  </section>
+  <!-- End Counts Section -->
+
+  <!-- ======= Services Section ======= -->
+  <section id="services" class="services section-bg">
+    <div class="container" data-aos="fade-up">
+      <div class="section-title">
+        <h2>Services</h2>
+        <p>
+          Data Idea's services demonstrate its commitment to providing
+          comprehensive data solutions, from research and analysis to software
+          development and education. They aim to empower clients with actionable
+          insights, cutting-edge technologies, and the necessary knowledge to
+          harness the power of data effectively.
+        </p>
+      </div>
+      <div class="row gy-4">
+        {% if services %}
+        <!-- Services -->
+        {% for service in services %}
+        <div
+          class="col-lg-4 col-md-6 d-flex align-items-stretch"
+          data-aos="zoom-in"
+          data-aos-delay="100"
+        >
+          <div class="icon-box iconbox-{{service.color}}">
+            <div class="icon">
+              <svg
+                width="100"
+                height="100"
+                viewBox="0 0 600 600"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  stroke="none"
+                  stroke-width="0"
+                  fill="{{service.color}}"
+                  d="M300,521.0016835830174C376.1290562159157,517.8887921683347,466.0731472004068,529.7835943286574,510.70327084640275,468.03025145048787C554.3714126377745,407.6079735673963,508.03601936045806,328.9844924480964,491.2728898941984,256.3432110539036C474.5976632858925,184.082847569629,479.9380746630129,96.60480741107993,416.23090153303,58.64404602377083C348.86323505073057,18.502131276798302,261.93793281208167,40.57373210992963,193.5410806939664,78.93577620505333C130.42746243093433,114.334589627462,98.30271207620316,179.96522072025542,76.75703585869454,249.04625023123273C51.97151888228291,328.5150500222984,13.704378332031375,421.85034740162234,66.52175969318436,486.19268352777647C119.04800174914682,550.1803526380478,217.28368757567262,524.383925680826,300,521.0016835830174"
+                ></path>
+              </svg>
+              <i class="bi bi-{{service.icon}}"></i>
+            </div>
+            <h4>{{service.name}}</h4>
+            <p>{{service.description}}</p>
+          </div>
+        </div>
+        {% endfor %}
+        <!-- End of Service -->
+        {% else %}
+      </div>
+      <div>Could not fetch services now</div>
+      {% endif %}
+    </div>
+  </section>
+  <!-- End Services Section -->
+
+  <!-- ======= Features Section ======= -->
+  <section id="features" class="features">
+    <div class="container" data-aos="fade-up">
+      <div class="section-title">
+        <h2>Features</h2>
+        <p>
+          Data Idea is a leading company that specializes in data-driven
+          solutions and cutting-edge technologies. As a data-focused company,
+          Data Idea can provide a range of valuable features to its clients.
+        </p>
+      </div>
+
+      <div class="row">
+        <div
+          class="col-lg-6 order-2 order-lg-1 d-flex flex-column align-items-lg-center"
+        >
+        {% if features %}
+        <!-- Show feature -->
+        {% for feature in features %}
+          <div
+            class="icon-box mt-5 mt-lg-0"
+            data-aos="fade-up"
+            data-aos-delay="100"
+          >
+            <i class="bi bi-{{feature.icon}}"></i>
+            <h4>{{feature.name}}</h4>
+            <p>{{feature.description}}</p>
+          </div>
+          {% endfor %}
+        <!-- End of Features -->
+        {% endif %}
+        </div>
+        <div
+          class="image col-lg-6 order-1 order-lg-2"
+          data-aos="zoom-in"
+          data-aos-delay="100"
+        >
+          <img src="{% static 'img/features.svg' %}" alt="" class="img-fluid" />
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- End Features Section -->
+
+  <!-- ======= Testimonials Section ======= -->
+  <section id="testimonials" class="testimonials section-bg">
+    <div class="container" data-aos="fade-up">
+      <div class="section-title">
+        <h2>Testimonials</h2>
+        <p>
+          Our clients' satisfaction is at the heart of everything we do. Here's
+          what some of them have to say about their experience working with our
+          company
+        </p>
+      </div>
+
+      <div
+        class="testimonials-slider swiper"
+        data-aos="fade-up"
+        data-aos-delay="100"
+      >
+        {% if testimonials %}
+        <div class="swiper-wrapper">
+          {% for testimonial in testimonials %}
+          <div class="swiper-slide">
+            <div class="testimonial-item">
+              <p>
+                <i class="bx bxs-quote-alt-left quote-icon-left"></i>
+                {{testimonial.testimony}}
+                <i class="bx bxs-quote-alt-right quote-icon-right"></i>
+              </p>
+              <img
+                src="{{testimonial.image.url}}"
+                class="testimonial-img"
+                alt="{{testimonial.name}}"
+              />
+              <h3>{{testimonial.name}}</h3>
+              <h4>{{testimonial.position}}</h4>
+            </div>
+          </div>
+          {% endfor %}
+          <!-- End testimonial item -->
+        </div>
+        {% else %}
+        <div>No testimony found</div>
+        {% endif %}
+        <div class="swiper-pagination"></div>
+      </div>
+    </div>
+  </section>
+  <!-- End Testimonials Section -->
+
+  <!-- ======= Portfolio Section ======= -->
+  <section id="portfolio" class="portfolio">
+    <div class="container" data-aos="fade-up">
+      <div class="section-title">
+        <h2>Portfolio</h2>
+        <p>
+          Discover the impressive range of projects we have successfully
+          undertaken for our esteemed clients. Our portfolio showcases our
+          expertise in diverse areas, including research, data analysis, machine
+          learning, software development, and more. Each project represents a
+          unique challenge that we tackled with precision and innovation.
+        </p>
+      </div>
+
+      <div class="row">
+        <div class="col-lg-12 d-flex justify-content-center">
+          <ul id="portfolio-flters">
+            <li data-filter="*" class="filter-active">All</li>
+            <li data-filter=".filter-web">Web</li>
+            <li data-filter=".filter-tutorial">Tutorials</li>
+            <li data-filter=".filter-other">Other</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="row portfolio-container">
+        {% if portfolios %}
+        <!-- Display Portfolio -->
+        {% for portfolio in portfolios %}
+        <div
+          class="col-lg-4 col-md-6 portfolio-item filter-{{portfolio.category}}"
+        >
+          <a
+            href="{% url 'index:portfolio_details' portfolio.id %}"
+            target=""
+            title="More Details"
+          >
+            <div class="portfolio-wrap">
+              <img src="{{portfolio.image.url}}" class="img-fluid" alt="" />
+              <div class="portfolio-info">
+                <h4>{{portfolio.name}}</h4>
+                <p>{{portfolio.category}}</p>
+              </div>
+            </div>
+          </a>
+        </div>
+        {% endfor %}
+        <!-- End of Portfolios -->
+        {% else %}
+        <div>No Portfolio</div>
+        {% endif %}
+      </div>
+    </div>
+  </section>
+  <!-- End Portfolio Section -->
+
+  <!-- Partners Section -->
+  <section id="partners" class="features">
+      <div id="pricing" class="pricing">
+        <div class="container p-3" data-aos="fade-up">
+          <div class="section-title">
+            <h2>Our Partners</h2>
+            <p>
+              Discover the organizations and collaborators who support our mission and contribute to our success.
+            </p>
+          </div>
+
+
+          <div class="row">
+            {% if partners %}
+            {% for partner in partners %}
+            <div class="col-lg-3 col-md-6 mt-3" data-aos="fade-up" data-aos-delay="100">
+              <div class="box">
+                <img src="{{partner.image}}"
+                class="img-fluid rounded"
+                alt="" />
+                <h5 class="mt-3">{{ partner.name }}</h5>
+                <hr>
+                <a href="{{partner.url}}">Visit Partner Site</a>
+              </div>
+            </div>
+            {% endfor %}
+            <!-- Otherwise -->
+            {% else %}
+            <h5>No partners found</h5>
+            {% endif %}
+          </div>
+          <!-- Pagination -->
+          <div class="pagination col-md-6 m-auto">
+            <span
+              class="step-links d-flex justify-content-between p-3 border m-2 mt-3 rounded w-100"
+              style="background: whitesmoke;"
+            >
+              {% if partners.has_previous %}
+              <a href="?page=1">&laquo; First</a>
+              <a href="?page={{ partners.previous_page_number }}">Previous</a>
+              {% endif %}
+
+              <span class="current">
+                Page {{ partners.number }}
+                <!-- Current number -->
+                of
+                <!-- Total number -->
+                {{ partners.paginator.num_pages}}.
+              </span>
+
+              {% if partners.has_next %}
+              <a href="?page={{ partners.next_page_number }}">Next</a>
+              <a href="?page={{ partners.paginator.num_pages }}"
+                >Last &raquo;</a
+              >
+              {% endif %}
+            </span>
+          </div>
+        </div>
+  </section>
+
+  <!-- ======= Pricing Section ======= -->
+  <section id="pricing" class="pricing section-bg">
+    <div class="container" data-aos="fade-up">
+      <div class="section-title">
+        <h2>Pricing</h2>
+        <p>
+          At our company, we believe in providing transparent and competitive
+          pricing for our wide range of services. We understand that every
+          project is unique, and we strive to offer flexible pricing options
+          that cater to your specific needs and budget.
+        </p>
+      </div>
+
+      <div class="row">
+        {% if prices %}
+        <!-- Display Price -->
+        {% for price in prices %}
+        <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="100">
+          <div class="box mt-3">
+            <h3>{{price.name}}</h3>
+            <h4><sup>$</sup>{{price.price}}<span> / project</span></h4>
+            <ul>
+              <li>{{price.service.name}}</li>
+            </ul>
+            <div class="btn-wrap">
+              <a href="mailto:datasideaofficial@gmail.com?subject=Request%20For%20{{price.service.name}}" class="btn-buy">Get Now</a>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+        <!-- End if -->
+      {% else %}
+      <div>No prices found</div>
+      {% endif %}
+
+      </div>
+    </div>
+  </section>
+  <!-- End Pricing Section -->
+
+  <!-- ======= Frequently Asked Questions Section ======= -->
+  <section id="faq" class="faq">
+    <div class="container" data-aos="fade-up">
+      <div class="section-title">
+        <h2>Frequently Asked Questions</h2>
+        <p>
+          We understand that you may have some questions about our company and
+          the services we offer. Here are answers to some of the frequently
+          asked questions to provide you with more information.
+        </p>
+      </div>
+
+      <div class="faq-list">
+        {% if faqs %}
+        <ul>
+          {% for faq in faqs %}
+          <li data-aos="fade-up" data-aos="fade-up" data-aos-delay="100">
+            <i class="bx bx-help-circle icon-help"></i>
+            <a
+              data-bs-toggle="collapse"
+              class="collapse"
+              data-bs-target="#faq-list-1"
+            >
+              {{ faq.question }}
+              <i class="bx bx-chevron-down icon-show"></i
+              ><i class="bx bx-chevron-up icon-close"></i
+            ></a>
+            <div
+              id="faq-list-1"
+              class="collapse"
+              data-bs-parent=".faq-list"
+            >
+              <p>{{ faq.answer }}</p>
+            </div>
+          </li>
+          {% endfor %}
+        </ul>
+        {% else %}
+        <div>No Frequently Asked Question Recorded</div>
+        {% endif %}
+      </div>
+    </div>
+  </section>
+  <!-- End Frequently Asked Questions Section -->
+
+  <!-- ======= Contact Section ======= -->
+  <section id="contact" class="contact section-bg">
+    <div class="container" data-aos="fade-up">
+      <div class="section-title">
+        <h2>Contact</h2>
+        <p>
+          Have a question or want to learn more about our services? We would
+          love to hear from you! Reach out to us using the contact information
+          provided below or fill out the form, and our team will get back to you
+          as soon as possible.
+        </p>
+      </div>
+
+      <!-- Contact Section -->
+      <div class="row">
+        {% if contacts %}
+        <!-- Contacts List -->
+        {% for contact in contacts %}
+        <!-- Telephone -->
+        {% if contact.name == 'Call' %}
+        <a href="tel:{{contact.contact}}"
+        class="col-lg-3 col-md-6">
+          <div class="info-box mb-4">
+            <i class="bi bi-{{contact.icon}}"></i>
+            <h3>{{contact.name}}</h3>
+            <p>{{contact.contact}}</p>
+          </div>
+        </a>
+        <!-- Email -->
+        {% elif contact.name == 'Email'%}
+        <a href="mailto:{{contact.contact}}"
+        class="col-lg-3 col-md-6">
+          <div class="info-box mb-4">
+            <i class="bi bi-{{contact.icon}}"></i>
+            <h3>{{contact.name}}</h3>
+            <p>{{contact.contact}}</p>
+          </div>
+        </a>
+        <!-- WhatsApp -->
+        {% elif contact.name == 'WhatsApp'%}
+        <a href="https://wa.me/{{contact.contact}}"
+        class="col-lg-3 col-md-6">
+          <div class="info-box mb-4">
+            <i class="bi bi-{{contact.icon}}"></i>
+            <h3>{{contact.name}}</h3>
+            <p>{{contact.contact}}</p>
+          </div>
+        </a>
+        {% elif contact.name == 'Twitter'%}
+        <a href="https://twitter.com/{{contact.contact}}"
+        class="col-lg-3 col-md-6">
+          <div class="info-box mb-4">
+            <i class="bi bi-{{contact.icon}}"></i>
+            <h3>{{contact.name}}</h3>
+            <p>{{contact.contact}}</p>
+          </div>
+        </a>
+        {% else %}
+        <div class="col-lg-3 col-md-6">
+          <div class="info-box mb-4">
+            <i class="bi bi-{{contact.icon}}"></i>
+            <h3>{{contact.name}}</h3>
+            <p>{{contact.contact}}</p>
+          </div>
+        </div>
+        {% endif %}
+        {% endfor %}
+        <!-- End of Contacts -->
+        {% else %}
+        <div>No Contact Information</div>
+        {% endif %}
+
+      <div class="row">
+        <div class="col-lg-6">
+          <iframe
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3989.7482428681355!2d32.56297169999999!3d0.3395869000000019!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x177dbbc4c655cf71%3A0x904a028e90ba9a2f!2sUMF%20Head%20Office!5e0!3m2!1sen!2sug!4v1685518436964!5m2!1sen!2sug"
+            width="600"
+            height="450"
+            style="border: 0"
+            allowfullscreen=""
+            style="border: 0; width: 100%; height: 384px"
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"
+          >
+          </iframe>
+        </div>
+
+        <div class="col-lg-6">
+          <form action="{% url 'index:feedback' %}" method="post" class="php-email-form" >
+            {% csrf_token %}
+            <div class="row">
+              <div class="col-md-6 form-group">
+                <input
+                  type="text"
+                  name="name"
+                  class="form-control"
+                  id="name"
+                  placeholder="Your Name"
+                  required
+                />
+              </div>
+              <div class="col-md-6 form-group mt-3 mt-md-0">
+                <input
+                  type="email"
+                  class="form-control"
+                  name="email"
+                  id="email"
+                  placeholder="Your Email"
+                  required
+                />
+              </div>
+            </div>
+            <div class="form-group mt-3">
+              <input
+                type="text"
+                class="form-control"
+                name="subject"
+                id="subject"
+                placeholder="Subject"
+                required
+              />
+            </div>
+            <div class="form-group mt-3">
+              <textarea
+                class="form-control"
+                name="message"
+                rows="5"
+                placeholder="Message"
+                required
+              ></textarea>
+            </div>
+            <div class="my-3">
+              <!-- <div class="loading">Loading</div>
+              <div class="error-message"></div>
+              <div class="sent-message">
+                Your message has been sent. Thank you!
+              </div> -->
+            </div>
+            <div class="text-center">
+              <button type="submit">Send Message</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- End Contact Section -->
+</main>
+<!-- End #main -->
+{% endblock %}

@@ -1,0 +1,139 @@
+{% extends 'components/base.html' %}
+<!-- Page Content -->
+{% block content %}
+<main id="main">
+  <!-- ======= Breadcrumbs ======= -->
+  <section class="breadcrumbs">
+    <div class="container">
+      <div class="d-flex justify-content-between align-items-center">
+        <h2>School</h2>
+        <ol>
+          <li><a href="{% url 'index:home' %}">Home</a></li>
+          <li>School</li>
+        </ol>
+        <form
+              action="{% url 'school:search_courses'%}"
+              method="post"
+              class="d-flex mt-2"
+            >
+              {% csrf_token %}
+              <label for="query" class="">
+                <input
+                  type="text"
+                  name="query"
+                  id=""
+                  class="w-100 rounded border p-2"
+                  placeholder="&#64;{{user}} search courses"
+                />
+              </label>
+              <input
+                type="submit"
+                value="Search"
+                class="btn p-2 mx-2"
+                style="background-color: #6610f2; color: #fff"
+              />
+            </form>
+      </div>
+    </div>
+  </section>
+  <!-- End Breadcrumbs -->
+
+  <section class="inner-page" style="padding: 0;" >
+    <!-- Popular Courser -->
+      <div id="pricing" class="pricing section-bg">
+        <div class="container p-3" data-aos="fade-up">
+          <div class="section-title">
+            <h2>Popular Courses</h2>
+            <p>
+              Dive into the world of Web Development and Machine Learning with our curated courses and tutorials. From beginner to expert, learn from industry professionals and master the latest skills. Start your journey to innovation today!
+            </p>
+          </div>
+    
+   
+          <div class="row">
+            {% if courses %}
+            {% for course in courses %}
+            <div class="col-lg-3 col-md-6 mt-3" data-aos="fade-up" data-aos-delay="100">
+              <div class="box">
+                <h3>{{course.name}}</h3>
+                <ul>
+                  <li class="">
+                    <i class="bi bi-{{course.level}}"></i>
+                    <span>
+                      {% if course.level == 'reception-1'%}
+                    Beginner
+                    {% elif course.level == 'reception-2'%}
+                    Intermediate
+                    {% elif course.level == 'reception-3'%}
+                    Advanced
+                    {% elif course.level == 'reception-4'%}
+                    Explorer
+                    {% else %}
+                    {{course.level}}
+                    {% endif %}
+                    </span>
+                  </li>
+                  <li class="">
+                    <i class="bi bi-buildings-fill"></i>
+                    <span>{{course.organization}}</span>
+                  </li>
+                  <li class="">
+                    <i class="bi bi-person-fill"></i>
+                    <span>
+                      {% for tutor in course.tutors.all %}
+                      {{tutor.name}},
+                      {% endfor %}
+                    </span>
+                  </li>
+                </ul>
+                <div class="btn-wrap">
+                  <a href="{% url 'school:course_details' course.id %}" class="btn-buy">GET STARTED</a>
+                </div>
+              </div>
+            </div>
+            {% endfor %}
+            <!-- Otherwise -->
+            {% else %}
+            <h5>No courses found</h5>
+            {% endif %}
+          </div>
+          <!-- Pagination -->
+          <div class="pagination col-md-6 m-auto">
+            <span
+              class="step-links d-flex justify-content-between p-3 border m-2 mt-3 rounded w-100" 
+              style="background: whitesmoke;"
+            >
+              {% if courses.has_previous %}
+              <a href="?page=1">&laquo; First</a>
+              <a href="?page={{ courses.previous_page_number }}">Previous</a>
+              {% endif %}
+
+              <span class="current">
+                Page {{ courses.number }}
+                <!-- Current number -->
+                of
+                <!-- Total number -->
+                {{ courses.paginator.num_pages}}.
+              </span>
+
+              {% if courses.has_next %}
+              <a href="?page={{ courses.next_page_number }}">Next</a>
+              <a href="?page={{ courses.paginator.num_pages }}"
+                >Last &raquo;</a
+              >
+              {% endif %}
+            </span>
+          </div>
+          <!-- End of Pagination -->
+        </div>
+  </section>
+</main>
+<!-- End #main -->
+
+<!-- JavaScript -->
+<script>
+  document.querySelector("#header").style.background = "rgba(24, 6, 185, 0.8)";
+
+  document.querySelector(".school").classList.add("active");
+</script>
+{% endblock %}

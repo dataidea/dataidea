@@ -1,0 +1,283 @@
+{% extends 'components/base.html' %}
+<!-- Page Content -->
+{% block content %}
+<!-- Load auth -->
+<!-- Styles -->
+<style>
+  .video-wrapper {
+    position: relative;
+    padding-bottom: 56.25%; /* 16:9 aspect ratio (for 100% width) */
+    height: 0;
+  }
+
+  .video-iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+</style>
+<!-- End of Styles -->
+
+<main id="main">
+  <!-- ======= Breadcrumbs ======= -->
+  <section id="breadcrumbs" class="breadcrumbs">
+    <div class="container">
+      <div class="d-flex justify-content-between align-items-center">
+        <h2 class="p-2">{{course.name}} Details</h2>
+        <ol>
+          <li><a href="/">Home</a></li>
+          <li><a href="{% url 'school:browse'%}">School</a></li>
+          <li>{{course.name}} Details</li>
+        </ol>
+      </div>
+    </div>
+  </section>
+  <!-- End Breadcrumbs -->
+
+  <!-- ======= Portfolio Details Section ======= -->
+  <section id="portfolio-details" class="portfolio-details">
+    <div class="container">
+      <div class="row gy-4">
+        <div class="col-lg-8">
+          <div id="portfolio" class="portfolio">
+            <div class="container" data-aos="fade-up">
+              <!-- Add Notes -->
+              <div class="accordion" id="accordionExample">
+                <div class="accordion-item">
+                  <h2 class="accordion-header" id="headingOne">
+                    <button
+                      class="accordion-button fw-medium"
+                      type="button"
+                      style="color: #6610f2"
+                      data-bs-toggle="collapse"
+                      data-bs-target="#collapseOne"
+                      aria-expanded="true"
+                      aria-controls="collapseOne"
+                    >
+                      Add Note
+                      <i class="bi bi-pencil-square px-2"></i>
+                    </button>
+                  </h2>
+                  <div
+                    id="collapseOne"
+                    class="accordion-collapse collapse"
+                    aria-labelledby="headingOne"
+                    data-bs-parent="#accordionExample"
+                  >
+                    <div class="accordion-body d-flex row">
+                      <form
+                        action="{% url 'tools:add_note' %}"
+                        method="post"
+                        class="d-flex flex-column"
+                      >
+                        {% csrf_token %}
+                        <label for="title" class="w-100">
+                          <input
+                            required
+                            type="text"
+                            name="title"
+                            id=""
+                            class="w-100 rounded border p-2"
+                            placeholder="write note title"
+                          />
+                        </label>
+                        <label for="note" class="w-100 mt-2">
+                          <textarea
+                            required
+                            name="detail"
+                            id=""
+                            cols=""
+                            rows="5"
+                            class="w-100 rounded border p-2"
+                            placeholder="write your note detail here"
+                          ></textarea>
+                        </label>
+                        <input
+                          type="submit"
+                          value="Save Note"
+                          class="btn p-2 mt-2"
+                          style="background-color: #6610f2; color: #fff"
+                        />
+                      </form>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- End Notes -->
+              <!-- Pagination -->
+              <div class="pagination">
+                <span
+                  class="step-links d-flex justify-content-between w-100 w-md-50 mb-3 mt-3"
+                >
+                  {% if videos.has_previous %}
+                  <a href="?page=1">&laquo; First</a>
+                  <a href="?page={{ videos.previous_page_number }}">Previous</a>
+                  {% endif %}
+
+                  <span class="current">
+                    {{ videos.number }}
+                    <!-- Current number -->
+                    of
+                    <!-- Total number -->
+                    {{ videos.paginator.num_pages}}.
+                  </span>
+
+                  {% if videos.has_next %}
+                  <a href="?page={{ videos.next_page_number }}">Next</a>
+                  <a href="?page={{ videos.paginator.num_pages }}"
+                    >Last &raquo;</a
+                  >
+                  {% endif %}
+                </span>
+              </div>
+              {% for video in videos %}
+              <div class="video-wrapper">
+                <iframe
+                  class="video-iframe"
+                  src="{{video.url}}?rel=0&amp;loop=1&amp;autoplay=1"
+                  title="YouTube video player"
+                  frameborder="0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture;"
+                  allowfullscreen
+                ></iframe>
+              </div>
+              <div>
+                <div class="d-flex justify-content-between align-items-center">
+                  <h5 class="p-3">{{video.name}}</h5>
+                  {% if course.quiz %}
+                  <a
+                    href="{% url 'school:quiz' course.quiz.id %}"
+                    class="btn text-white"
+                    style="background-color: #6610f2"
+                    >Try Quiz</a
+                  >
+                  {% endif %}
+                </div>
+                <script src="{{video.gist}}"></script>
+              </div>
+              <!-- Comments -->
+              <div class="portfolio-info">
+                <h3>Comments</h3>
+                <ul>
+                  {% for comment in video.comments.all %}
+                  <li>
+                    <strong>
+                      <!-- End of staff -->
+                      {{comment.user}}
+                      <!-- If usesr is verified -->
+                      {% for group in comment.user.groups.all %}
+                      <!-- Check for Verified -->
+                      {% if group.name == 'Verified' %}
+                      <i class="bi bi-patch-check"></i>
+                      {% endif %} {% endfor %}
+                      <!-- If usesr is staff -->
+                      {% if comment.user.is_staff %}
+                      <!-- staff -->
+                      (staff) {% endif %}
+                    </strong>
+                    {{comment.comment}}
+                  </li>
+                  {% endfor %}
+                </ul>
+                <form
+                  action="{% url 'school:comment' video.id %}"
+                  method="post"
+                  class="d-flex flex-column"
+                >
+                  {% csrf_token %}
+                  <label for="comment" class="w-100">
+                    <input
+                      type="text"
+                      name="comment"
+                      id=""
+                      class="w-100 rounded border p-2"
+                      placeholder="&#64;{{user}} write your comment here"
+                    />
+                  </label>
+                  <input
+                    type="submit"
+                    value="Comment"
+                    class="btn p-2 mt-2"
+                    style="background-color: #6610f2; color: #fff"
+                  />
+                </form>
+              </div>
+              <!-- End of Comments -->
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+
+        <!-- Course Information -->
+        <div class="col-lg-4">
+          <div class="portfolio-info">
+            <h3>Course information</h3>
+            <ul>
+              <li><strong>Name</strong>: {{course.name}}</li>
+              <li>
+                <strong>Level</strong>:
+                <!-- Configure level -->
+                {% if course.level == 'reception-1'%}
+                <span>Beginner</span>
+                {% elif course.level == 'reception-2'%}
+                <span>Intermediate</span>
+                {% elif course.level == 'reception-3'%}
+                <span>Advanced</span>
+                {% elif course.level == 'reception-4'%}
+                <span>Explorer</span>
+                {% else %}
+                <span>{{course.level}}</span>
+                {% endif %}
+              </li>
+              <li><strong>Offered by</strong>: {{course.organization}}</li>
+              <li>
+                <strong>Tutors</strong>:
+                <!-- display tutors -->
+                {% for tutor in course.tutors.all %}
+                <a href="{{tutor.info}}">{{tutor.name}},</a>
+                {% endfor %}
+              </li>
+              <li>
+                <strong>Outline</strong>:
+                <ul>
+                  {% for video in course.videos.all %}
+                  <li>
+                    <span>{{forloop.counter}}.</span>
+                    <span
+                      ><a
+                        href="{% url 'school:course_details' course.id %}?page={{forloop.counter}}"
+                        >{{ video.name }}</a
+                      ></span
+                    >
+                  </li>
+                  {% endfor %}
+                </ul>
+              </li>
+              <li>
+                <strong>Course URL</strong>:
+                <a href="{{course.url}}">{{course.url}}</a>
+              </li>
+            </ul>
+          </div>
+          <div class="portfolio-description">
+            <h2>Course Description</h2>
+            <p>{{course.description}}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- End Portfolio Details Section -->
+</main>
+<!-- End #main -->
+
+<!-- JavaScript -->
+<!-- Add this in your <head> section -->
+<script>
+  header = document.querySelector("#header");
+  header.style.background = "rgba(24, 6, 185, 0.8)";
+</script>
+
+{% endblock %}

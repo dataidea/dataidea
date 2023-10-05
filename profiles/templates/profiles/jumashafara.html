@@ -1,0 +1,513 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Google fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/42e0e8b23e.js" crossorigin="anonymous"></script>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-8HFEVX779Y"></script>
+    <link rel="stylesheet" href="{% static 'css/jumashafara.css' %}">
+    <link rel="stylesheet" href="{% static 'css/jumashafara_custom.css' %}">
+    <title>Juma Shafara</title>
+
+    <!-- AdSense -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8076040302380238"
+     crossorigin="anonymous"></script>
+     <!-- End of AdSense -->
+</head>
+<body class="font-[Poppins]">
+    <button onclick="topFunction()" id="myBtn" title="Go to top">Top</button>
+    <section class="bg-[#228b24]" id="home">
+        <nav class= " flex flex-col md:flex-row container m-auto md:justify-between text-white  space-y-5 md:space-y-0 p-5">
+            <h1 class="font-extrabold text-2xl text-white text-center md:w-1/3">Juma Shafara</h1>
+            <ul class="flex flex-row space-x-5 m-auto md:w-2/3 justify-end">
+                <li>
+                    <a href="#services" class="font-medium text-gray-200 hover:text-white active:white">
+                        <span class="md:hidden">
+                            <i class="fa-solid fa-bell-concierge"></i>
+                        </span>
+                        <span class="hidden md:block"> Services</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#blog" class="font-medium text-gray-200 hover:text-white active:white">
+                        <span class="md:hidden"><i class="fa-solid fa-blog"></i></span>
+                        <span class="hidden md:block"> Blog</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#shop" class="font-medium text-gray-200 hover:text-white active:white">
+                        <span class="md:hidden"><i class="fa-solid fa-shop"></i></span>
+                        <span class="hidden md:block"> Shop</span>
+                    </a>
+                </li>
+                <!-- <li>
+                    <a href="#portfolio" class="font-medium text-gray-200 hover:text-white active:white">
+                        <span class="md:hidden"><i class="fa-solid fa-briefcase"></i></span>
+                        <span class="hidden md:block"> Portfolio</span>
+                    </a>
+                </li> -->
+                <li>
+                    <a href="#about" class="font-medium text-gray-200 hover:text-white active:white">
+                        <!--  -->
+                        <span class="md:hidden"><i class="fa-solid fa-address-card"></i></span>
+                        <span class="hidden md:block"> About</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#contact" class="font-medium text-gray-200 hover:text-white active:white">
+                        <!--  -->
+                        <span class="md:hidden"><i class="fa-solid fa-address-book"></i></span>
+                        <span class="hidden md:block"> Contact</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </section>
+
+    <!-- Hero Section -->
+    <section id="hero" 
+            class="backdrop-blur-xl h-[80vh] flex justify-center align-middle w-full bg-no-repeat bg-fixed bg-cover bg-center 
+            bg-[url('https://drive.google.com/uc?export=view&id=1TA5KKBLaTs6av4o5Fsg0CN1it05O70f2')]">
+            <!-- https://drive.google.com/file/d/1TA5KKBLaTs6av4o5Fsg0CN1it05O70f2/view?usp=sharing -->
+        <div class=" md:px-32 flex flex-col md:flex-row m-auto items-center">
+            <main class="flex flex-col space-y-7 p-5 md:w-2/3 text-gray-900">
+                <p><i class="fa-solid fa-location-dot"></i><span> Kampala, Uganda</span></p>
+                <h1 class= "font-extrabold text-5xl" >Applied Machine Learning Engineer</h1>
+                <p class="font-normal text-lg">
+                    I specialize in building and deploying ML models through applications or websites. 
+                    I have a deep understanding of ML algorithms, data modeling techniques, and data structures
+                </p>
+                <div class="flex flex-col w-2/3 space-y-3 md:flex-row md:space-x-3 md:space-y-0">
+                    <a download="Kibekityo Juma Shafara Resume" href="https://drive.google.com/file/d/1-al4XvvmaVKwTLCDs_Cfz5vk_6t9aSI5/view?usp=sharing" 
+                        target="_blank"
+                        class="btn bg-[#228b24] hover:bg-green-500 text-center rounded p-3 text-white font-medium">See Resume</a>
+                    <a href="mailto: jumashafara0@gmail.com" class="btn bg-gray-500 hover:bg-blue-500 text-center rounded p-3 text-white font-medium">Send Email</a>
+                </div>
+            </main>
+            <aside class="md:w-1/3 md:h-1/2">
+                <div class="relative bg-gray-200 rounded">
+                    <!-- <img src="https://drive.google.com/uc?export=view&id=1hIV0sxTJsRn_pLqN99iEH1Hxff8Zq7tY" alt="jumashafara"> -->
+                    <img class="hidden md:block rounded "
+                    src="https://drive.google.com/uc?export=view&id=1Kp84pJ2YuSvD3uATwePZiEKu1uXipE-t" alt="jumashafara">
+                </div>
+            </aside>
+        </div>
+    </section>
+
+    <!-- Services -->
+    <section class="bg-zinc-900 text-white py-10 p-5 flex flex-col space-y-5 md:px-32" 
+    id="services">
+        <h1 class="font-extrabold text-5xl text-[#228b24] text-center pb-10">Services</h1>
+        <!-- Web Development -->
+        <div class="flex flex-col align-middle space-y-5 md:flex-row">
+            <aside class="md:w-1/2">
+                <div class="md:pt-10 flex justify-center align-middle text-zinc-500 hover:text-green-300 text-7xl md:text-9xl cursor-grab">
+                    <span>
+                        <i class="fa-brands fa-chrome"></i>
+                    </span>
+                </div>
+            </aside>
+            <main class="flex flex-col space-y-5 md:w-1/2">
+                <h2 class = "font-bold text-3xl py-5">Web Development</h2>
+                <p class="font-base">
+                    I design and code customized websites and tailor them to match my clients needs
+                    using the best software in the business.
+                </p>
+                <div class="container m-auto space-y-5">
+                    <h3 class="text-lg text-center font-semibold">My Tech Stack</h3>
+                    <div class="flex flex-row p-5 space-x-3 justify-center text-3xl">
+                        <a href="" class="flex flex-col">
+                            <span class="text-center"><i class="fa-brands fa-figma"></i></span>
+                            <span class="text-center text-base">Figma</span>
+                        </a>
+                        <a href="" class="flex flex-col">
+                            <span class="text-center"><i class="fa-brands fa-react"></i></span>
+                            <span class="text-center text-base">React</span>
+                            </a>
+                        <a href="" class="flex flex-col">
+                            <span class="text-center "><i class="fa-brands fa-python"></i></span>
+                            <span class="text-center text-base">Django</span>
+                        </a>
+                    </div>
+                </div>
+            </main>
+        </div>
+
+        <!-- Data analysis -->
+        <div class="flex flex-col space-y-5 md:flex-row-reverse">
+            <main class="md:w-1/2">
+                <div class="md:pt-10 flex justify-center align-middle text-zinc-500 text-7xl md:text-9xl hover:text-red-300">
+                    <span>
+                        <i class="fa-solid fa-chart-simple"></i>
+                    </span>
+                </div>
+            </main>
+            <aside class="flex flex-col space-y-5 md:w-1/2">
+                <h2 class = "font-bold text-3xl py-5">Data analysis and ML model development</h2>
+                <p>
+                    I can identify trends in your data, write user-friedly reports, 
+                    guide decision making processes and implement statistical models
+                </p>
+                <div class="flex flex-col space-y-5 text-center">
+                    <h3 class="font-semibold">My Tech Stack</h3>
+                    <div class="flex flex-row p-5 space-x-3 justify-center text-3xl">
+                        <a href="" class="flex flex-col">
+                            <span><i class="fa-brands fa-python"></i></span>
+                            <span class="text-base">Python</span>
+                        </a>
+                        <a href="" class="flex flex-col">
+                            <span><i class="fa-brands fa-python"></i></span>
+                            <span class="text-base">PyTorch </span>
+                        </a>
+                        <a href="" class="flex flex-col">
+                            <span><i class="fa-brands fa-python"></i></span>
+                            <span class="text-base">
+                                <p>Anaconda</p>
+                            </span>
+                        </a>
+                </div>
+            </aside>
+        </div>
+
+        <!-- Technical writing -->
+        <div class="flex flex-col space-y-5 md:flex-row">
+            <aside class="md:w-1/2">
+                <div class="md:pt-10 flex justify-center align-middle text-zinc-500 text-7xl md:text-9xl hover:text-blue-300">
+                    <span>
+                        <i class="fa-regular fa-newspaper"></i>
+                    </span>
+                </div>
+            </aside>
+            <main class="space-y-5 md:w-1/2">
+                <h2 class="font-bold text-3xl">Technical writing</h2>
+                <p>
+                    I simplify complex procedures and technologies of my interest or those paid for.
+                    I also write about my personal experiences with these technologies or procedures.
+                </p>
+                <div class="text-center space-y-5">
+                    <h3 class="font-semibold">Where I write</h3>
+                    <div class="flex flex-row p-5 space-x-3 justify-center text-3xl">
+                        <a href="" class="flex flex-col">
+                            <span class=""><i class="fa-brands fa-dev"></i></span>
+                            <span class="text-base">DEV</span>
+                        </a>
+                        <a href="https://jumashafara.hashnode.dev" class="flex flex-col">
+                            <span><i class="fa-brands fa-hashnode"></i></span>
+                            <span class="text-base">
+                                <p>Hash</p>
+                                <p>node</p>
+                            </span>
+                        </a>
+                        <a href="https://dataidea.pythonanywhere.com" class="flex flex-col">
+                            <span>DI</span>
+                            <span class="text-base">
+                                <p>DataIdea</p>
+                            </span>
+                        </a>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </section>
+
+    <!-- Blog -->
+    <section class="py-10 p-5 flex flex-col space-y-5 md:px-32 mx-auto" id="blog" >
+        <h1 class="font-extrabold text-5xl text-[#228b24] text-center pb-10">Blog</h1>
+        <div class="flex flex-col space-y-5 md:flex-row">
+            <main class="flex flex-col space-y-5 md:w-1/2">
+                <h2 class="font-semibold text-3xl">The Ultimate R Language Beginner Tutorial</h2>
+                <p>
+                    R is a programming language, that is often associated with statistical computing, 
+                    used for graphical presentation and analyzing and visualizing data.
+                    That said, R comes with the full power of a programming language and should 
+                    be able to execute tasks required of programming languages(...)
+                </p>
+            </main>
+            <aside class="flex flex-row space-y-3 space-x-3 md:w-1/2 md:flex-col">
+                <div class="flex flex-col space-y-3 w-1/2 md:m-auto">
+                    <a class="btn bg-[#228b24] hover:bg-green-500 rounded p-3 text-white text-center font-medium"
+                        href="https://blog.jumashafara.com/the-r-language"
+                        target = "_blank">Read on Blog</a>
+                <a class="btn bg-gray-500 hover:bg-blue-500 text-center rounded p-3 text-white font-medium"
+                href="tel:+256701520768" target = "_blank">Sponsor Blog</a>
+                </div>
+                <div class="flex flex-row justify-center align-middle text-7xl md:text-9xl text-zinc-300 w-1/2">
+                    <span class="m-auto">
+                        <i class="fa-regular fa-newspaper"></i>
+                    </span>
+                </div>
+            </aside>
+        </div>
+        <div class="flex flex-col space-y-5 md:flex-row">
+            <main class="flex flex-col space-y-5 md:w-1/2">
+                <h2 class="font-semibold text-3xl">Deploy a machine learning model using Django (the easy way)</h2>
+                <p>
+                    The goal of building a machine learning application is to solve a problem, and an ML model can only do this when it is actively being used in production. As such, ML model deployment is just as important as ML model development.(...)
+                </p>
+            </main>
+            <aside class="flex flex-row space-y-3 space-x-3 md:w-1/2 md:flex-col">
+                <div class="flex flex-col space-y-3 w-1/2 md:m-auto">
+                    <a class="btn bg-[#228b24] hover:bg-green-500 rounded p-3 text-white text-center font-medium"
+                href="https://dataidea.pythonanywhere.com/blog/blogs/?slug=deploy-a-machine-learning-model-using-django-the-easy-way" target = "_blank">Read on Blog</a>
+                <a class="btn bg-gray-500 hover:bg-blue-500 text-center rounded p-3 text-white font-medium"
+                href="tel:+256701520768" target = "_blank">Sponsor Blog</a>
+                </div>
+                <div class="flex flex-row justify-center align-middle text-7xl md:text-9xl text-zinc-300 w-1/2">
+                    <span class="m-auto">
+                        <i class="fa-regular fa-newspaper"></i>
+                    </span>
+                </div>
+            </aside>
+        </div>
+        <div class="flex flex-col space-y-5 md:flex-row">
+            <main class="flex flex-col space-y-5 md:w-1/2">
+                <h2 class="font-semibold text-3xl">Create a fake REST API with zero coding in less than 30 seconds(seriously)</h2>
+                <p>
+                    You may want to create a fully functional frontend but for some reason, 
+                    you're lacking a backend or API to service it. Maybe because you can't 
+                    develop one or you're just 
+                    practicing or focusing on the front end or you're probably lazy 😁. 
+                    In this article you will discover how to set up a fake functional backend for yourself.
+                </p>
+            </main>
+            <aside class="flex flex-row space-y-3 space-x-3 md:w-1/2 md:flex-col">
+                <div class="flex flex-col space-y-3 w-1/2 md:m-auto">
+                    <a class="btn bg-[#228b24] hover:bg-green-500 rounded p-3 text-white text-center font-medium"
+                href="https://dataidea.pythonanywhere.com/blog/blogs/?slug=create-a-fake-rest-api-with-zero-coding-in-less-than-30-secondsseriously" target = "_blank">Read on Blog</a>
+                <a class="btn bg-gray-500 hover:bg-blue-500 text-center rounded p-3 text-white font-medium"
+                href="tel:+256701520768" target = "_blank">Sponsor Blog</a>
+                </div>
+                <div class="flex flex-row justify-center align-middle text-7xl md:text-9xl text-zinc-300 w-1/2">
+                    <span class="m-auto">
+                        <i class="fa-regular fa-newspaper"></i>
+                    </span>
+                </div>
+            </aside>
+        </div>
+    </section>
+
+       <section id="about"
+            class="bg-zinc-900 text-white py-10 p-5 flex flex-col space-y-5 md:px-20 m-auto">
+        <h1 class="font-extrabold text-5xl text-[#228b24] text-center pb-10">About Me</h1>
+        <div class="flex flex-col md:flex-row md:space-x-10">
+            <main class="container m-auto flex flex-col p-3 space-y-5 md:w-2/3">
+                <h2 class="text-lg font-semibold">Hi, I'm Juma Shafara</h2>
+                <div class= "space-y-3">
+                    <p>
+                        In late 2019, I was introduced to the C language as a freshman module.
+                        I was so astounded by the idea of being able to communicate more directly with the computer.
+                        This was where my passion for programming started. So casually spent the next few months practicing C/C++ languages for the fun of it.
+                    </p>
+                    <p>
+                        In the early 2020, we were hit by the pandemic that would change everything and give me an entirely different direction.
+                        Due to obvious reasons, the world embraced the digital transformation at an expedited pace, remimagining technology's critical role in how we learn, work and live.
+                        But at the same time, the COVID-19 pandemic illuminated the long-standing issue, the digital divide.
+                        While countries that were ahead in technology quickly redeemed themselves by operating via the internet with efficiency, 
+                        countries like mine that were lower in digital operation continued to sink further and life became harder.
+                    </p>
+                    <p>
+                        I decided then to learn web development and merge it with the technical analytic skills I was getting from statistics, 
+                        to develop more accurate and specific digital solutions that are based on data to uplift the statuses of whichever communities I were to live in, in the future, 
+                        this became my new purpose.
+                    </p>
+                    <p>
+                        I’m a firm believer in the growth mindset concept, and that “life is not about finding yourself, but about creating yourself” (George Bernard Shaw).
+                    </p>
+                </div>
+                <div class="flex flex-col">
+                    <h3 class="text-lg font-semibold text-center">My Tech Stack</h3>
+                    <p>I'm proficient with the following relevant technologies</p>
+                    <div class="w-full flex flex-col m-auto text-3xl p-5 space-y-3 text-center">
+                        <div class="flex flex-row p-5 space-x-3 justify-center">
+                            <a href="" class="flex flex-col">
+                                <span><i class="fa-brands fa-js"></i></span>
+                                <span class="text-base">JavaScript</span>
+                            </a>
+                            <a href="" class="flex flex-col">
+                                <span><i class="fa-brands fa-python"></i></span>
+                                <span class="text-base">Python</span>
+                            </a>
+                            <a href="" class="flex flex-col">
+                                <span>DI</span>
+                                <span class="text-base">DataIdea</span>
+                            </a>
+                            <a href="" class="flex flex-col">
+                                <span><i class="fa-brands fa-github"></i></span>
+                                <span class="text-base">
+                                    <p>Git &</p>
+                                    <p>GitHub</p>
+                                </span>
+                            </a>
+                        </div>
+                        <div class="flex flex-row p-5 space-x-3 justify-center">
+                            <a href="" class="flex flex-col">
+                                <span class="text-center"><i class="fa-brands fa-figma"></i></span>
+                                <span class="text-center text-base">Figma</span>
+                            </a>
+                            <!-- <a href="">MongoDB</a>
+                            <a href="">ExpressJS</a> -->
+                            <a href="" class="flex flex-col">
+                                <span class="text-center"><i class="fa-brands fa-react"></i></span>
+                                <span class="text-center text-base">React</span>
+                                </a>
+                            <a href="" class="flex flex-col">
+                                <span class="text-center "><i class="fa-brands fa-python"></i></span>
+                                <span class="text-center text-base">Django</span>
+                            </a>
+                            <a href="" class="flex flex-col">
+                                <span class="text-center "><i class="fa-brands fa-windows"></i></span>
+                                <span class="text-center text-base">Windows</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </main>
+            <aside class="flex flex-col space-y-5 md:w-1/3">
+                <div class="relative bg-gray-200 rounded">
+                    <img class = "rounded" 
+                    src="https://drive.google.com/uc?export=view&id=1Kp84pJ2YuSvD3uATwePZiEKu1uXipE-t" alt="jumashafara">  
+                </div>
+                <a download="Kibekityo Juma Shafara Resume" href="https://drive.google.com/file/d/1-al4XvvmaVKwTLCDs_Cfz5vk_6t9aSI5/view?usp=sharing"
+                    target="_blank"
+                    class="btn bg-[#228b24] hover:bg-green-500 rounded p-3 text-white text-center font-medium">See Resume</a>
+                <div class="flex flex-row p-5 space-x-3 justify-center text-3xl">
+                    <a href="https://www.linkedin.com/in/jumashafara" 
+                        class="flex flex-col text-center"
+                        target = "_blank">
+                        <span class=""><i class="fa-brands fa-linkedin"></i></span>
+                        <span class="text-center text-base">LinkedIn</span>
+                    </a>
+                    <a href="https://twitter.com/juma_shafara" target = "_blank" class="flex flex-col" >
+                        <span class="text-center "><i class="fa-brands fa-square-twitter"></i></span>
+                        <span class="text-center text-base">Twitter</span>
+                    </a>
+                    <a href="https://github.com/jumashafara" target = "_blank" class="flex flex-col">
+                        <span><i class="fa-brands fa-github"></i></span>
+                        <span class="text-base">
+                            <p>Git &</p>
+                            <p>GitHub</p>
+                        </span>
+                    </a>
+                </div>
+            </aside>
+        </div>
+    </section>
+
+    <!-- Contact -->
+    <section id="contact"
+            class="text-gray-900 py-10 p-5 flex flex-col space-y-5 md:px-32">
+        <h1 class="font-extrabold text-5xl text-[#228b24] text-center pb-10">Contact</h1>
+        <div class="flex flex-col md:flex-row md:justify-between">
+            <h2 class="font-bold text-3xl">Lets get in touch</h2>
+            <div class="flex flex-row justify-between p-5 md:space-x-28">
+                <div class="flex flex-col space-y-3 w-1/2">
+                    <a href="mailto: jumashafara0@gmail.com" target = "_blank"
+                        class="btn bg-[#228b24] hover:bg-green-500 rounded p-3 text-white text-center font-medium"
+                    >Open Mailer</a>
+                    <a href="https://www.linkedin.com/in/jumashafara" target = "_blank"
+                    class="btn bg-gray-500 hover:bg-blue-500 rounded p-3 text-white text-center font-medium"    
+                    >LinkedIn</a>
+                </div>
+                <div>
+                    <span class="text-zinc-700 text-9xl w-1/2">
+                        <i class="fa-regular fa-envelope"></i>
+                    </span>
+                </div>
+            </div>
+        </div>
+        <form 
+        class="email-form flex flex-col space-y-5 bg-[whitesmoke] text-gray-900 border-zinc-700  border-2 rounded p-5 m-auto ">
+            <label for="" class="flex flex-col space-y-3">
+                <p>Name</p>
+                <input  class="block border-2 border-zinc-700  rounded w-full p-3"
+                    type="text" name="name" id="" onkeyup="sendMail()">
+            </label>
+            <label for="email" class="flex flex-col space-y-3">
+                <p>Email</p>
+                <input  class="block border-2 border-zinc-700  rounded w-full p-3"
+                    type="text" name="email" id="" onkeyup="sendMail()">
+            </label>
+            <label for="text" class="flex flex-col space-y-3">
+                <p>Message</p>
+                <textarea class="block border-2 border-zinc-700 rounded w-full p-3"
+                name="message" id="" cols="300" rows="5" onkeyup="sendMail()"></textarea>
+            </label>
+            <div class="submit_button m-auto p-5 flex justify-center align-middle"></div>
+        </form>
+    </section>
+    <footer class="text-gray-900 py-10 p-5 flex flex-col-reverse space-y-5 md:px-32">
+        <main class="flex flex-col space-y-3 pt-10">
+            <p><i class="fa-solid fa-location-dot"></i><span> Kampala, Uganda</span></p>
+            <h1 class= "font-extrabold text-xl" >Juma Shafara</h1>
+            <h1 class= "font-extrabold text-3xl" >Web Developer, Statistician.</h1>
+            <div class="flex flex-col w-2/3 space-y-3 md:flex-row md:space-x-3 md:space-y-0">
+                <a download="Kibekityo Juma Shafara Resume" href="https://drive.google.com/file/d/1-al4XvvmaVKwTLCDs_Cfz5vk_6t9aSI5/view?usp=sharing" target="_blank"
+                class="btn bg-[#228b24] hover:bg-green-500 rounded p-3 text-white text-center font-medium">See Resume</a>
+                <a href="mailto: jumashafara0@gmail.com" class="btn bg-gray-500 hover:bg-blue-500 text-center rounded p-3 text-white font-medium">Send Email</a>
+            </div>
+            <div class="flex flex-row p-5 space-x-3 justify-center text-3xl text-center">
+                <a href="https://www.linkedin.com/in/jumashafara" target = "_blank" class="flex flex-col">
+                    <span class=""><i class="fa-brands fa-linkedin"></i></span>
+                    <span class="text-center text-base">LinkedIn</span>
+                </a>
+                <a href="https://twitter.com/juma_shafara" target = "_blank" class="flex flex-col">
+                    <span class="text-center "><i class="fa-brands fa-square-twitter"></i></span>
+                    <span class="text-center text-base">Twitter</span>
+                </a>
+                <a href="https://github.com/jumashafara" target = "_blank" class="flex flex-col">
+                    <span><i class="fa-brands fa-github"></i></span>
+                    <span class="text-base">
+                        <p>Git &</p>
+                        <p>GitHub</p>
+                    </span>
+                </a>
+            </div>
+        </main>
+        <aside class="">
+            <ul class="flex flex-col space-y-3 px-3 w-full text-center">
+                <li>
+                    <a href="#services" class="font-medium text-center">
+                        <span class=""> SERVICES</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#blog" class="font-medium">
+                        <span class=""> BLOG</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#shop" class="font-medium">
+                        <span class=""> SHOP</span>
+                    </a>
+                </li>
+                <!-- <li>
+                    <a href="#portfolio" class="font-medium">
+                        <span class=""> PORTFOLIO</span>
+                    </a>
+                </li> -->
+                <li>
+                    <a href="#about" class="font-medium">
+                        <span class=""> ABOUT</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#contact" class="font-medium">
+                        <span class=""> CONTACT</span>
+                    </a>
+                </li>
+            </ul>
+        </aside>
+    </footer>
+
+    <!-- JavaScript -->
+    <script src="/js/mailer.js"></script>
+    <script src="/js/buttons.js"></script>
+</body>
+</html>

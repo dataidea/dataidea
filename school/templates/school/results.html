@@ -1,0 +1,76 @@
+{% extends 'components/base.html' %}
+<!-- Page Content -->
+{% block content %}
+{% load school_extras %}
+<main id="main">
+  <!-- ======= Breadcrumbs ======= -->
+  <section class="breadcrumbs">
+    <div class="container">
+      <div class="d-flex justify-content-between align-items-center">
+        <h2>School</h2>
+        <ol>
+          <li><a href="{% url 'index:home' %}">Home</a></li>
+          <li><a href="{% url 'school:browse' %}">School</a></li>
+          <li>Quiz</li>
+        </ol>
+      </div>
+    </div>
+  </section>
+  <!-- End Breadcrumbs -->
+
+  <section class="inner-page" style="padding: 0;" >
+    <!-- Popular Courser -->
+      <div id="pricing" class="pricing section-bg">
+        <div class="container p-3" data-aos="fade-up">
+          <div class="section-title">
+            <h2>{{ quiz.name }} Results</h2>
+            <p>
+                {{ quiz.description }} 
+                <span><a href="{% url 'school:browse' %}">See available courses.</a></span>
+            </p>
+          </div>
+          
+          <div class="container" data-aos="fade-up" data-aos-delay="100">
+              <div class="row justify-content-center">
+                  <div class="col-lg-6">
+                    <div class="row pb-3">
+                      <h2 class="col-8">Your Score: {{ score }} out of {{ questions.count }}</h2>
+                      <a href="{% url 'school:quiz' quiz.id %}"
+                      class="text-decoration-underline fw-bold col-4" >Try again</a>
+                    </div>
+                    {% for question in questions %}
+                    <div class="card mb-4">
+                      <div class="card-header text-white bg-success">
+                        <h6 class="mb-0">{{ question.text }}</h6>
+                      </div>
+                      <div class="card-body">
+                        {% for choice in question.choice_set.all %}
+                        <div class="form-check mb-2">
+                          <p>
+                            {% if choice.is_correct %}
+                            {{choice.text}}
+                            <i class="bi bi-check-circle-fill text-success"></i>
+                            {% else %}
+                            {{choice.text}}
+                            {% endif %}
+                          </p>
+                        </div>
+                        {% endfor %}
+                      </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+          </div> 
+        </div>
+  </section>
+</main>
+<!-- End #main -->
+
+<!-- JavaScript -->
+<script>
+  document.querySelector("#header").style.background = "rgba(24, 6, 185, 0.8)";
+
+  document.querySelector(".school").classList.add("active");
+</script>
+{% endblock %}
