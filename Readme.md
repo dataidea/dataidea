@@ -1,3 +1,3 @@
 Name: Data Idea Ug
-Template URL: https://dataidea.jumashafara.com/
+Website URL: https://www.dataidea.org/
 Author: Juma Shafara
