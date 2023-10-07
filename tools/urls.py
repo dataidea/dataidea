@@ -10,5 +10,4 @@ urlpatterns = [
     path(route='note/delete_note/<int:id>', view=views.deleteNote, name='delete_note'),
     path(route='note/one_note/<int:id>', view=views.oneNote, name='one_note'),
     path(route='generate_devotion/', view=views.generateDevotion, name='generate_devotion'),
-    path(route='download_devotion/', view=views.downloadDevotion, name='download_devotion')
 ]

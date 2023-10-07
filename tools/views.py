@@ -10,7 +10,7 @@ from .forms import AudioUploadForm, TranscriptionOptionsForm, DevotionForm
 
 
 def transcribe(audio_file):
-    aai.settings.api_key = f"3282ce6eca0a47519f6f69dbbaa38da6"
+    aai.settings.api_key = f"{Secret.objects.get(label='AssemblyAI').value}"
     transcription = Transcription(audio_file=audio_file)
     transcription.save()
 
@@ -38,7 +38,7 @@ def transcribe(audio_file):
 
 def askOpenAi(prompt, scripture, summary):
     try:
-        os.environ["OPENAI_API_KEY"] = Secret.objects.get(label='OpenAi Key').value
+        os.environ["OPENAI_API_KEY"] = Secret.objects.get(label='OpenAi').value
 
         llm = OpenAI(temperature=0.9)
         prompt_template = PromptTemplate(
@@ -110,27 +110,7 @@ def generateDevotion(request):
                       context={'devotion_form': devotion_form, 
                                'audio_form': audio_form}
                       )
-    
-def downloadDevotion(request, pk):
-    import io
-    from reportlab.pdfgen import canvas
 
-    devotion = Devotion.objects.get(pk=pk)
-    pdf_file = io.BytesIO()
-    canvas = canvas.Canvas(pdf_file)
-    canvas.setFont("Helvetica", 12)
-    canvas.drawString(10, 10, devotion.detail)
-    canvas.showPage()
-    canvas.save()
-
-    response = HttpResponse(content_type='application/pdf')
-    response['Content-Disposition'] = f'attachment; filename="devotion.pdf"'
-
-    response.write(pdf_file.getvalue())
-
-    pdf_file.close()
-
-    return response
 
 @login_required(login_url='accounts:signin')
 def uploadFile(request):
