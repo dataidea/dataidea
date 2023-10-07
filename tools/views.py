@@ -10,7 +10,7 @@ from .forms import AudioUploadForm, TranscriptionOptionsForm, DevotionForm
 
 
 def transcribe(audio_file):
-    aai.settings.api_key = f"{Secret.objects.get(label='AssemblyAI').value}"
+    aai.settings.api_key = f"{Secret.objects.get(label='AssemblyAi').value}"
     transcription = Transcription(audio_file=audio_file)
     transcription.save()
 
