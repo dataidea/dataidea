@@ -41,7 +41,7 @@ def askOpenAi(prompt, scripture, summary):
     try:
         os.environ["OPENAI_API_KEY"] = Secret.objects.get(label='OpenAi').value
 
-        llm = OpenAI(temperature=0.9)
+        llm = OpenAI(temperature=0.7)
         prompt_template = PromptTemplate(
                     input_variables=['scripture', 'summary'],
                     template = prompt,
