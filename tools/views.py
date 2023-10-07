@@ -87,61 +87,60 @@ def generateDevotion(request):
                                    'scripture': 'No Scripture Provided'}
                                    )
             else:
-                devotion_prompt =  '''I would like you to write me a "devotion" based on {scripture}, 
-                                    and this summary {summary}. I have two examples below of a "devotion" which you can use to learn.
+                devotion_prompt =  '''I would like you to write me a "devotion" based on {scripture}, and this summary {summary}. I have two examples below of a "devotion" which you can use to learn.
                                     
-                                    The first example is as below: 
+The first example is as below: 
 
-                                    #IndisputableGeneration
-                                    Tuesday 26th September 2023
+#IndisputableGeneration
+Tuesday 26th September 2023
 
-                                    YOUR DAILY PRAYER IGNITE 
-                                    BY [Your Name]
+YOUR DAILY PRAYER IGNITE 
+BY Ap. Samuel Muyita
 
-                                    John 12:3 Then took Mary a pound of ointment of spikenard, very costly, and anointed the feet of Jesus, and wiped his feet with her hair: and the house was filled with the odour of the ointment.
+John 12:3 Then took Mary a pound of ointment of spikenard, very costly, and anointed the feet of Jesus, and wiped his feet with her hair: and the house was filled with the odour of the ointment.
 
-                                    SPENDING ON JESUS 
+SPENDING ON JESUS 
 
-                                    It’s in the ways of God that He only trusts you with what you can give Him back. Anything you aren’t ready to spend on Him, you aren’t ready to receive!
+It’s in the ways of God that He only trusts you with what you can give Him back. Anything you aren’t ready to spend on Him, you aren’t ready to receive!
 
-                                    The scriptures are clear, “For where your treasure is, there will your heart be also” Matthew 6:21. Whenever our hearts are fully given to Him, our treasures too will be!
+The scriptures are clear, “For where your treasure is, there will your heart be also” Matthew 6:21. Whenever our hearts are fully given to Him, our treasures too will be!
 
-                                    In our theme scripture, we see Mary, taking something very costly and spending it on Jesus! Judas called it wasting, but Jesus saw it as love! She added on that and laid her crown of glory (hair) at the feet of Jesus to wipe His feet!
+In our theme scripture, we see Mary, taking something very costly and spending it on Jesus! Judas called it wasting, but Jesus saw it as love! She added on that and laid her crown of glory (hair) at the feet of Jesus to wipe His feet!
 
-                                    Whatever we spend on behalf of God is not wasted, but it’s a statement to heaven that we understand where our treasure is, and there our hearts also will be!
+Whatever we spend on behalf of God is not wasted, but it’s a statement to heaven that we understand where our treasure is, and there our hearts also will be!
 
-                                    Your heart will be tested, God will try you with a little of what you think you are ready for, and oftentimes, many eyes are blinded by the hand of God that they miss His heart. If you can’t spend on behalf of the Kingdom, you’re not yet ready for abundance.
+Your heart will be tested, God will try you with a little of what you think you are ready for, and oftentimes, many eyes are blinded by the hand of God that they miss His heart. If you can’t spend on behalf of the Kingdom, you’re not yet ready for abundance.
 
-                                    PRAYER POINT 
-                                    You have the wisdom to lay down anything for the sake of the Kingdom. You understand the responsibility of wealth and as God multiplies what is upon your life, your heart stays fixed on God as your ultimate treasure. Hallelujah
-                                    
-                                    The second example is as below
+PRAYER POINT 
+You have the wisdom to lay down anything for the sake of the Kingdom. You understand the responsibility of wealth and as God multiplies what is upon your life, your heart stays fixed on God as your ultimate treasure. Hallelujah
 
-                                    #IndisputableGeneration
-                                    Friday 29th September 2023
+The second example is as below
 
-                                    YOUR DAILY PRAYER IGNITE 
-                                    BY [Your Name]
+#IndisputableGeneration
+Friday 29th September 2023
 
-                                    Proverbs 4:23 (NIV): "Above all else, guard your heart, for everything you do flows from it."
+YOUR DAILY PRAYER IGNITE 
+BY Ap. Samuel Muyita
 
-                                    GUARDIANS OF THE HEART
+Proverbs 4:23 (NIV): "Above all else, guard your heart, for everything you do flows from it."
 
-                                    In the treasury of wisdom found in Proverbs, we are given this profound and vital command: "Above all else, guard your heart." It's a directive that carries immense significance because our hearts are the wellspring of our lives, the source from which everything flows.
+GUARDIANS OF THE HEART
 
-                                    Our hearts are not merely the physical organ that pumps blood through our bodies; they are the seat of our emotions, desires, and intentions. Our thoughts, words, and actions all emanate from the condition of our hearts.
+In the treasury of wisdom found in Proverbs, we are given this profound and vital command: "Above all else, guard your heart." It's a directive that carries immense significance because our hearts are the wellspring of our lives, the source from which everything flows.
 
-                                    Just as a vigilant guard protects a fortress, we are called to be guardians of our hearts. Why? Because the state of our hearts profoundly impacts the course of our lives. When our hearts are filled with love, compassion, and righteousness, our actions reflect these qualities. Conversely, a heart tainted by bitterness, anger, or envy can lead us down a destructive path.
+Our hearts are not merely the physical organ that pumps blood through our bodies; they are the seat of our emotions, desires, and intentions. Our thoughts, words, and actions all emanate from the condition of our hearts.
 
-                                    In the spiritual journey, guarding our hearts means cultivating a heart that is aligned with God's Word. It means regularly examining our hearts, seeking forgiveness and healing when necessary, and filling our hearts with the love, grace, and truth of Christ.
+Just as a vigilant guard protects a fortress, we are called to be guardians of our hearts. Why? Because the state of our hearts profoundly impacts the course of our lives. When our hearts are filled with love, compassion, and righteousness, our actions reflect these qualities. Conversely, a heart tainted by bitterness, anger, or envy can lead us down a destructive path.
 
-                                    So, today, let us pray together:
+In the spiritual journey, guarding our hearts means cultivating a heart that is aligned with God's Word. It means regularly examining our hearts, seeking forgiveness and healing when necessary, and filling our hearts with the love, grace, and truth of Christ.
 
-                                    PRAYER POINT
-                                    Heavenly Father, we come before you with hearts open and vulnerable. We recognize the importance of guarding our hearts above all else. Please help us to keep our hearts pure and aligned with your will. Grant us the wisdom and discernment to nurture a heart that overflows with love, kindness, and righteousness. May everything we do flow from a heart devoted to you. In Jesus' name, we pray. Amen.
+So, today, let us pray together:
 
-                                    Please develop your devotion in the similar way the examples have been developed. Don't Replace [Your Name] with any value.
-                                    '''
+PRAYER POINT
+Heavenly Father, we come before you with hearts open and vulnerable. We recognize the importance of guarding our hearts above all else. Please help us to keep our hearts pure and aligned with your will. Grant us the wisdom and discernment to nurture a heart that overflows with love, kindness, and righteousness. May everything we do flow from a heart devoted to you. In Jesus' name, we pray. Amen.
+
+Please develop your devotion in the similar way the examples have been developed. Don't Replace [Your Name] with any value.
+'''
                 ai_res_devotion = askOpenAi(prompt=devotion_prompt,
                                             scripture=scripture,
                                             summary=summary
