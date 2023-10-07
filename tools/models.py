@@ -27,3 +27,9 @@ class Devotion(models.Model):
 
     def __str__(self):
         return self.verse
+    
+class Secret(models.Model):
+    label = models.CharField(max_length=255, default='Secret Label')
+    value = models.CharField(max_length=255, default='Secret Value')
+    def __str__(self):
+        return self.label

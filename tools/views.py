@@ -1,12 +1,9 @@
 import os
 import assemblyai as aai
-from .models import Note
-from .models import Devotion
 from langchain.llms import OpenAI
-from .models import Transcription
 from langchain.chains import LLMChain
 from langchain.prompts import PromptTemplate
-from .forms import DevotionForm, AudioUploadForm
+from .models import Note, Devotion, Transcription, Secret
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, HttpResponse
 from .forms import AudioUploadForm, TranscriptionOptionsForm, DevotionForm
@@ -19,24 +16,47 @@ def transcribe(audio_file):
 
     transcriber = aai.Transcriber()
 
-    transcript = transcriber.transcribe(
-        data=transcription.audio_file.path,
-        config=aai.TranscriptionConfig(
-            summarization=True,
-            summary_model=aai.SummarizationModel.informative,
-            summary_type=aai.SummarizationType.bullets)
-    )
+    # Summarize the audio file
+    try:
+        transcript = transcriber.transcribe(
+            data=transcription.audio_file.path,
+            config=aai.TranscriptionConfig(
+                summarization=True,
+                summary_model=aai.SummarizationModel.informative,
+                summary_type=aai.SummarizationType.bullets)
+        )
 
-    transcription.summary_text = transcript.summary
-    transcription.transcription_text = transcript.text
-    transcription.save()
+        transcription.summary_text = transcript.summary
+        transcription.transcription_text = transcript.text
+        transcription.save()
+
+    except:
+        return None
 
     return transcription
 
 
+def askOpenAi(prompt, scripture, summary):
+    try:
+        os.environ["OPENAI_API_KEY"] = Secret.objects.get(label='OpenAi Key').value
+
+        llm = OpenAI(temperature=0.9)
+        prompt_template = PromptTemplate(
+                    input_variables=['scripture', 'summary'],
+                    template = prompt,
+                )
+        
+        llm_chain = LLMChain(llm=llm, prompt=prompt_template)
+        res_devotion = llm_chain.run(scripture=scripture, 
+                                    summary=summary)
+    except:
+        res_devotion = 'Error generating devotion'
+
+    return res_devotion.strip()
+
+
 @login_required(login_url='accounts:signin')
 def generateDevotion(request):
-    os.environ["OPENAI_API_KEY"] = "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"
     devotion_form = DevotionForm()
     audio_form = AudioUploadForm()
     if request.method == 'POST':
@@ -48,85 +68,42 @@ def generateDevotion(request):
             scripture = devotion_form.cleaned_data['scripture']
 
             transcription = transcribe(audio_file=audio_file)
+
+            if transcription:
+                text = transcription.transcription_text
+                summary = transcription.summary_text
+            else:
+                text = 'No audio was provide for transcription'
+                summary = 'No transcript to summarize'
             
-            llm = OpenAI(temperature=0, model='gpt-3.5-turbo')
+            if scripture == '':
+               return render(request=request,
+                          template_name='tools/devotion_out.html',
+                          context={'devotion': 'No Scripture Provided',
+                                   'summary': summary,
+                                   'text':text,
+                                   'scripture': 'No Scripture Provided'}
+                                   )
+            else:
+                devotion_prompt =  '''I would like you to write me a "devotion" based on {scripture}, 
+                                    and this summary {summary} if its found.
+                                    '''
+                ai_res_devotion = askOpenAi(prompt=devotion_prompt,
+                                            scripture=scripture,
+                                            summary=summary
+                                            )
+                devotion = Devotion(scripture=scripture, 
+                                    detail=ai_res_devotion, 
+                                    user=request.user)
+                devotion.save()
 
-            devotion_prompt = '''
-            I would like you to write me a "devotion" based on {scripture} and this summary below
-            {summary} 
-            I have two examples of "devotion" that I want you to learn from. The first one is as below
-
-            #IndisputableGeneration
-            Tuesday 26th September 2023
-
-            YOUR DAILY PRAYER IGNITE 
-            BY Ap. Samuel Muyita
-
-            John 12:3 Then took Mary a pound of ointment of spikenard, very costly, and anointed the feet of Jesus, and wiped his feet with her hair: and the house was filled with the odour of the ointment.
-
-            SPENDING ON JESUS 
-
-            It’s in the ways of God that He only trusts you with what you can give Him back. Anything you aren’t ready to spend on Him, you aren’t ready to receive!
-
-            The scriptures are clear, “For where your treasure is, there will your heart be also” Matthew 6:21. Whenever our hearts are fully given to Him, our treasures too will be!
-
-            In our theme scripture, we see Mary, taking something very costly and spending it on Jesus! Judas called it wasting, but Jesus saw it as love! She added on that and laid her crown of glory (hair) at the feet of Jesus to wipe His feet!
-
-            Whatever we spend on behalf of God is not wasted, but it’s a statement to heaven that we understand where our treasure is, and there our hearts also will be!
-
-            Your heart will be tested, God will try you with a little of what you think you are ready for, and oftentimes, many eyes are blinded by the hand of God that they miss His heart. If you can’t spend on behalf of the Kingdom, you’re not yet ready for abundance.
-
-            PRAYER POINT 
-            You have the wisdom to lay down anything for the sake of the Kingdom. You understand the responsibility of wealth and as God multiplies what is upon your life, your heart stays fixed on God as your ultimate treasure. Hallelujah
-
-            The second example is as below
-
-            #IndisputableGeneration
-            Friday 29th September 2023
-
-            YOUR DAILY PRAYER IGNITE 
-            BY Ap. Samuel Muyita
-
-            Proverbs 4:23 (NIV): "Above all else, guard your heart, for everything you do flows from it."
-
-            GUARDIANS OF THE HEART
-
-            In the treasury of wisdom found in Proverbs, we are given this profound and vital command: "Above all else, guard your heart." It's a directive that carries immense significance because our hearts are the wellspring of our lives, the source from which everything flows.
-
-            Our hearts are not merely the physical organ that pumps blood through our bodies; they are the seat of our emotions, desires, and intentions. Our thoughts, words, and actions all emanate from the condition of our hearts.
-
-            Just as a vigilant guard protects a fortress, we are called to be guardians of our hearts. Why? Because the state of our hearts profoundly impacts the course of our lives. When our hearts are filled with love, compassion, and righteousness, our actions reflect these qualities. Conversely, a heart tainted by bitterness, anger, or envy can lead us down a destructive path.
-
-            In the spiritual journey, guarding our hearts means cultivating a heart that is aligned with God's Word. It means regularly examining our hearts, seeking forgiveness and healing when necessary, and filling our hearts with the love, grace, and truth of Christ.
-
-            So, today, let us pray together:
-
-            PRAYER POINT
-            Heavenly Father, we come before you with hearts open and vulnerable. We recognize the importance of guarding our hearts above all else. Please help us to keep our hearts pure and aligned with your will. Grant us the wisdom and discernment to nurture a heart that overflows with love, kindness, and righteousness. May everything we do flow from a heart devoted to you. In Jesus' name, we pray. Amen.
-
-            Please develop your devotion in the similar way the examples were developed.
-            '''
-
-            devotion_prompt_template = PromptTemplate(
-                input_variables=["scripture", 'summary'],
-                template = devotion_prompt,
-            )
-
-            # llm_chain = LLMChain(llm=llm, prompt=devotion_prompt_template)
-            # res_devotion = llm_chain.run(scripture=scripture, 
-            #                              summary=transcription.summary_text)
-
-            res_devotion = transcription.summary_text
-
-            # devotion = Devotion(scripture=scripture, 
-            #                     detail=res_devotion, 
-            #                     user=request.user)
-            # devotion.save()
-
-            template_name = 'tools/devotion_out.html'
             return render(request=request,
-                          template_name=template_name,
-                          context={'devotion': res_devotion,})
+                          template_name='tools/devotion_out.html',
+                          context={'devotion': ai_res_devotion,
+                                   'summary': summary,
+                                   'text':text,
+                                   'scripture': scripture}
+                                   )
     else:
         return render(request=request,
                       template_name='tools/devotion.html',
