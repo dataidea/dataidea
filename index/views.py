@@ -72,9 +72,9 @@ def feedback(request):
                             subject=subject, message=message)
         feedback.save()
     
-        context = {'state': 'success', 'message': f'Thank you for contacting us {name}. We will get in touch as soon as possible.'}
+        context = {'message': f'Thank you for contacting us {name}. We will get in touch as soon as possible.'}
     except Exception as e:
-        context = {'state': 'warning', 'message': f'Something went wrong. Please try again later.'}
+        context = {'message': f'Something went wrong. Please try again later.'}
 
     template_name='components/message.html'
     return render(request=request, template_name=template_name, context=context)
@@ -91,4 +91,14 @@ def privacyPolicy(request):
     context = {'privacy_policy':privacy_policy}
     
     template_name='index/privacy_policy.html'
+    return render(request=request, template_name=template_name, context=context)
+
+def notAllowed(request):
+    context = {'message': 'You are not allowed to access this page, contact admin for help.'}
+    template_name = 'components/message.html'
+    return render(request=request, template_name=template_name, context=context)
+
+def paidFeature(request):
+    context = {'message': 'This is a paid feature, however, a trial period can be granted, please contact admin for more information.'}
+    template_name = 'components/message.html'
     return render(request=request, template_name=template_name, context=context)

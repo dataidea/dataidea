@@ -1,8 +1,8 @@
 from django import forms
 
 TRANSCRIPT_OPTIONS = [
-    ('transcript', 'Transcript Only'),
-    ('summary', 'Summary Only'),
+    ('transcript', 'Transcribe'),
+    ('summary', 'Summarize'),
 ]
 
 class AudioUploadForm(forms.Form):

@@ -11,5 +11,7 @@ urlpatterns = [
     path(route='feedback/', view=views.feedback, name='feedback'),
     path(route='terms_of_service', view=views.termsOfService, name='terms_of_service'),
     path(route='privacy_policy', view=views.privacyPolicy, name='privacy_policy'),
-    path(route='portfolio_details/<int:id>', view=views.portfolio_details, name='portfolio_details')
+    path(route='portfolio_details/<int:id>', view=views.portfolio_details, name='portfolio_details'),
+    path(route='not_allowed', view=views.notAllowed, name='not_allowed'),
+    path(route='paid_feature', view=views.paidFeature, name='paid_feature')
 ]

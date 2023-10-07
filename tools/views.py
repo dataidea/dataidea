@@ -4,7 +4,7 @@ from langchain.llms import OpenAI
 from langchain.chains import LLMChain
 from langchain.prompts import PromptTemplate
 from .models import Note, Devotion, Transcription, Secret
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, user_passes_test
 from django.shortcuts import render, redirect, HttpResponse
 from .forms import AudioUploadForm, TranscriptionOptionsForm, DevotionForm
 
@@ -56,7 +56,8 @@ def askOpenAi(prompt, scripture, summary):
     return res_devotion.strip()
 
 
-@login_required(login_url='accounts:signin')
+@user_passes_test(test_func=lambda u: u.is_staff, 
+                  login_url='index:paid_feature')
 def generateDevotion(request):
     devotion_form = DevotionForm()
     audio_form = AudioUploadForm()
@@ -87,13 +88,15 @@ def generateDevotion(request):
                                    )
             else:
                 devotion_prompt =  '''I would like you to write me a "devotion" based on {scripture}, 
-                                    and this summary {summary}. I have an example below of a "devotion" which you can use to learn.
+                                    and this summary {summary}. I have two examples below of a "devotion" which you can use to learn.
                                     
+                                    The first example is as below: 
+
                                     #IndisputableGeneration
                                     Tuesday 26th September 2023
 
                                     YOUR DAILY PRAYER IGNITE 
-                                    BY Ap. Samuel Muyita
+                                    BY [Your Name]
 
                                     John 12:3 Then took Mary a pound of ointment of spikenard, very costly, and anointed the feet of Jesus, and wiped his feet with her hair: and the house was filled with the odour of the ointment.
 
@@ -111,8 +114,33 @@ def generateDevotion(request):
 
                                     PRAYER POINT 
                                     You have the wisdom to lay down anything for the sake of the Kingdom. You understand the responsibility of wealth and as God multiplies what is upon your life, your heart stays fixed on God as your ultimate treasure. Hallelujah
+                                    
+                                    The second example is as below
 
-                                    Please develop your devotion in the similar way the example was developed
+                                    #IndisputableGeneration
+                                    Friday 29th September 2023
+
+                                    YOUR DAILY PRAYER IGNITE 
+                                    BY [Your Name]
+
+                                    Proverbs 4:23 (NIV): "Above all else, guard your heart, for everything you do flows from it."
+
+                                    GUARDIANS OF THE HEART
+
+                                    In the treasury of wisdom found in Proverbs, we are given this profound and vital command: "Above all else, guard your heart." It's a directive that carries immense significance because our hearts are the wellspring of our lives, the source from which everything flows.
+
+                                    Our hearts are not merely the physical organ that pumps blood through our bodies; they are the seat of our emotions, desires, and intentions. Our thoughts, words, and actions all emanate from the condition of our hearts.
+
+                                    Just as a vigilant guard protects a fortress, we are called to be guardians of our hearts. Why? Because the state of our hearts profoundly impacts the course of our lives. When our hearts are filled with love, compassion, and righteousness, our actions reflect these qualities. Conversely, a heart tainted by bitterness, anger, or envy can lead us down a destructive path.
+
+                                    In the spiritual journey, guarding our hearts means cultivating a heart that is aligned with God's Word. It means regularly examining our hearts, seeking forgiveness and healing when necessary, and filling our hearts with the love, grace, and truth of Christ.
+
+                                    So, today, let us pray together:
+
+                                    PRAYER POINT
+                                    Heavenly Father, we come before you with hearts open and vulnerable. We recognize the importance of guarding our hearts above all else. Please help us to keep our hearts pure and aligned with your will. Grant us the wisdom and discernment to nurture a heart that overflows with love, kindness, and righteousness. May everything we do flow from a heart devoted to you. In Jesus' name, we pray. Amen.
+
+                                    Please develop your devotion in the similar way the examples have been developed. Don't Replace [Your Name] with any value.
                                     '''
                 ai_res_devotion = askOpenAi(prompt=devotion_prompt,
                                             scripture=scripture,
@@ -138,7 +166,8 @@ def generateDevotion(request):
                       )
 
 
-@login_required(login_url='accounts:signin')
+@user_passes_test(test_func=lambda u: u.is_staff, 
+                  login_url='index:paid_feature')
 def uploadFile(request):
     if request.method == 'POST':
         audio_form = AudioUploadForm(request.POST, request.FILES)
@@ -226,4 +255,3 @@ def deleteNote(request, id):
         context = {'state': 'warning', 'message': 'An error occured while trying to delete the note'}
         template_name = 'components/message.html'
         return render(request=request, template_name=template_name, context=context)
-

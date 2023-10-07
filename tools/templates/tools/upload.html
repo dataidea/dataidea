@@ -1,6 +1,27 @@
 {% extends 'components/base.html' %}
 <!-- Page Content -->
 {% block content %}
+<!-- Styles -->
+<style>
+
+  form div {
+    margin-top: 0.5em;
+  }
+
+  form input[type='file'], input[type='submit'] {
+    width: 100%;
+    padding: 0.5em;
+    border: 1px solid gray;
+    border-radius: 0.25em;
+    margin-top: 0.25em;
+  }
+
+  legend {
+    margin-top: 0.25em;
+    font-size: medium;
+  }
+
+</style>
 <main id="main">
   <!-- ======= Breadcrumbs ======= -->
   <section class="breadcrumbs">
@@ -20,10 +41,16 @@
 
   <!-- Add Notes -->
   <div class="d-flex justify-content-center">
-    <div class="container m-3 ">
-        <h1>Upload an Audio File</h1>
-        <form method="post" enctype="multipart/form-data">
-          {% csrf_token %} {{ audio_form.as_p }} {{ options_form.as_p }}
+    <div class="container m-3 row">
+        <h2 class="text-center">Upload File</h2>
+        <form method="post" 
+        class="m-auto col-md-6"
+        enctype="multipart/form-data">
+          {% csrf_token %} 
+          <!-- Audio Form -->
+          {{ audio_form.as_div }} 
+          <!-- Options Form -->
+          {{ options_form.as_div }}
           <input
           id="submit-btn"
             type="submit"
