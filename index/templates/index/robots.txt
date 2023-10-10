@@ -1,0 +1,8 @@
+User-agent: *
+Disallow: /accounts/signin
+Disallow: /accounts/signup
+Disallow: /paid_feature
+Disallow: /portfolio_details
+Disallow: /school
+Disallow: /blog/blogs
+Disallow: /school/quiz

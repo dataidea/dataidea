@@ -102,3 +102,11 @@ def paidFeature(request):
     context = {'message': 'This is a paid feature, however, a trial period can be granted, please contact admin for more information.'}
     template_name = 'components/message.html'
     return render(request=request, template_name=template_name, context=context)
+
+def sitemap(request):
+    template_name = 'index/sitemap.xml'
+    return render(request=request, template_name=template_name)
+
+def robots(request):
+    template_name = 'index/robots.txt'
+    return render(request=request, template_name=template_name)
