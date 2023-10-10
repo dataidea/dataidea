@@ -34,104 +34,6 @@ def transcribe(audio_file):
     return transcription
 
 
-def askOpenAi(prompt, scripture, summary):
-    try:
-        openai.api_key = Secret.objects.get(label='OpenAi').value
-
-        response=openai.ChatCompletion.create(
-    model='gpt-4',
-    messages=[{"role":"user",
-              "content": prompt.format(scripture, summary)}]
-              )
-
-        res_devotion = response.choices[0].message.content
-    except:
-        res_devotion = 'Error generating devotion'
-
-    return res_devotion
-
-
-@user_passes_test(test_func=lambda u: u.is_staff,
-                  login_url='index:paid_feature')
-def generateDevotion(request):
-    devotion_form = DevotionForm()
-    audio_form = AudioUploadForm()
-    if request.method == 'POST':
-        devotion_form = DevotionForm(request.POST)
-        audio_form = AudioUploadForm(request.POST, request.FILES)
-
-        if audio_form.is_valid() and devotion_form.is_valid():
-            audio_file = audio_form.cleaned_data['audio_file']
-            scripture = devotion_form.cleaned_data['scripture']
-
-            transcription = transcribe(audio_file=audio_file)
-
-            if transcription:
-                text = transcription.transcription_text
-                summary = transcription.summary_text
-            else:
-                text = 'No audio was provide for transcription'
-                summary = 'No transcript to summarize'
-
-            if scripture == '':
-               return render(request=request,
-                          template_name='tools/devotion_out.html',
-                          context={'devotion': 'No Scripture Provided',
-                                   'summary': summary,
-                                   'text':text,
-                                   'scripture': 'No Scripture Provided'}
-                                   )
-            else:
-                devotion_prompt =  '''I would like you to write me a "devotion" based on {}, and this summary {}. I have an example below of a "devotion" which you can use to learn.
-#IndisputableGeneration
-Tuesday 26th September 2023
-
-YOUR DAILY PRAYER IGNITE
-BY [Your Name]
-
-John 12:3 Then took Mary a pound of ointment of spikenard, very costly, and anointed the feet of Jesus, and wiped his feet with her hair: and the house was filled with the odour of the ointment.
-
-SPENDING ON JESUS
-
-It’s in the ways of God that He only trusts you with what you can give Him back. Anything you aren’t ready to spend on Him, you aren’t ready to receive!
-
-The scriptures are clear, “For where your treasure is, there will your heart be also” Matthew 6:21. Whenever our hearts are fully given to Him, our treasures too will be!
-
-In our theme scripture, we see Mary, taking something very costly and spending it on Jesus! Judas called it wasting, but Jesus saw it as love! She added on that and laid her crown of glory (hair) at the feet of Jesus to wipe His feet!
-
-Whatever we spend on behalf of God is not wasted, but it’s a statement to heaven that we understand where our treasure is, and there our hearts also will be!
-
-Your heart will be tested, God will try you with a little of what you think you are ready for, and oftentimes, many eyes are blinded by the hand of God that they miss His heart. If you can’t spend on behalf of the Kingdom, you’re not yet ready for abundance.
-
-PRAYER POINT
-You have the wisdom to lay down anything for the sake of the Kingdom. You understand the responsibility of wealth and as God multiplies what is upon your life, your heart stays fixed on God as your ultimate treasure. Hallelujah
-
-Please develop your devotion in the similar way the example has been developed and make sure it includes the prayer point. Don't Replace [Your Name] with any value.
-'''
-                ai_res_devotion = askOpenAi(prompt=devotion_prompt,
-                                            scripture=scripture,
-                                            summary=summary
-                                            )
-                devotion = Devotion(scripture=scripture,
-                                    detail=ai_res_devotion,
-                                    user=request.user)
-                devotion.save()
-
-            return render(request=request,
-                          template_name='tools/devotion_out.html',
-                          context={'devotion': ai_res_devotion,
-                                   'summary': summary,
-                                   'text':text,
-                                   'scripture': scripture}
-                                   )
-    else:
-        return render(request=request,
-                      template_name='tools/devotion.html',
-                      context={'devotion_form': devotion_form,
-                               'audio_form': audio_form}
-                      )
-
-
 @user_passes_test(test_func=lambda u: u.is_staff,
                   login_url='index:paid_feature')
 def uploadFile(request):
@@ -145,7 +47,7 @@ def uploadFile(request):
 
             transcription = transcribe(audio_file)
 
-            return redirect(to='download_transcription',
+            return redirect(to='tools:download_transcription',
                             pk=transcription.pk,
                             option='text' if transcript_option == 'text' else 'summary')
 
