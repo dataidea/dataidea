@@ -105,7 +105,7 @@ def blogDetails(request):
     # Fetch Blog Details
     try:
         blog = Blog.objects.get(slug=request.GET.get('slug'))
-        related = Blog.objects.filter(category=blog.category)
+        related = Blog.objects.filter(category=blog.category).order_by('-pk')
     except Blog.DoesNotExist:
         context = {'state': 'danger', 'message': 'Blog not found'}
         template_name = 'components/message.html'
