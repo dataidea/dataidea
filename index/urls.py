@@ -14,6 +14,6 @@ urlpatterns = [
     path(route='portfolio_details/<int:id>', view=views.portfolio_details, name='portfolio_details'),
     path(route='not_allowed', view=views.notAllowed, name='not_allowed'),
     path(route='paid_feature', view=views.paidFeature, name='paid_feature'),
-    path(route='sitemap.xml', view=views.sitemap, name='sitemap'),
-    path(route='robots.txt', view=views.robots, name='robots')
+    path(route='sitemap', view=views.sitemap, name='sitemap'),
+    path(route='robots', view=views.robots, name='robots')
 ]
