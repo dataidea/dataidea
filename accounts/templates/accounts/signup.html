@@ -4,6 +4,13 @@
 {% block content %}
 <!-- Load Social Account -->
 {% load socialaccount %}
+<style>
+  input {
+    padding: 0.25em;
+    border-radius: 0.25em;
+    border: 1.5px solid lightgray;
+  }
+</style>
 <main id="main">
   <!-- ======= Breadcrumbs ======= -->
   <section id="breadcrumbs" class="breadcrumbs">
@@ -24,7 +31,7 @@
             href="{% provider_login_url 'google' %}?next=/"
             class="w-100 btn mb-2"
             style="background-color: #6610f2; color: #fff"
-            >Signup with <i class="bi bi-google"></i>oogleoogle</a
+            >Signup with <i class="bi bi-google"></i>oogle</a
           >
         </div>
         <h4>Or</h4>
