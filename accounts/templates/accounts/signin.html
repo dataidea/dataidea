@@ -2,6 +2,15 @@
 {% extends 'components/base.html' %}
 <!-- Page Content -->
 {% block content %}
+<!-- Load Social Account -->
+{% load socialaccount %}
+<style>
+  input {
+    padding: 0.25em;
+    border-radius: 0.25em;
+    border: 1.5px solid lightgray;
+  }
+</style>
 <main id="main">
   <!-- ======= Breadcrumbs ======= -->
   <section id="breadcrumbs" class="breadcrumbs">
@@ -17,6 +26,15 @@
   <section id="portfolio-details" class="portfolio-details">
     <div class="container">
       <div class="d-flex flex-column align-items-center">
+        <div>
+          <a
+            href="{% provider_login_url 'google' %}?next=/"
+            class="w-100 btn mb-2"
+            style="background-color: #6610f2; color: #fff"
+            >Login with Google</a
+          >
+        </div>
+        <h4>Or</h4>
         <form
           action="{% url 'accounts:signin'%}"
           method="POST"

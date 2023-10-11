@@ -15,6 +15,7 @@ assemblyai = "^0.18.0"
 openai = "^0.28.1"
 langchain = "^0.0.309"
 reportlab = "^4.0.5"
+googleauthentication = "^0.0.17"
 
 
 [build-system]

@@ -28,8 +28,10 @@ urlpatterns = [
     path(route='blog/', view=include('blog.urls'), name='blog'),
     path(route='school/', view=include('school.urls'), name='school'),
     path(route='profiles/', view=include('profiles.urls'), name='profiles'),
-    path(route='accounts/', view=include('accounts.urls'), name='accounts'),
-    path(route='tools/', view=include('tools.urls'), name='tools')
+    path(route='users/', view=include('accounts.urls'), name='accounts'),
+    path(route='accounts/', view=include('allauth.urls')),
+    path(route='tools/', view=include('tools.urls'), name='tools'),
+    # 0auth routes
 ]
 urlpatterns += staticfiles_urlpatterns()
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
