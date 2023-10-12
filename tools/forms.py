@@ -8,15 +8,15 @@ TRANSCRIPT_OPTIONS = [
 class AudioUploadForm(forms.Form):
     audio_file = forms.FileField(
         label='Select an audio file (max size: 25MB)',
-        required=False,
+        required=True,
         widget=forms.ClearableFileInput(attrs={'accept': 'audio/*'}),
     )
 
 class TranscriptionOptionsForm(forms.Form):
     transcript_option = forms.ChoiceField(
-        label='Select Transcription Option',
+        label='Select Transcription Choice (Optional)',
         choices=TRANSCRIPT_OPTIONS,
-        required=True,
+        required=False,
         widget=forms.RadioSelect,
     )
 

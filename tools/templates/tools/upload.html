@@ -21,6 +21,10 @@
     font-size: medium;
   }
 
+  #preloader {
+    display: none;
+  }
+
 </style>
 <main id="main">
   <!-- ======= Breadcrumbs ======= -->
@@ -45,7 +49,9 @@
         <h2 class="text-center">Upload File</h2>
         <form method="post" 
         class="m-auto col-md-6"
-        enctype="multipart/form-data">
+        enctype="multipart/form-data"
+        onsubmit="displayPreloader()"
+        >
           {% csrf_token %} 
           <!-- Audio Form -->
           {{ audio_form.as_div }} 
@@ -64,6 +70,9 @@
   </div>
 </div>
 <!-- End Notes -->
+
+<!-- Preloader -->
+<div id="preloader"></div>
 </main>
 <!-- End #main -->
 
@@ -78,6 +87,10 @@ const detailLoader = (content) => {
 document.querySelector('#submit-btn').addEventListener('click', () => {
     alert("Processing, it may take 15%-30% of the file's duration, eg a 10 minute file takes 90-180 seconds to complete. After that, your transcription will automatically be downloaded.")
 })
+
+const displayPreloader = () => {
+  document.querySelector('#preloader').style.display = 'block'
+}
 </script>
 
 {% endblock %}

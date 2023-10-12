@@ -9,9 +9,18 @@
       href="{% static 'vendor/bootstrap-icons/bootstrap-icons.css' %}"
       rel="stylesheet"
     />
-    <title>{% block head_title %}{% endblock head_title %}</title>
-    {% block extra_head %} {% endblock extra_head %}
-
+    <title>
+    <!-- Head Title Block -->
+    {% block head_title %}
+    <!-- Head Title Content -->
+    {% endblock head_title %}
+    <!-- End Head Title -->
+    </title>
+    <!-- Extra head -->
+    {% block extra_head %}
+    <!-- Extra head content-->
+    {% endblock extra_head %}
+    <!-- End Extra Head -->
     <style>
       button {
         background-color: #6610f2;
@@ -21,11 +30,14 @@
         padding: 1em;
         font-weight: medium;
         font-size: 16px;
+        cursor: pointer;
       }
     </style>
   </head>
   <body>
-    {% block body %} {% if messages %}
+    {% block body %} 
+    <!-- If Any Messages -->
+    {% if messages %}
     <div>
       <strong>{% trans "Messages:" %}</strong>
       <ul>
@@ -50,7 +62,15 @@
         {% endif %}
       </ul>
     </div>
-    {% block content %} {% endblock content %} {% endblock body %} {% block
-    extra_body %} {% endblock extra_body %}
+    {% block content %} 
+    <!-- Block Content -->
+    {% endblock content %}
+    <!-- End Block Content -->
+    {% endblock body %}
+    <!-- End Block Body -->
+    {% block extra_body %}
+    <!-- Block Extra Body Content -->
+    {% endblock extra_body %}
+    <!-- End Block Extra Body Content -->
   </body>
 </html>
