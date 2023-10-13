@@ -34,8 +34,8 @@ def transcribe(audio_file):
     return transcription
 
 
-@user_passes_test(test_func=lambda u: u.is_staff,
-                  login_url='index:paid_feature')
+@user_passes_test(test_func=lambda u: u.is_authenticated,
+                  login_url='accounts:signin')
 def uploadFile(request):
     if request.method == 'POST':
         audio_form = AudioUploadForm(request.POST, request.FILES)
@@ -47,9 +47,14 @@ def uploadFile(request):
 
             transcription = transcribe(audio_file)
 
-            return redirect(to='tools:download_transcription',
-                            pk=transcription.pk,
-                            option='text' if transcript_option == 'text' else 'summary')
+            # return redirect(to='tools:download_transcription',
+            #                 pk=transcription.pk,
+            #                 option='text' if transcript_option == 'transcript' else 'summary')
+            template_name = 'tools/transcription_out.html'
+            context = {'transcription': transcription}
+            return render(request=request, 
+                          template_name=template_name,
+                          context=context)
 
     else:
         audio_form = AudioUploadForm()

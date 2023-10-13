@@ -1,0 +1,133 @@
+{% extends 'components/base.html' %}
+<!-- Page Content -->
+{% block content %}
+<main id="main">
+  <!-- ======= Breadcrumbs ======= -->
+  <section class="breadcrumbs">
+    <div class="container">
+      <div class="d-flex justify-content-between align-items-center">
+        <h2>Transcriber Output</h2>
+        <ol>
+          <li><a href="/">Home</a></li>
+          <li><span>Services</span></li>
+          <li><span>Our Tools</span></li>
+          <li><span>Transcriber</span></li>
+        </ol>
+      </div>
+    </div>
+  </section>
+  <!-- End Breadcrumbs -->
+
+  <!-- Results -->
+  <div class="container mt-4">
+    <h2 class="text-center">Results</h2>
+    <div class="row justify-content-center">
+      <div class="col-md-6">
+        <div id="accordion">
+          <!-- Item 1 -->
+          <div class="card mb-3">
+            <div class="card-header" id="headingOne">
+              <h5 class="mb-0 d-flex justify-content-between">
+                <button
+                  class="btn btn-link collapsed text-decoration-none"
+                  style="color: #5846f9"
+                  data-toggle="collapse"
+                  data-target="#collapseOne"
+                  aria-expanded="false"
+                  aria-controls="collapseOne"
+                >
+                  <i class="bi bi-book" style="font-size: large"></i> Transcript
+                </button>
+                <button
+                  class="btn copy-button text-white"
+                  style="background-color: #6610f2"
+                  data-clipboard-target="#transcript"
+                >
+                  <i class="bi bi-clipboard"></i> Copy
+                </button>
+              </h5>
+            </div>
+            <div
+              id="collapseOne"
+              class="collapse show"
+              aria-labelledby="headingOne"
+              data-parent="#accordion"
+            >
+              <div class="card-body" id="transcript">
+                <pre style="font-family: 'Open Sans', sans-serif">
+                {{transcription.transcription_text}}
+                </pre>
+              </div>
+            </div>
+          </div>
+
+          <div class="card mb-3">
+            <div class="card-header" id="headingThree">
+              <h5 class="mb-0 d-flex justify-content-between">
+                <button
+                  class="btn btn-link collapsed text-decoration-none"
+                  style="color: #5846f9"
+                  data-toggle="collapse"
+                  data-target="#collapseThree"
+                  aria-expanded="false"
+                  aria-controls="collapseThree"
+                >
+                  <i class="bi bi-journal-text" style="font-size: large"></i>
+                  Summary
+                </button>
+                <button
+                  class="btn copy-button text-white"
+                  style="background-color: #6610f2"
+                  data-clipboard-target="#summary"
+                >
+                  <i class="bi bi-clipboard"></i> Copy
+                </button>
+              </h5>
+            </div>
+            <div
+              id="collapseThree"
+              class="collapse"
+              aria-labelledby="headingThree"
+              data-parent="#accordion"
+            >
+              <div class="card-body" id="summary">
+                <pre style="font-family: 'Open Sans', sans-serif">
+                {{transcription.summary_text}}
+                </pre>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Coffee -->
+    <div class="coffee mb-3">
+      <script
+        type="text/javascript"
+        src="https://storage.ko-fi.com/cdn/widget/Widget_2.js"
+      ></script>
+      <script type="text/javascript">
+        kofiwidget2.init("Support Me", "#6610f2", "F1F7Q1TUW");
+        kofiwidget2.draw();
+      </script>
+    </div>
+  </div>
+</main>
+<!-- End #main -->
+
+<!-- JavaScript -->
+<script>
+  const header = document.querySelector("#header");
+  header.style.background = "rgba(24, 6, 185, 0.8)";
+  const detailLoader = (content) => {
+    document.querySelector(".detail").value = content;
+  };
+
+  document.querySelector("#submit-btn").addEventListener("click", () => {
+    alert(
+      "Processing, it may take 15%-30% of the file's duration, eg a 10 minute file takes 90-180 seconds to complete. After that, your transcription will automatically be downloaded."
+    );
+  });
+</script>
+
+{% endblock %}
