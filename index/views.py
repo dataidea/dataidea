@@ -27,18 +27,13 @@ def home(request):
     companyinfo = CompanyInfo.objects.get(
         name="DataIdea")
     
-    # partner pagination
-    paginator = Paginator(partners, 4)
-    page_number = request.GET.get('page')
-    partners_obj = paginator.get_page(page_number)
-    
     context = {
         'faqs': faqs,
         'prices':prices,
         'services': services,
         'contacts': contacts,
         'features': features,
-        'partners': partners_obj,
+        'partners': partners,
         'companyinfo': companyinfo,
         'portfolios': portfolios,
         'testimonials': testimonials,
@@ -109,4 +104,8 @@ def sitemap(request):
 
 def robots(request):
     template_name = 'index/robots.txt'
+    return render(request=request, template_name=template_name)
+
+def ads(request):
+    template_name = 'index/ads.txt'
     return render(request=request, template_name=template_name)

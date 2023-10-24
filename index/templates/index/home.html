@@ -226,54 +226,6 @@
   </section>
   <!-- End Features Section -->
 
-  <!-- ======= Testimonials Section ======= -->
-  <section id="testimonials" class="testimonials section-bg">
-    <div class="container" data-aos="fade-up">
-      <div class="section-title">
-        <h2>Testimonials</h2>
-        <p>
-          Our clients' satisfaction is at the heart of everything we do. Here's
-          what some of them have to say about their experience working with our
-          company
-        </p>
-      </div>
-
-      <div
-        class="testimonials-slider swiper"
-        data-aos="fade-up"
-        data-aos-delay="100"
-      >
-        {% if testimonials %}
-        <div class="swiper-wrapper">
-          {% for testimonial in testimonials %}
-          <div class="swiper-slide">
-            <div class="testimonial-item">
-              <p>
-                <i class="bx bxs-quote-alt-left quote-icon-left"></i>
-                {{testimonial.testimony}}
-                <i class="bx bxs-quote-alt-right quote-icon-right"></i>
-              </p>
-              <img
-                src="{{testimonial.image.url}}"
-                class="testimonial-img"
-                alt="{{testimonial.name}}"
-              />
-              <h3>{{testimonial.name}}</h3>
-              <h4>{{testimonial.position}}</h4>
-            </div>
-          </div>
-          {% endfor %}
-          <!-- End testimonial item -->
-        </div>
-        {% else %}
-        <div>No testimony found</div>
-        {% endif %}
-        <div class="swiper-pagination"></div>
-      </div>
-    </div>
-  </section>
-  <!-- End Testimonials Section -->
-
   <!-- ======= Portfolio Section ======= -->
   <section id="portfolio" class="portfolio">
     <div class="container" data-aos="fade-up">
@@ -360,33 +312,6 @@
             {% else %}
             <h5>No partners found</h5>
             {% endif %}
-          </div>
-          <!-- Pagination -->
-          <div class="pagination col-md-6 m-auto">
-            <span
-              class="step-links d-flex justify-content-between p-3 border m-2 mt-3 rounded w-100"
-              style="background: whitesmoke;"
-            >
-              {% if partners.has_previous %}
-              <a href="?page=1">&laquo; First</a>
-              <a href="?page={{ partners.previous_page_number }}">Previous</a>
-              {% endif %}
-
-              <span class="current">
-                Page {{ partners.number }}
-                <!-- Current number -->
-                of
-                <!-- Total number -->
-                {{ partners.paginator.num_pages}}.
-              </span>
-
-              {% if partners.has_next %}
-              <a href="?page={{ partners.next_page_number }}">Next</a>
-              <a href="?page={{ partners.paginator.num_pages }}"
-                >Last &raquo;</a
-              >
-              {% endif %}
-            </span>
           </div>
         </div>
   </section>
@@ -501,7 +426,6 @@
           <div class="info-box mb-4">
             <i class="bi bi-{{contact.icon}}"></i>
             <h3>{{contact.name}}</h3>
-            <p>{{contact.contact}}</p>
           </div>
         </a>
         <!-- Email -->
@@ -511,7 +435,6 @@
           <div class="info-box mb-4">
             <i class="bi bi-{{contact.icon}}"></i>
             <h3>{{contact.name}}</h3>
-            <p>{{contact.contact}}</p>
           </div>
         </a>
         <!-- WhatsApp -->
@@ -521,7 +444,6 @@
           <div class="info-box mb-4">
             <i class="bi bi-{{contact.icon}}"></i>
             <h3>{{contact.name}}</h3>
-            <p>{{contact.contact}}</p>
           </div>
         </a>
         {% elif contact.name == 'Twitter'%}
@@ -530,7 +452,6 @@
           <div class="info-box mb-4">
             <i class="bi bi-{{contact.icon}}"></i>
             <h3>{{contact.name}}</h3>
-            <p>{{contact.contact}}</p>
           </div>
         </a>
         {% else %}
@@ -538,7 +459,6 @@
           <div class="info-box mb-4">
             <i class="bi bi-{{contact.icon}}"></i>
             <h3>{{contact.name}}</h3>
-            <p>{{contact.contact}}</p>
           </div>
         </div>
         {% endif %}

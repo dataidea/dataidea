@@ -17,5 +17,7 @@ urlpatterns = [
     path(route='sitemap', view=views.sitemap, name='sitemap'),
     path(route='sitemap.xml', view=views.sitemap, name='sitemap'),
     path(route='robots', view=views.robots, name='robots'),
-    path(route='robots.txt', view=views.robots, name='robots')
+    path(route='robots', view=views.robots, name='robots'),
+    path(route='ads', view=views.ads, name='ads'),
+    path(route='ads.txt', view=views.ads, name='ads'),
 ]
