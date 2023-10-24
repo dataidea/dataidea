@@ -19,5 +19,7 @@ urlpatterns = [
     path(route='robots', view=views.robots, name='robots'),
     path(route='robots', view=views.robots, name='robots'),
     path(route='ads', view=views.ads, name='ads'),
+    path(route='Ads', view=views.ads, name='ads'),
     path(route='ads.txt', view=views.ads, name='ads'),
+    path(route='Ads.txt', view=views.ads, name='ads'),
 ]
