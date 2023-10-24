@@ -8,7 +8,7 @@ from django.http import FileResponse
 from django.shortcuts import redirect
 from django.core.paginator import Paginator
 from django.shortcuts import get_object_or_404
-# from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 
@@ -18,8 +18,8 @@ def quiz_view(request, quiz_id):
     except Quiz.DoesNotExist:
         context = {'message': 'Quiz Not Found', 'state': 'danger'}
         template_name = 'components/message.html'
-        return render (request=request, 
-                       template_name=template_name, 
+        return render (request=request,
+                       template_name=template_name,
                        context=context)
     questions = quiz.questions.all()
 
@@ -62,7 +62,7 @@ def browse(request):
     context = {'courses': page_obj,
                'course_level_key_map': course_level_key_map}
     template_name = 'school/browse.html'
-    return render(request=request, 
+    return render(request=request,
                   template_name=template_name,
                    context=context )
 
@@ -79,10 +79,10 @@ def searchCourses(request):
         context = {'courses': courses,
                 'course_level_key_map': course_level_key_map}
         template_name = 'school/browse.html'
-        return render(request=request, 
+        return render(request=request,
                     template_name=template_name,
                     context=context )
-    
+
     elif query == '' or query == None:
         return redirect('school:browse')
 
@@ -100,8 +100,8 @@ def course_details(request, id):
                'videos': page_obj,
                'user': request.user}
     template_name = 'school/course_details.html'
-    return render(request=request, 
-                  template_name=template_name, 
+    return render(request=request,
+                  template_name=template_name,
                   context=context)
 
 
@@ -113,7 +113,7 @@ def comment(request, id):
         if user.is_anonymous:
             video.comments.create(comment=comment)
             message = """
-                    Thanks for your comment! Please sign in to enjoy the full benefits of our services. 
+                    Thanks for your comment! Please sign in to enjoy the full benefits of our services.
                     Your comment has been saved and will be visible to other users after you refresh the page 😊.
                     """
             context = {'message': message, 'state': 'success'}
@@ -122,16 +122,16 @@ def comment(request, id):
         else:
             video.comments.create(comment=comment, user=user)
             return redirect(request.META.get('HTTP_REFERER'))
-    except Exception as e:
+    except Exception:
         message = """
-                    Sorry, something went wrong while saving your comment. 
+                    Sorry, something went wrong while saving your comment.
                     Please try again later.
                     """
         context = {'message': message, 'state': 'warning'}
         template_name = 'components/message.html'
         return render(request=request, template_name=template_name, context=context)
 
-
+@login_required(login_url='accounts:signin')
 def downloadLearningMaterial(request, id):
     learningMaterial = get_object_or_404(LearningMaterial, pk=id)
     return FileResponse(learningMaterial.file)
