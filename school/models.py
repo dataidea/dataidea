@@ -62,7 +62,15 @@ class Video(models.Model):
     quiz = models.OneToOneField(to=Quiz, on_delete=models.CASCADE, null=True, blank=True)
     def __str__(self):
         return self.name
-    
+
+
+class LearningMaterial(models.Model):
+    name = models.CharField(max_length=122, default='New Learning Material')
+    file = models.FileField(upload_to='learning_materials/', default='learning_materials/default.pdf')
+
+    def __str__(self):
+        return self.name
+
 
 class Course(models.Model):
     LEVELS = [('reception-1', 'Beginner'), ('reception-2', 'Intermediate'), ('reception-3', 'Advanced'), ('reception-4', 'Explorer'),]
@@ -73,22 +81,12 @@ class Course(models.Model):
     tutors = models.ManyToManyField(to=Tutor, default='Not Identified')
     url = models.CharField(max_length=122, default='No URLs provided attached')
     level = models.CharField(max_length=22, choices=LEVELS, default='reception-1')
-    learners = models.IntegerField(default=0)
+    learning_materials = models.OneToOneField(to=LearningMaterial, on_delete=models.CASCADE, null=True, blank=True)
     videos = models.ManyToManyField(to=Video, default='No Videos')
     quiz = models.OneToOneField(to=Quiz, on_delete=models.CASCADE, null=True, blank=True)
 
     def __str__(self):
         return self.name
-
-
-class Learner(models.Model):
-    user = models.ForeignKey(to=User, on_delete=models.CASCADE)
-    courses = models.ManyToManyField(to=Course)
-    subscription_end = models.DateField(null=True)
-
-    def __str__(self):
-        return self.user.username
-
 
 
     

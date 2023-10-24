@@ -7,6 +7,7 @@ from django.shortcuts import render
 from django.shortcuts import redirect
 from django.contrib.auth.models import User
 from django.core.paginator import Paginator
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 # def blogs(request):
@@ -124,6 +125,7 @@ def blogDetails(request):
 
 
 # Comments
+@login_required(login_url='accounts:signin')
 def comment(request):
 
     if request.user.is_anonymous:

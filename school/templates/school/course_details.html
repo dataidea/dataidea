@@ -155,6 +155,15 @@
                   >
                   {% endif %}
                 </div>
+                <!-- Resources -->
+                {% if course.learning_materials %}
+                <a
+                  href="{% url 'school:download_learning_material' course.learning_materials.id %}"
+                  class="btn text-white w-100 mb-3"
+                  style="background-color: #6610f2"
+                  >Download Course Materials</a
+                >
+                {% endif %}
                 <script src="{{video.gist}}"></script>
               </div>
               <!-- Comments -->

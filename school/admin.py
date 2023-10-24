@@ -3,7 +3,7 @@ from .models import Tutor
 from .models import Video
 from .models import Course
 from .models import Choice
-from .models import Learner
+from .models import LearningMaterial
 from .models import Comment
 from .models import Question
 from .models import Organization
@@ -23,5 +23,5 @@ class VideoAdmin(admin.ModelAdmin):
 
 # Register your models here.
 admin.site.register(model_or_iterable=Course, admin_class=CourseAdmin)
-admin.site.register(model_or_iterable=[Choice, Comment,Organization, Quiz, Tutor, Video, Learner, Question])
+admin.site.register(model_or_iterable=[Choice, Comment,Organization, Quiz, Tutor, Video, LearningMaterial, Question])
 
