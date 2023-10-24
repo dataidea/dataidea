@@ -18,15 +18,6 @@ class Note(models.Model):
     date_created = models.DateField(auto_now=True)
     def __str__(self):
         return f'{self.user.username}, {self.title}'
-
-
-class Devotion(models.Model):
-    scripture = models.CharField(max_length=255, default='Scripture')
-    detail = models.TextField(default='Detail')
-    user = models.ForeignKey(to=User, on_delete=models.CASCADE)
-
-    def __str__(self):
-        return self.verse
     
 class Secret(models.Model):
     label = models.CharField(max_length=255, default='Secret Label')

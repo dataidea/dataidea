@@ -1,6 +1,5 @@
 import assemblyai as aai
-import openai
-from .models import Note, Devotion, Transcription, Secret
+from .models import Note, Transcription, Secret
 from django.shortcuts import render, redirect, HttpResponse
 from django.contrib.auth.decorators import login_required, user_passes_test
 from .forms import AudioUploadForm, TranscriptionOptionsForm, DevotionForm

@@ -11,7 +11,6 @@ from .models import TermOfService
 from .models import PrivacyPolicy
 from .models import FrequentlyAskedQuestion
 from django.shortcuts import render, redirect
-from django.core.paginator import Paginator
 
 
 # Create your views here.

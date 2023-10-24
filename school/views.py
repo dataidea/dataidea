@@ -7,8 +7,8 @@ from .models import LearningMaterial
 from django.http import FileResponse
 from django.shortcuts import redirect
 from django.core.paginator import Paginator
-from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404
+# from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 
