@@ -6,25 +6,25 @@ from django.contrib.auth.models import User
 class Tutor(models.Model):
     name = models.CharField(max_length=122, default='New Tutor')
     info = models.CharField(max_length=122, default='New Tutor')
-    
+
     def __str__(self):
         return self.name
-    
+
 class Organization(models.Model):
     name = models.CharField(max_length=122, default='DataIdea')
     url = models.CharField(max_length=122, default='dataidea.com')
 
     def __str__(self):
         return self.name
-    
+
 
 class Comment(models.Model):
-    approved = models.BooleanField(default=False) 
+    approved = models.BooleanField(default=False)
     comment = models.TextField(default='New Comment')
     user = models.ForeignKey(to=User, on_delete=models.CASCADE, default=12)
     def __str__(self):
         return self.comment
-    
+
 
 class Quiz(models.Model):
     name = models.CharField(max_length=255, default='New Quiz')
@@ -36,11 +36,11 @@ class Quiz(models.Model):
 
 
 class Question(models.Model):
-    quiz = models.ForeignKey(to=Quiz, on_delete=models.CASCADE, 
+    quiz = models.ForeignKey(to=Quiz, on_delete=models.CASCADE,
         related_name='questions', null=True, blank=True)
     text = models.TextField(null=True, blank=True)
     # Add any other fields you need for your questions
-    
+
     def __str__(self):
         return self.text
 
@@ -49,9 +49,9 @@ class Choice(models.Model):
     text = models.CharField(max_length=255)
     is_correct = models.BooleanField(default=False)
     # Add any other fields you need for choices
-    
+
     def __str__(self):
-        return f'{self.question}, {self.text}, {self.is_correct}' 
+        return f'{self.question}, {self.text}, {self.is_correct}'
 
 
 class Video(models.Model):
@@ -89,7 +89,7 @@ class Course(models.Model):
         return self.name
 
 
-    
+
 
 
 

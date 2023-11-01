@@ -143,6 +143,8 @@ USE_TZ = True
 STATIC_URL = 'static/'
 STATICFILES_DIRS = [BASE_DIR / 'assets',]
 
+# upload up to 1GB
+DATA_UPLOAD_MAX_MEMORY_SIZE = 1024 * 1024 * 1024
 
 MEDIA_URL = 'media/'
 MEDIA_ROOT = BASE_DIR / 'media'

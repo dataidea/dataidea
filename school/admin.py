@@ -19,7 +19,7 @@ class VideoAdmin(admin.ModelAdmin):
     filter_horizontal = []
 
 
-    
+
 
 # Register your models here.
 admin.site.register(model_or_iterable=Course, admin_class=CourseAdmin)

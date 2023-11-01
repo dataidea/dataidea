@@ -11,6 +11,7 @@ from .models import TermOfService
 from .models import PrivacyPolicy
 from .models import FrequentlyAskedQuestion
 from django.shortcuts import render, redirect
+from .forms import FeedbackForm
 
 
 # Create your views here.
@@ -36,9 +37,10 @@ def home(request):
         'companyinfo': companyinfo,
         'portfolios': portfolios,
         'testimonials': testimonials,
+        'form': FeedbackForm()
     }
     
-    template_name = 'index/home.html'
+    template_name = 'index/index.html'
     return render(request=request, 
                   template_name=template_name, 
                   context=context)
@@ -56,19 +58,16 @@ def back(request):
     return redirect(request.META.get('HTTP_REFERER'))
 
 def feedback(request):
+    context = {}
     try:
-        name = request.POST.get('name')
-        email = request.POST.get('email')
-        subject = request.POST.get('subject')
-        message = request.POST.get('message')
-        
-        feedback = Feedback(name=name, email=email, 
-                            subject=subject, message=message)
-        feedback.save()
-    
-        context = {'message': f'Thank you for contacting us {name}. We will get in touch as soon as possible.'}
+        form = FeedbackForm(request.POST)
+        if form.is_valid():
+            form.save()
+            context['message'] = f'Thanks for contacting us, we will get back to you as soon as possible.'
+        else:
+            return redirect(to='/#contactFrom')
     except Exception as e:
-        context = {'message': f'Something went wrong. Please try again later.'}
+        context['message'] = f'Something went wrong. Please try again later. {e}'
 
     template_name='components/message.html'
     return render(request=request, template_name=template_name, context=context)
