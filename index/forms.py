@@ -6,9 +6,9 @@ class FeedbackForm(forms.ModelForm):
         required=True,
         widget=forms.TextInput(
             attrs={
-                'class': 'shadow form-control form-control-lg', 
+                'class': 'form-control', 
                 'placeholder': 'Your Name',
-                'id': 'inputName'
+                'id': 'name'
                 }
         )
     )
@@ -16,9 +16,9 @@ class FeedbackForm(forms.ModelForm):
     email = forms.EmailField(required=True,
         widget=forms.TextInput(
             attrs={
-                'class': 'shadow form-control form-control-lg', 
+                'class': 'form-control', 
                 'placeholder': 'Your Email',
-                'id': 'inputName'
+                'id': 'email'
                 }
         )
     )
@@ -27,9 +27,9 @@ class FeedbackForm(forms.ModelForm):
         required=True,
         widget=forms.TextInput(
             attrs={
-                'class': 'shadow form-control form-control-lg', 
-                'placeholder': 'Your Subject',
-                'id': 'inputSubject'
+                'class': 'form-control', 
+                'placeholder': 'Subject',
+                'id': 'subject'
                 }
         )
     )
@@ -38,9 +38,9 @@ class FeedbackForm(forms.ModelForm):
         required=True,
         widget=forms.Textarea(
             attrs={
-                'class': 'shadow form-control form-control-lg', 
-                'placeholder': 'Your Name',
-                'id': 'inputName'
+                'class': 'form-control', 
+                'placeholder': 'Message',
+                'rows': '5'
                 }
         )
     )
