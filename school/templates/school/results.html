@@ -39,7 +39,7 @@
                   <div class="col-lg-6">
                     <div class="row pb-3">
                       <h2 class="col-8">Your Score: {{ score }} out of {{ questions.count }}</h2>
-                      <a href="{% url 'school:quiz' quiz.id %}"
+                      <a href="{% url 'school:view_quiz' quiz.id %}"
                       class="text-decoration-underline fw-bold col-4" >Try again</a>
                     </div>
                     {% for question in questions %}

@@ -83,7 +83,7 @@
     <!-- ======= Header ======= -->
     <header id="header" class="fixed-top">
       <div class="container d-flex align-items-center justify-content-between">
-        <h1 class="logo"><a href="{% url 'index:home' %}">DataIdea</a></h1>
+        <h1 class="logo"><a href="{% url 'index:home' %}">DATAIDEA</a></h1>
         <!-- Uncomment below if you prefer to use an image logo -->
         <!-- <a href="index.html" class="logo"><img src="{% static 'img/logo.png" alt="" class="img-fluid"></a>-->
 
@@ -202,6 +202,7 @@
               <ul>
                 {% if user.is_authenticated %}
                 <li><a href="{% url 'accounts:signout' %}">Signout</a></li>
+                <li><a href="{% url 'school:profile' %}">Profile</a></li>
                 <li><a href="/admin">Administer</a></li>
                 {% else %}
                 <li><a href="{% url 'accounts:signin' %}">Signin</a></li>
@@ -323,15 +324,15 @@
           </div>
           <div class="social-links text-center text-md-right pt-3 pt-md-0">
             <a href="https://twitter.com/datas_idea" class="twitter"
-              ><i class="bx bxl-twitter"></i
+              ><i class="bi bi-twitter"></i
             ></a>
-            <a
-              href="https://www.facebook.com/profile.php?id=100079727257708"
+            <!--a
+              href=""
               class="facebook"
-              ><i class="bx bxl-facebook"></i
-            ></a>
-            <a href="https://www.youtube.com/@dataidea2347" class="youtube"
-              ><i class="bx bxl-youtube"></i
+              ><i class="bi bi-youtube"></i
+            ></a -->
+            <a href="https://www.youtube.com/@dataideaug" class="youtube"
+              ><i class="bi bi-youtube"></i
             ></a>
           </div>
         </div>

@@ -10,11 +10,8 @@
       rel="stylesheet"
     />
     <title>
-    <!-- Head Title Block -->
-    {% block head_title %}
-    <!-- Head Title Content -->
-    {% endblock head_title %}
-    <!-- End Head Title -->
+      <!-- Head Title Block --> {% block head_title %} <!-- Head Title Content
+      --> {% endblock head_title %} <!-- End Head Title -->
     </title>
     <!-- Extra head -->
     {% block extra_head %}
@@ -35,7 +32,7 @@
     </style>
   </head>
   <body>
-    {% block body %} 
+    {% block body %}
     <!-- If Any Messages -->
     {% if messages %}
     <div>
@@ -62,7 +59,7 @@
         {% endif %}
       </ul>
     </div>
-    {% block content %} 
+    {% block content %}
     <!-- Block Content -->
     {% endblock content %}
     <!-- End Block Content -->

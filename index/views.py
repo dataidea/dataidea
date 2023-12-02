@@ -1,55 +1,15 @@
-from .models import Price
-from .models import Service
-from .models import Feature
-from .models import Contact
-from .models import Partner
-from .models import Feedback
-from .models import Portfolio
-from .models import CompanyInfo
-from .models import Testimonial
 from .models import TermOfService
 from .models import PrivacyPolicy
-from .models import FrequentlyAskedQuestion
 from django.shortcuts import render, redirect
 from .forms import FeedbackForm
+from django.core.mail import send_mail
 
 
 # Create your views here.
 def home(request):
-    prices = Price.objects.all()
-    services = Service.objects.all()
-    contacts = Contact.objects.all()
-    features = Feature.objects.all()
-    partners = Partner.objects.all()
-    portfolios = Portfolio.objects.all()
-    testimonials = Testimonial.objects.all()
-    faqs = FrequentlyAskedQuestion.objects.all()
-    companyinfo = CompanyInfo.objects.get(
-        name="DataIdea")
     
-    context = {
-        'faqs': faqs,
-        'prices':prices,
-        'services': services,
-        'contacts': contacts,
-        'features': features,
-        'partners': partners,
-        'companyinfo': companyinfo,
-        'portfolios': portfolios,
-        'testimonials': testimonials,
-        'form': FeedbackForm()
-    }
-    
+    context = {'form': FeedbackForm}
     template_name = 'index/index.html'
-    return render(request=request, 
-                  template_name=template_name, 
-                  context=context)
-
-
-def portfolio_details(request, id):
-    portfolio = Portfolio.objects.get(id=id)
-    context = {'portfolio':portfolio}
-    template_name = 'index/portfolio_details.html'
     return render(request=request, 
                   template_name=template_name, 
                   context=context)
@@ -62,7 +22,18 @@ def feedback(request):
     try:
         form = FeedbackForm(request.POST)
         if form.is_valid():
-            form.save()
+            feed = form.save()
+
+            send_mail(
+                subject=feed.subject,
+                message=f'{feed.message}. \n From: \n {feed.name} \n {feed.email}',
+                from_email='datasideaofficial@gmail.com',
+                recipient_list=['datasideaofficial@gmail.com','jumashafara0@gmail.com'],
+                auth_password='sjkt gmrm xihb iidk',
+                
+                fail_silently=False
+            )
+            
             context['message'] = f'Thanks for contacting us, we will get back to you as soon as possible.'
         else:
             return redirect(to='/#contactFrom')

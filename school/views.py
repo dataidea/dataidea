@@ -1,7 +1,10 @@
 from .models import Quiz
 from .models import Video
 from .models import Course
+from .models import QuizScore
 from django.db.models import Q
+from .models import LearnerProfile
+from .forms import LearnerProfileForm
 from django.shortcuts import render
 from .models import LearningMaterial
 from django.http import FileResponse
@@ -12,15 +15,46 @@ from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 
-def quiz_view(request, quiz_id):
+def profile(request):
+    user = request.user
+    try:
+        profile = LearnerProfile.objects.get(user=user)
+        quiz_scores = QuizScore.objects.filter(user=user)
+    except LearnerProfile.DoesNotExist:
+        profile = LearnerProfile(user=user)
+        profile.save()
+    return render(request, 'school/profile.html', {'profile': profile, 'quiz_scores': quiz_scores})
+
+def updateProfile(request):
+    profile = LearnerProfile.objects.get(user=request.user)
+    if request.method == 'POST':
+        form = LearnerProfileForm(request.POST, request.FILES, instance=profile)
+        if form.is_valid():
+            profile.save()
+            return redirect('school:profile')
+        else:
+            return render(request, 'school/update_profile.html', {'form': form})
+    else:
+        form = LearnerProfileForm()
+    return render(request, 'school/update_profile.html', {'form': form})
+
+def view_quiz(request, quiz_id):
     try:
         quiz = Quiz.objects.get(pk=quiz_id)
+        questions = quiz.questions.all()
+        return render(request, 'school/quiz.html', {'quiz': quiz, 'questions': questions})
     except Quiz.DoesNotExist:
         context = {'message': 'Quiz Not Found', 'state': 'danger'}
         template_name = 'components/message.html'
         return render (request=request,
                        template_name=template_name,
                        context=context)
+    
+
+@login_required(login_url='accounts:signin')
+def submit_quiz(request, quiz_id):
+    # Get quiz 
+    quiz = Quiz.objects.get(pk=quiz_id)
     questions = quiz.questions.all()
 
     # Calculate correct answers for each question
@@ -29,25 +63,25 @@ def quiz_view(request, quiz_id):
         correct_choices = question.choice_set.filter(is_correct=True)
         correct_answers[f'{question.id}'] = [choice.text for choice in correct_choices]
 
-    if request.method == 'POST':
-        score = 0
+    score = 0
 
-        for question in questions:
-            selected_choice_id = request.POST.get(f'question_{question.id}', None)
-            if selected_choice_id:
-                selected_choice = question.choice_set.get(pk=selected_choice_id)
+    for question in questions:
+        selected_choice_id = request.POST.get(f'question_{question.id}', None)
+        if selected_choice_id:
+            selected_choice = question.choice_set.get(pk=selected_choice_id)
 
-                # Check if the selected choice is correct
-                if selected_choice.is_correct:
-                    score += 1
+            # Check if the selected choice is correct
+            if selected_choice.is_correct:
+                score += 1
 
-        # You can also store the user's score in the user's profile or a separate model here
+    # You can also store the user's score in the user's profile or a separate model here
+    QuizScore.updateOrCreateScore(user=request.user, quiz=quiz, score=score)
 
-        return render(request, 'school/results.html',
-                      {'quiz': quiz, 'questions': questions,
-                       'score': score, 'correct_answers': correct_answers})
+    return render(request, 'school/results.html',
+                    {'quiz': quiz, 'questions': questions,
+                    'score': score, 'correct_answers': correct_answers})
 
-    return render(request, 'school/quiz.html', {'quiz': quiz, 'questions': questions})
+    
 
 
 def browse(request):

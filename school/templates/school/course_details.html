@@ -150,9 +150,9 @@
               <div>
                 <div class="d-flex justify-content-between align-items-center">
                   <h5 class="p-3">{{video.name}}</h5>
-                  {% if course.quiz %}
+                  {% if video.quiz %}
                   <a
-                    href="{% url 'school:quiz' course.quiz.id %}"
+                    href="{% url 'school:view_quiz' video.quiz.id %}"
                     class="btn text-white"
                     style="background-color: #6610f2"
                     >Try Quiz</a

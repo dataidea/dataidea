@@ -3,6 +3,19 @@ from django.contrib.auth.models import User
 
 
 # Create your models here.
+class LearnerProfile(models.Model):
+    user = models.ForeignKey(to=User, on_delete=models.CASCADE)
+    display_picture = models.ImageField(upload_to='profiles/', default='profiles/profile.png')
+    name = models.CharField(max_length=122, default='')
+    info = models.CharField(max_length=122, default='')
+    github = models.CharField(max_length=122, default='')
+    linkedin = models.CharField(max_length=122, default='')
+    other = models.CharField(max_length=122, default='')
+
+    def __str__(self):
+        return self.name
+
+
 class Tutor(models.Model):
     name = models.CharField(max_length=122, default='New Tutor')
     info = models.CharField(max_length=122, default='New Tutor')
@@ -58,7 +71,7 @@ class Video(models.Model):
     name = models.CharField(max_length=122, default='New Video')
     url = models.CharField(max_length=122, default='New Video')
     gist = models.CharField(max_length=122, default='New Gist')
-    comments = models.ManyToManyField(to=Comment, default=None)
+    comments = models.ManyToManyField(to=Comment, default=None, blank=True)
     quiz = models.OneToOneField(to=Quiz, on_delete=models.CASCADE, null=True, blank=True)
     def __str__(self):
         return self.name
@@ -87,6 +100,26 @@ class Course(models.Model):
 
     def __str__(self):
         return self.name
+    
+
+class QuizScore(models.Model):
+    user = models.ForeignKey(to=User, on_delete=models.CASCADE)
+    quiz = models.ForeignKey(to=Quiz, on_delete=models.CASCADE)
+    score = models.IntegerField(default=0)
+
+    def __str__(self):
+        return f'{self.user}, {self.quiz}, {self.score}'
+    
+    @classmethod
+    def updateOrCreateScore(cls, user, quiz, score):
+        try:
+            quiz_score = cls.objects.get(user=user, quiz=quiz)
+            quiz_score.score = score
+            quiz_score.save()
+        except cls.DoesNotExist:
+            quiz_score = cls(user=user, quiz=quiz, score=score)
+            quiz_score.save()
+        return quiz_score
 
 
 

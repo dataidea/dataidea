@@ -1,0 +1,118 @@
+{% extends 'components/base.html' %}
+<!--Page Title -->
+{% block title %}
+<title>{{profile.name}} Profile</title>
+{% endblock title%}
+<!-- Page Content -->
+{% block content %}
+<main id="main">
+  <!-- ======= Breadcrumbs ======= -->
+  <section class="breadcrumbs">
+    <div class="container">
+      <div class="d-flex justify-content-between align-items-center">
+        <h2>Profile</h2>
+        <ol>
+          <li><a href="{% url 'index:home' %}">Home</a></li>
+          <li><a href="{% url 'school:profile' %}">Profile</a></li>
+        </ol>
+      </div>
+    </div>
+  </section>
+  <!-- End Breadcrumbs -->
+
+  <section class="inner-page" style="padding: 0">
+    <!-- Popular Courser -->
+    <div id="pricing" class="pricing section-bg">
+      <div class="container p-3" data-aos="fade-up">
+        <div class="section-title">
+          <h2>Profile</h2>
+          <a href="{% url 'school:update_profile'%}"
+            >Update Profile <i class="bi bi-pencil-square px-2"></i
+          ></a>
+        </div>
+
+        <div class="container mt-4" data-aos="fade-up" data-aos-delay="100">
+          <div class="row justify-content-center">
+            <div class="col-lg-6">
+              <div class="row justify-content-center">
+                <img
+                  src="{{profile.display_picture.url}}"
+                  class="card-img-top img-fluid rounded-circle justify-self-center"
+                  alt="Profile Image"
+                  style="width: 15rem"
+                />
+                <div class="card-body text-center p-3">
+                  <h5 class="card-title">{{profile.name}}</h5>
+                  <p class="card-text">{{profile.info}}</p>
+                </div>
+              </div>
+              <div class="card mb-4">
+                <div
+                  class="card-header text-white"
+                  style="background-color: rgba(24, 6, 185, 0.8)"
+                >
+                  <h6 class="mb-0">Links and Resume</h6>
+                </div>
+                <div class="card-body">
+                  <div>
+                    <div class="p-2">
+                      <i class="bi bi-linkedin"></i>
+                      {% if profile.linkedin != '' %}
+                      <a href="{{profile.linkedin}}"> {{profile.linkedin}}</a>
+                      {% else %}
+                      <span>No link provided</span>
+                      {% endif %}
+                    </div>
+                    <div class="p-2">
+                      <i class="bi bi-github"></i>
+                      {% if profile.github != '' %}
+                      <a href="{{profile.github}}"> {{profile.github}}</a>
+                      {% else %}
+                      <span>No link provided</span>
+                      {% endif %}
+                    </div>
+                    <div class="p-2">
+                      <i class="bi bi-globe"></i>
+                      {% if profile.other != '' %}
+                      <a href="{{profile.other}}"> {{profile.other}}</a>
+                      {% else %}
+                      <span>No link provided</span>
+                      {% endif %}
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="card mb-4">
+                <div
+                  class="card-header text-white"
+                  style="background-color: rgba(24, 6, 185, 0.8)"
+                >
+                  <h6 class="mb-0">DATAIDEA Skill-First Learning</h6>
+                </div>
+                <div class="card-body">
+                  <div>
+                    {% for quiz_score in quiz_scores %}
+                    <ul class="d-flex justify-content-between border-bottom">
+                      <li>{{quiz_score.quiz}}</li>
+                      <li>{{quiz_score.score}}</li>
+                    </ul>
+                    {% endfor %}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+<!-- End #main -->
+
+<!-- JavaScript -->
+<script>
+  document.querySelector("#header").style.background = "rgba(24, 6, 185, 0.8)";
+
+  document.querySelector(".school").classList.add("active");
+</script>
+{% endblock content %}

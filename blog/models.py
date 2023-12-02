@@ -21,11 +21,9 @@ class BlogCategory(models.Model):
     
 class Blog(models.Model):
     slug = models.CharField(max_length=122, default='New Blog Slug')
-    cuid = models.CharField(max_length=122, default='New Cuid')
     title = models.CharField(max_length=122)
     author = models.ForeignKey(to=Author, on_delete=models.CASCADE, default=1)
     category = models.ForeignKey(to=BlogCategory, on_delete=models.CASCADE, default=1)
-    brief = models.TextField(default='')
     cover_image = models.CharField(max_length=122, default='no image')
     popularity = models.FloatField(default=0)
     date_featured = models.CharField(max_length=122, default='no date', null=True)
