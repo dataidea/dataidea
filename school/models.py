@@ -5,8 +5,8 @@ from django.contrib.auth.models import User
 # Create your models here.
 class LearnerProfile(models.Model):
     user = models.ForeignKey(to=User, on_delete=models.CASCADE)
-    display_picture = models.ImageField(upload_to='profiles/', default='profiles/profile.png')
-    name = models.CharField(max_length=122, default='')
+    display_picture = models.ImageField(upload_to='profiles/', default='profiles/profile.jpg')
+    name = models.CharField(max_length=122, default='No name provided')
     info = models.CharField(max_length=122, default='')
     github = models.CharField(max_length=122, default='')
     linkedin = models.CharField(max_length=122, default='')

@@ -12,18 +12,20 @@ from django.shortcuts import redirect
 from django.core.paginator import Paginator
 from django.shortcuts import get_object_or_404
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 
 # Create your views here.
-
-def profile(request):
-    user = request.user
+@login_required(login_url='accounts:signin')
+def profile(request, user_id):
     try:
-        profile = LearnerProfile.objects.get(user=user)
-        quiz_scores = QuizScore.objects.filter(user=user)
+        profile = LearnerProfile.objects.get(user=user_id)
+        quiz_scores = QuizScore.objects.filter(user=user_id)
     except LearnerProfile.DoesNotExist:
+        user = get_object_or_404(klass=User, id=user_id)
         profile = LearnerProfile(user=user)
         profile.save()
-    return render(request, 'school/profile.html', {'profile': profile, 'quiz_scores': quiz_scores})
+        quiz_scores = QuizScore.objects.filter(user=user)
+    return render(request, 'school/profile.html', {'profile': profile, 'quiz_scores': quiz_scores, 'user_id':user_id})
 
 def updateProfile(request):
     profile = LearnerProfile.objects.get(user=request.user)
@@ -31,7 +33,7 @@ def updateProfile(request):
         form = LearnerProfileForm(request.POST, request.FILES, instance=profile)
         if form.is_valid():
             profile.save()
-            return redirect('school:profile')
+            return redirect(f'/school/profile/{request.user.id}')
         else:
             return render(request, 'school/update_profile.html', {'form': form})
     else:

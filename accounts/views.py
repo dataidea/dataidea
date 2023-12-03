@@ -5,6 +5,7 @@ from django.contrib.auth import login
 from django.contrib.auth import logout
 # from django.contrib.auth.forms import UserCreationForm
 from .forms import CustomUserCreationForm
+from .forms import CustomAuthenticationForm
 from django.contrib.auth.forms import AuthenticationForm
 
 # Create your views here.
@@ -12,7 +13,7 @@ from django.contrib.auth.forms import AuthenticationForm
 
 def signin(request):
     if request.method == "POST":
-        form = AuthenticationForm(data=request.POST)
+        form = CustomAuthenticationForm(data=request.POST)
         if form.is_valid():
             user = form.get_user()
             login(request=request, user=user)
@@ -23,11 +24,15 @@ def signin(request):
         else:
             error = 'Please enter correct username and password. Click "Lets sign you up" if you dont have an account.'
             template_name = 'accounts/signin.html'
-            context = {'form': AuthenticationForm(), 'error': error}
+            context = {'form': CustomAuthenticationForm()}
             return render(request, template_name=template_name, context=context)
     else:
+        context = {}
+        if 'next' in request.GET:
+            context['message'] = 'You should be logged in with and account to see this page'
+
         template_name = 'accounts/signin.html'
-        context = {'form': AuthenticationForm()}
+        context['form'] = CustomAuthenticationForm()
     return render(request, template_name=template_name, context=context)
 
 
@@ -50,10 +55,8 @@ def signup(request):
             else:
                 return redirect('/')
         else:
-            # Customize error messages
-            error = form.errors
             template_name = 'accounts/signup.html'
-            context = {'form': CustomUserCreationForm(), 'error': error}
+            context = {'form': CustomUserCreationForm()}
             return render(request, template_name=template_name, context=context)
     else:
         template_name = 'accounts/signup.html'

@@ -30,45 +30,48 @@
   <section id="portfolio-details" class="portfolio-details">
     <div class="container">
       <div class="d-flex flex-column align-items-center">
-        <div>
+        <div class="">
+          {% if request.GET.next %}
           <a
-            href="{% provider_login_url 'google' %}?next=/"
-            class="w-100 btn mb-2"
+            href="{% provider_login_url 'google' %}?next={{request.GET.next}}"
+            class="btn p-2 mt-2 form-control"
             style="background-color: #6610f2; color: #fff"
-            >Signup with <i class="bi bi-google"></i>oogle</a
+          >
+          {% else %}
+          <a
+          href="{% provider_login_url 'google' %}?next='/'"
+          class="btn p-2 mt-2 form-control"
+          style="background-color: #6610f2; color: #fff;"
+        >
+        {% endif %}
+            Signup with <i class="bi bi-google"></i>oogle</a
           >
         </div>
         <h4>Or</h4>
         <form
-          action="{% url 'accounts:signup'%}"
-          method="POST"
-          class="login rounded d-flex flex-column shadow p-5"
+          action="{% url 'accounts:signup' %}"
+          method="post"
+          role="form"
+          class=""
         >
-          <!-- Show Error Message -->
-          {% if error %}
-          <div class="error p-3 rounded mb-2" style="background: orange">
-            {{error}}
-          </div>
-          {% endif %}
-          <!-- End Error Message -->
-          {% csrf_token %} {{form}} {% if request.GET.next %}
+          {% csrf_token %}
+          <!-- form -->
+          {{form}}
+          <!-- next -->
+          {% if request.GET.next %}
           <input type="hidden" name="next" value="{{ request.GET.next }}" />
           {% endif %}
-          <div class="checkbox mb-3">
-            <label>
-              <input type="checkbox" value="remember-me" /> Remember me
-            </label>
+          <div class="text-center">
+            <input
+              type="submit"
+              value="Let me in"
+              class="btn p-2 mt-2 form-control"
+              style="background-color: #6610f2; color: #fff"
+            />
           </div>
-          <button
-            class="w-100 btn"
-            style="background-color: #6610f2; color: #fff"
-            type="submit"
-          >
-            Sign me up
-          </button>
         </form>
         <div class="d-flex text-center p-3">
-          <p>Don't have account?</p>
+          <p>Already have an account?</p>
           <a href="{% url 'accounts:signin'%}"> Let's sign you in</a>
         </div>
       </div>

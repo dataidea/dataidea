@@ -3,8 +3,19 @@
 {% block title %}
 <title>{{profile.name}} Profile</title>
 {% endblock title%}
+
 <!-- Page Content -->
 {% block content %}
+<!-- Styles -->
+<style>
+  .rounded-circle {
+    width: 15rem; /* Adjust the width as needed */
+    height: 15rem; /* Set the height to match the width */
+    object-fit: cover; /* Maintain the aspect ratio and cover the container */
+    border-radius: 50%; /* Display as a circle */
+  }
+</style>
+<!-- content -->
 <main id="main">
   <!-- ======= Breadcrumbs ======= -->
   <section class="breadcrumbs">
@@ -13,7 +24,7 @@
         <h2>Profile</h2>
         <ol>
           <li><a href="{% url 'index:home' %}">Home</a></li>
-          <li><a href="{% url 'school:profile' %}">Profile</a></li>
+          <li><a href="{% url 'school:profile' user.id %}">Profile</a></li>
         </ol>
       </div>
     </div>
@@ -26,9 +37,11 @@
       <div class="container p-3" data-aos="fade-up">
         <div class="section-title">
           <h2>Profile</h2>
+          {% if user.id == user_id %}
           <a href="{% url 'school:update_profile'%}"
             >Update Profile <i class="bi bi-pencil-square px-2"></i
           ></a>
+          {% endif %}
         </div>
 
         <div class="container mt-4" data-aos="fade-up" data-aos-delay="100">
@@ -39,7 +52,6 @@
                   src="{{profile.display_picture.url}}"
                   class="card-img-top img-fluid rounded-circle justify-self-center"
                   alt="Profile Image"
-                  style="width: 15rem"
                 />
                 <div class="card-body text-center p-3">
                   <h5 class="card-title">{{profile.name}}</h5>

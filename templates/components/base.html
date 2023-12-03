@@ -202,7 +202,9 @@
               <ul>
                 {% if user.is_authenticated %}
                 <li><a href="{% url 'accounts:signout' %}">Signout</a></li>
-                <li><a href="{% url 'school:profile' %}">Profile</a></li>
+                <li>
+                  <a href="{% url 'school:profile' user.id %}">Profile</a>
+                </li>
                 <li><a href="/admin">Administer</a></li>
                 {% else %}
                 <li><a href="{% url 'accounts:signin' %}">Signin</a></li>

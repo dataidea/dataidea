@@ -5,7 +5,7 @@ app_name = 'school'
 
 urlpatterns = [
     path(route='', view=views.browse, name='browse'),
-    path(route='profile', view=views.profile, name='profile'),
+    path(route='profile/<int:user_id>', view=views.profile, name='profile'),
     path(route='update-profile', view=views.updateProfile, name='update_profile'),
     path(route='search-courses/', view=views.searchCourses, name='search_courses'),
     path(route='comment/<int:id>', view=views.comment, name='comment'),
