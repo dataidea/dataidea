@@ -1,5 +1,5 @@
-from .models import (QuizScore, Question, Quiz, 
-                     Choice, Comment, Course, 
+from .models import (QuizScore, Queztion, Quizz, 
+                     Choize, Comment, Course, 
                      Organization, Tutor, Video, 
                      LearningMaterial, LearnerProfile)
 
@@ -17,8 +17,8 @@ class VideoAdmin(admin.ModelAdmin):
 
 # Register your models here.
 admin.site.register(model_or_iterable=Course, admin_class=CourseAdmin)
-admin.site.register(model_or_iterable=[QuizScore, Choice, Comment,
-                                       Organization, Quiz, Tutor, 
-                                       Video, LearningMaterial, Question,
+admin.site.register(model_or_iterable=[QuizScore, Choize, Comment,
+                                       Organization, Quizz, Tutor, 
+                                       Video, LearningMaterial, Queztion,
                                        LearnerProfile])
 

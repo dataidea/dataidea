@@ -1,4 +1,4 @@
-from .models import Quiz
+from .models import Quizz
 from .models import Video
 from .models import Course
 from .models import QuizScore
@@ -42,10 +42,10 @@ def updateProfile(request):
 
 def view_quiz(request, quiz_id):
     try:
-        quiz = Quiz.objects.get(pk=quiz_id)
+        quiz = Quizz.objects.get(pk=quiz_id)
         questions = quiz.questions.all()
         return render(request, 'school/quiz.html', {'quiz': quiz, 'questions': questions})
-    except Quiz.DoesNotExist:
+    except Quizz.DoesNotExist:
         context = {'message': 'Quiz Not Found', 'state': 'danger'}
         template_name = 'components/message.html'
         return render (request=request,
@@ -56,7 +56,7 @@ def view_quiz(request, quiz_id):
 @login_required(login_url='accounts:signin')
 def submit_quiz(request, quiz_id):
     # Get quiz 
-    quiz = Quiz.objects.get(pk=quiz_id)
+    quiz = Quizz.objects.get(pk=quiz_id)
     questions = quiz.questions.all()
 
     # Calculate correct answers for each question
