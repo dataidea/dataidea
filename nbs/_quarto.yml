@@ -1,0 +1,38 @@
+project:
+  type: website
+
+format:
+  html:
+    theme: cosmo
+    css: styles.css
+    toc: true
+
+website:
+  twitter-card: true
+  open-graph: true
+  repo-actions: [issue]
+  page-navigation: true
+  reader-mode: true
+  navbar:
+    background: primary
+    search: true
+    logo: assets/dataidea-logo.png
+    right:
+      - text: Home
+        href: '#'
+      - text: About
+        href: '#'
+      - text: Resources
+        href: '#'
+      - text: Forum
+        href: 'https://chat.whatsapp.com/GuCZRyJICgO3Y7MPvDQKhi'
+      - text: Blog
+        href: '#'
+  sidebar:
+    style: "floating"
+    favicon: assets/dataidea-logo.png
+    twitter-card:
+    creator: "@juma_shafara"
+    site: "@datas_idea"
+
+metadata-files: [nbdev.yml, sidebar.yml]

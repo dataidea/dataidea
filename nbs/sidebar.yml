@@ -1,0 +1,36 @@
+website:
+  sidebar:
+    contents:
+      - index.ipynb
+      - section: Week1
+        contents:
+          - Week1/11_python_tutorial.ipynb
+          - Week1/12_numpy.ipynb
+          - Week1/13_pandas.ipynb
+      - section: Week2
+        contents:
+          - Week2/21_weather_data.ipynb
+      - section: Week3
+        contents:
+          - Week3/31_matplotlib_refined.ipynb
+          - Week3/32_data_exploration_and_cleaning_exercise.ipynb
+      - section: Week4
+        contents:
+          - Week4/41_overview_of_machine_learning.ipynb
+          - Week4/42_training_models_meaning.ipynb
+      - section: Week5
+        contents:
+          - Week5/51_descriptive_statistics.ipynb
+          - Week5/52_inferencial_statistics.ipynb
+          - Week5/53_implementing_statistical_models.ipynb
+      - section: Week6
+        contents:
+          - Week6/61_seaborn.ipynb
+          - Week6/63_exploratory_data_analysis_using_visualization.ipynb
+      - section: Week7
+        contents:
+          - Week7/71_feature_selection.ipynb
+          - Week7/72_normailization_and_standardization.ipynb
+      - section: dataidea
+        contents:
+          - dataidea/quickstart.ipynb

@@ -1,0 +1,9 @@
+project:
+  output-dir: _docs
+
+website:
+  title: "DATAIDEA"
+  site-url: "https://courses.dataidea.org/programming-for-data-science-site"
+  description: "subject site"
+  repo-branch: main
+  repo-url: "https://github.com/dataidea/programming-for-data-science-site"
