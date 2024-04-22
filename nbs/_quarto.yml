@@ -19,15 +19,19 @@ website:
     logo: assets/dataidea-logo.png
     right:
       - text: Home
-        href: '#'
+        href: 'https://www.dataidea.org/'
       - text: About
-        href: '#'
+        href: 'https://docs.dataidea.org/about'
       - text: Resources
-        href: '#'
-      - text: Forum
-        href: 'https://chat.whatsapp.com/GuCZRyJICgO3Y7MPvDQKhi'
-      - text: Blog
-        href: '#'
+        menu:
+         - text: Materials
+           url: 'https://api.dataidea.org/school/download-course-material/2'
+         - text: Blog
+           url: 'https://blog.dataidea.org'
+         - text: Forum
+           url: 'https://chat.whatsapp.com/GuCZRyJICgO3Y7MPvDQKhi'
+      - text: Contact
+        href: 'https://docs.dataidea.org/contact'
   sidebar:
     style: "floating"
     favicon: assets/dataidea-logo.png
