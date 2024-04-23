@@ -30,7 +30,9 @@ website:
       - section: Week7
         contents:
           - Week7/71_feature_selection.ipynb
-          - Week7/72_normailization_and_standardization.ipynb
+          - Week7/72_why_scaling.ipynb
+          - Week7/72_why_scaling_fpl.ipynb
+          - Week7/73_normailization_and_standardization.ipynb
       - section: dataidea
         contents:
           - dataidea/quickstart.ipynb
