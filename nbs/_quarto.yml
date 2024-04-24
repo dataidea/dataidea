@@ -12,16 +12,16 @@ website:
   open-graph: true
   repo-actions: [issue]
   page-navigation: true
+  back-to-top-navigation: true
   reader-mode: true
   navbar:
     background: primary
     search: true
-    logo: assets/dataidea-logo.png
     right:
       - text: Home
         href: 'https://www.dataidea.org/'
       - text: About
-        href: 'https://docs.dataidea.org/about'
+        href: 'https://courses.dataidea.org/about'
       - text: Resources
         menu:
          - text: Materials
@@ -31,7 +31,7 @@ website:
          - text: Forum
            url: 'https://chat.whatsapp.com/GuCZRyJICgO3Y7MPvDQKhi'
       - text: Contact
-        href: 'https://docs.dataidea.org/contact'
+        href: 'https://courses.dataidea.org/contact'
   sidebar:
     style: "floating"
     favicon: assets/dataidea-logo.png
@@ -39,4 +39,4 @@ website:
     creator: "@juma_shafara"
     site: "@datas_idea"
 
-metadata-files: [nbdev.yml, sidebar.yml]
+metadata-files: [nbdev.yml,sidebar.yml]
