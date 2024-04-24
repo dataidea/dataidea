@@ -4,6 +4,6 @@ project:
 website:
   title: "DATAIDEA"
   site-url: "https://courses.dataidea.org/programming-for-data-science-site"
-  description: "subject site"
+  description: "Learn Programming For Data Science"
   repo-branch: main
   repo-url: "https://github.com/dataidea/programming-for-data-science-site"
