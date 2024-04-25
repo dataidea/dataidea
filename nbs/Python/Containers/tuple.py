@@ -1,2 +1,0 @@
-pets = ('dog', 'cat', 'rabbit')
-

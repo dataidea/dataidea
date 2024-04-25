@@ -7,7 +7,13 @@ website:
           - Python/00_outline.ipynb
           - Python/01_basics.ipynb
           - Python/02_variables.ipynb
+          - Python/03_numbers.ipynb
+          - Python/04_operators.ipynb
+          - Python/05_containers.ipynb
+          - Python/06_flow_control.ipynb
+          - Python/07_modules.ipynb
           - Python/09_advanced.ipynb
+          - Python/10_exercise.ipynb
       - section: Python Data Analysis
         contents:
           - section: Week1

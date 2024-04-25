@@ -1,1 +1,0 @@
-areaOfATriangle(6, 4)
