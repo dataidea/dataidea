@@ -4,7 +4,10 @@ website:
       - index.ipynb
       - section: Python
         contents:
-          - Python/outline.ipynb
+          - Python/00_outline.ipynb
+          - Python/01_basics.ipynb
+          - Python/02_variables.ipynb
+          - Python/09_advanced.ipynb
       - section: Python Data Analysis
         contents:
           - section: Week1

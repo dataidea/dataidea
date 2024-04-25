@@ -1,0 +1,2 @@
+pets = ('dog', 'cat', 'rabbit')
+
