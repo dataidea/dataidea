@@ -2,37 +2,65 @@ website:
   sidebar:
     contents:
       - index.ipynb
-      - section: Week1
+      - section: Python
         contents:
-          - Week1/11_python_tutorial.ipynb
-          - Week1/12_numpy.ipynb
-          - Week1/13_pandas.ipynb
-      - section: Week2
+          - Python/outline.ipynb
+      - section: Python Data Analysis
         contents:
-          - Week2/21_weather_data.ipynb
-      - section: Week3
+          - section: Week1
+            contents:
+              - Python Data Analysis/Week1/11_python_tutorial.ipynb
+              - Python Data Analysis/Week1/12_numpy.ipynb
+              - Python Data Analysis/Week1/13_pandas.ipynb
+          - section: Week2
+            contents:
+              - Python Data Analysis/Week2/21_weather_data.ipynb
+          - section: Week3
+            contents:
+              - Python Data Analysis/Week3/31_matplotlib_refined.ipynb
+              - Python Data Analysis/Week3/32_data_exploration_and_cleaning_exercise.ipynb
+          - section: Week4
+            contents:
+              - Python Data Analysis/Week4/41_overview_of_machine_learning.ipynb
+              - Python Data Analysis/Week4/42_training_models_meaning.ipynb
+              - Python Data Analysis/Week4/43_sklearn-unsupervised-learning.ipynb
+              - Python Data Analysis/Week4/44_data_exploration_and_cleaning_exercise.ipynb
+          - section: Week5
+            contents:
+              - Python Data Analysis/Week5/51_descriptive_statistics.ipynb
+              - Python Data Analysis/Week5/52_inferencial_statistics.ipynb
+              - Python Data Analysis/Week5/53_implementing_statistical_models.ipynb
+          - section: Week6
+            contents:
+              - Python Data Analysis/Week6/61_seaborn.ipynb
+              - Python Data Analysis/Week6/63_exploratory_data_analysis_using_visualization.ipynb
+          - section: Week7
+            contents:
+              - Python Data Analysis/Week7/71_feature_selection.ipynb
+              - Python Data Analysis/Week7/72_why_scaling.ipynb
+              - Python Data Analysis/Week7/72_why_scaling_fpl.ipynb
+              - Python Data Analysis/Week7/73_normailization_and_standardization.ipynb
+              - Python Data Analysis/Week7/75_bonus.ipynb
+              - Python Data Analysis/Week7/76_handling_missing_data.ipynb
+      - section: Python Machine Learning
         contents:
-          - Week3/31_matplotlib_refined.ipynb
-          - Week3/32_data_exploration_and_cleaning_exercise.ipynb
-      - section: Week4
-        contents:
-          - Week4/41_overview_of_machine_learning.ipynb
-          - Week4/42_training_models_meaning.ipynb
-      - section: Week5
-        contents:
-          - Week5/51_descriptive_statistics.ipynb
-          - Week5/52_inferencial_statistics.ipynb
-          - Week5/53_implementing_statistical_models.ipynb
-      - section: Week6
-        contents:
-          - Week6/61_seaborn.ipynb
-          - Week6/63_exploratory_data_analysis_using_visualization.ipynb
-      - section: Week7
-        contents:
-          - Week7/71_feature_selection.ipynb
-          - Week7/72_why_scaling.ipynb
-          - Week7/72_why_scaling_fpl.ipynb
-          - Week7/73_normailization_and_standardization.ipynb
+          - section: Overview
+            contents:
+              - Python Machine Learning/Overview/41_overview_of_machine_learning.ipynb
+              - Python Machine Learning/Overview/42_training_models_meaning.ipynb
+              - Python Machine Learning/Overview/43_sklearn-unsupervised-learning.ipynb
+          - section: Processing
+            contents:
+              - Python Machine Learning/Processing/72_why_scaling.ipynb
+              - Python Machine Learning/Processing/72_why_scaling_fpl.ipynb
+              - Python Machine Learning/Processing/73_normailization_and_standardization.ipynb
+              - Python Machine Learning/Processing/75_bonus.ipynb
+              - Python Machine Learning/Processing/76_handling_missing_data.ipynb
+              - Python Machine Learning/Processing/77_exercise_rescaling_data.ipynb
+          - section: Selection
+            contents:
+              - Python Machine Learning/Selection/52_inferencial_statistics.ipynb
+              - Python Machine Learning/Selection/71_feature_selection.ipynb
       - section: dataidea
         contents:
           - dataidea/quickstart.ipynb
