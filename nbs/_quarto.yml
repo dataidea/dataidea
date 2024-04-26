@@ -24,7 +24,7 @@ website:
         href: 'https://courses.dataidea.org/about'
       - text: Resources
         menu:
-         - text: Materials
+         - text: Download
            url: 'https://api.dataidea.org/school/download-course-material/2'
          - text: Blog
            url: 'https://blog.dataidea.org'
