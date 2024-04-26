@@ -11,11 +11,13 @@ website:
           - Python/04_operators.ipynb
           - Python/05_containers.ipynb
           - Python/06_flow_control.ipynb
-          - Python/07_modules.ipynb
-          - Python/09_advanced.ipynb
+          - Python/07_advanced.ipynb
+          - Python/08_modules.ipynb
+          - Python/09_file_handling.ipynb
           - Python/10_exercise.ipynb
       - section: Python Data Analysis
         contents:
+          - Python Data Analysis/outline.ipynb
           - section: Week1
             contents:
               - Python Data Analysis/Week1/11_python_tutorial.ipynb
