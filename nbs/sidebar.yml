@@ -15,6 +15,7 @@ website:
           - Python/08_modules.ipynb
           - Python/09_file_handling.ipynb
           - Python/10_exercise.ipynb
+          - Python/miscellaneous_exerise.ipynb
       - section: Python Data Analysis
         contents:
           - Python Data Analysis/outline.ipynb
@@ -26,6 +27,7 @@ website:
           - section: Week2 Cleaning Intro
             contents:
               - Python Data Analysis/Week2 Cleaning Intro/21_weather_data.ipynb
+              - Python Data Analysis/Week2 Cleaning Intro/pandas-puzzles.ipynb
           - section: Week3 Visualization
             contents:
               - Python Data Analysis/Week3 Visualization/31_matplotlib_refined.ipynb
@@ -35,6 +37,7 @@ website:
               - Python Data Analysis/Week4 ML Intro/41_overview_of_machine_learning.ipynb
               - Python Data Analysis/Week4 ML Intro/42_training_models_meaning.ipynb
               - Python Data Analysis/Week4 ML Intro/43_sklearn-unsupervised-learning.ipynb
+              - Python Data Analysis/Week4 ML Intro/43_sklearn-unsupervised-learning2.ipynb
               - Python Data Analysis/Week4 ML Intro/44_data_exploration_and_cleaning_exercise.ipynb
           - section: Week5 Statistics
             contents:
