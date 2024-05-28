@@ -2,6 +2,7 @@ website:
   sidebar:
     contents:
       - index.ipynb
+      - 404.ipynb
       - section: Python
         contents:
           - Python/00_outline.ipynb
