@@ -32,11 +32,11 @@ website:
       - text: Download
         menu:
           - text: Python 3 Beginner
-            url: "https://api.dataidea.org/school/download-course-material/1"
+            url: "http://dataidea.pythonanywhere.com/school/download-course-material/1"
           - text: Python Data Analysis
-            url: "https://api.dataidea.org/school/download-course-material/2"
+            url: "http://dataidea.pythonanywhere.com/school/download-course-material/2"
           - text: Pytorch
-            url: "https://api.dataidea.org/school/download-course-material/3"
+            url: "http://dataidea.pythonanywhere.com/school/download-course-material/3"
       - text: Resources
         menu:
           - text: Blog
