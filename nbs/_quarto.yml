@@ -41,8 +41,16 @@ website:
         menu:
           - text: Blog
             url: "https://blog.dataidea.org"
+          - text: Web Development
+            url: "https://web.dataidea.org"
           - text: Forum
             url: "https://chat.whatsapp.com/GuCZRyJICgO3Y7MPvDQKhi"
+          - text: French
+            url: "https://french.dataidea.org"
+          - text: Football
+            url: "https://football.dataidea.org"
+          - text: Movies
+            url: "https://movies.dataidea.org"
       - text: Contact
         href: "https://www.dataidea.org/#contact"
   sidebar:
