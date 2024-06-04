@@ -37,12 +37,16 @@ website:
             url: "http://dataidea.pythonanywhere.com/school/download-course-material/2"
           - text: Pytorch
             url: "http://dataidea.pythonanywhere.com/school/download-course-material/3"
+      - text: Subjects
+        menu:
+          - text: Data Science
+            url: "https://blog.dataidea.org"
+          - text: Web Development
+            url: "https://web.dataidea.org"
       - text: Resources
         menu:
           - text: Blog
             url: "https://blog.dataidea.org"
-          - text: Web Development
-            url: "https://web.dataidea.org"
           - text: Forum
             url: "https://chat.whatsapp.com/GuCZRyJICgO3Y7MPvDQKhi"
           - text: French
