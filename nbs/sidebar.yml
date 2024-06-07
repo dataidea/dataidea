@@ -16,6 +16,7 @@ website:
           - Python/08_modules.ipynb
           - Python/09_file_handling.ipynb
           - Python/10_exercise.ipynb
+          - Python/11_python_objective_quiz.ipynb
           - Python/miscellaneous_exerise.ipynb
       - section: Python Data Analysis
         contents:
@@ -33,13 +34,13 @@ website:
             contents:
               - Python Data Analysis/Week3 Visualization/31_matplotlib_refined.ipynb
               - Python Data Analysis/Week3 Visualization/32_data_exploration_and_cleaning_exercise.ipynb
+              - Python Data Analysis/Week3 Visualization/nobel_prize_laureates_exercise.ipynb
           - section: Week4 ML Intro
             contents:
               - Python Data Analysis/Week4 ML Intro/41_overview_of_machine_learning.ipynb
               - Python Data Analysis/Week4 ML Intro/42_training_models_meaning.ipynb
               - Python Data Analysis/Week4 ML Intro/43_sklearn-unsupervised-learning.ipynb
               - Python Data Analysis/Week4 ML Intro/43_sklearn-unsupervised-learning2.ipynb
-              - Python Data Analysis/Week4 ML Intro/44_data_exploration_and_cleaning_exercise.ipynb
           - section: Week5 Statistics
             contents:
               - Python Data Analysis/Week5 Statistics/51_descriptive_statistics.ipynb
@@ -87,14 +88,24 @@ website:
               - Pytorch/Introduction/5.autogradqs_tutorial.ipynb
               - Pytorch/Introduction/6.optimization_tutorial.ipynb
               - Pytorch/Introduction/7.saveloadrun_tutorial.ipynb
+          - section: Text
+            contents:
+              - Pytorch/Text/01_Better_Transformer_with_Torchtext_Demo.ipynb
+              - Pytorch/Text/02_char_rnn_classification_tutorial.ipynb
+              - Pytorch/Text/03_char_rnn_generation_tutorial.ipynb
+              - Pytorch/Text/04_seq2seq_translation_tutorial.ipynb
+              - Pytorch/Text/05_seq2seq_translation_tutorial.ipynb
+              - Pytorch/Text/06_seq2seq_translation_tutorial.ipynb
+              - Pytorch/Text/07_torchtext_custom_dataset_tutorial.ipynb
           - section: Vision
             contents:
-              - Pytorch/Vision/dcgan_faces_tutorial.ipynb
-              - Pytorch/Vision/fgsm_tutorial.ipynb
-              - Pytorch/Vision/spatial_transformer_tutorial.ipynb
+              - Pytorch/Vision/01_torchvision_tutorial.ipynb
+              - Pytorch/Vision/02_transfer_learning_tutorial.ipynb
+              - Pytorch/Vision/03_fgsm_tutorial.ipynb
+              - Pytorch/Vision/04_dcgan_faces_tutorial.ipynb
+              - Pytorch/Vision/05_spatial_transformer_tutorial.ipynb
+              - Pytorch/Vision/06_vt_tutorial.ipynb
               - Pytorch/Vision/torchvision_finetuning_instance_segmentation.ipynb
-              - Pytorch/Vision/transfer_learning_tutorial.ipynb
-              - Pytorch/Vision/vt_tutorial.ipynb
       - section: dataidea
         contents:
           - dataidea/quickstart.ipynb
