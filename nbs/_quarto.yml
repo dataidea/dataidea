@@ -58,9 +58,10 @@ website:
       - text: Contact
         href: "https://www.dataidea.org/#contact"
   sidebar:
-    style: "floating"
+    style: "docked"
+    title: "LPFDS"
     twitter-card:
     creator: "@juma_shafara"
-    site: "@datas_idea"
+    site: "@dataideaorg"
 
 metadata-files: [nbdev.yml, sidebar.yml]
