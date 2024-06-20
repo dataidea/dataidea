@@ -17,6 +17,7 @@ website:
           - Python/09_file_handling.ipynb
           - Python/10_exercise.ipynb
           - Python/11_python_objective_quiz.ipynb
+          - Python/12_true_or_false_quiz.ipynb
           - Python/miscellaneous_exerise.ipynb
       - section: Python-Data-Analysis
         contents:
@@ -60,12 +61,12 @@ website:
               - Python-Data-Analysis/Week7-Preprocessing/73_normailization_and_standardization.ipynb
               - Python-Data-Analysis/Week7-Preprocessing/75_bonus.ipynb
               - Python-Data-Analysis/Week7-Preprocessing/76_handling_missing_data.ipynb
-          - section: Week8-More ML
+          - section: Week8-More-ML
             contents:
-              - Python-Data-Analysis/Week8-More ML/80_classification_metrics.ipynb
-              - Python-Data-Analysis/Week8-More ML/81_regression_metrics.ipynb
-              - Python-Data-Analysis/Week8-More ML/82_sklearn_pipeline.ipynb
-              - Python-Data-Analysis/Week8-More ML/83_GridSearchCV.ipynb
+              - Python-Data-Analysis/Week8-More-ML/80_classification_metrics.ipynb
+              - Python-Data-Analysis/Week8-More-ML/81_regression_metrics.ipynb
+              - Python-Data-Analysis/Week8-More-ML/82_sklearn_pipeline.ipynb
+              - Python-Data-Analysis/Week8-More-ML/83_GridSearchCV.ipynb
           - section: Week9-Time-Series
             contents:
               - Python-Data-Analysis/Week9-Time-Series/90_introduction.ipynb
