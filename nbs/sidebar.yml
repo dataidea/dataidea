@@ -36,6 +36,7 @@ website:
               - Python-Data-Analysis/Week3-Visualization/31_matplotlib_refined.ipynb
               - Python-Data-Analysis/Week3-Visualization/32_data_exploration_and_cleaning_exercise.ipynb
               - Python-Data-Analysis/Week3-Visualization/nobel_prize_laureates_exercise.ipynb
+              - Python-Data-Analysis/Week3-Visualization/visualization_quiz.ipynb
           - section: Week4-ML-Intro
             contents:
               - Python-Data-Analysis/Week4-ML-Intro/41_overview_of_machine_learning.ipynb
@@ -47,6 +48,7 @@ website:
               - Python-Data-Analysis/Week5-Statistics/51_descriptive_statistics.ipynb
               - Python-Data-Analysis/Week5-Statistics/52_inferencial_statistics.ipynb
               - Python-Data-Analysis/Week5-Statistics/53_implementing_statistical_models.ipynb
+              - Python-Data-Analysis/Week5-Statistics/hypothesis_testing.ipynb
           - section: Week6-Visualization2
             contents:
               - Python-Data-Analysis/Week6-Visualization2/61_matplotlib.ipynb
