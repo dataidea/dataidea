@@ -95,3 +95,8 @@ div.description {
   font-size: 135%;
   opacity: 70%;
 }
+
+.keywords {
+  display: none;
+}
+
