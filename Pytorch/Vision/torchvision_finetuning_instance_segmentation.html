@@ -1,0 +1,2492 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.4.557">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>DATAIDEA - TorchVision Instance Segmentation Finetuning Tutorial</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../dataidea/quickstart.html" rel="next">
+<link href="../../Pytorch/Vision/vt_tutorial.html" rel="prev">
+<link href="../../assets/dataidea-logo.png" rel="icon" type="image/png">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="../../styles.css">
+<meta property="og:title" content="DATAIDEA - TorchVision Instance Segmentation Finetuning Tutorial">
+<meta property="og:description" content="Learn Programming For Data Science">
+<meta property="og:site_name" content="DATAIDEA">
+<meta name="twitter:title" content="DATAIDEA - TorchVision Instance Segmentation Finetuning Tutorial">
+<meta name="twitter:description" content="Learn Programming For Data Science">
+<meta name="twitter:card" content="summary">
+</head>
+
+<body class="nav-sidebar docked nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">DATAIDEA</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="https://www.dataidea.org/"> 
+<span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-about" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">About</span>
+    </a>
+    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="nav-menu-about">    
+        <li>
+    <a class="dropdown-item" href="https://dataidea.org/#about">
+ <span class="dropdown-text">About Us</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="https://dataidea.org/privacy_policy.html">
+ <span class="dropdown-text">Privacy Policy</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="https://dataidea.org/terms_of_service.html">
+ <span class="dropdown-text">Terms of Service</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-download" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Download</span>
+    </a>
+    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="nav-menu-download">    
+        <li>
+    <a class="dropdown-item" href="http://dataidea.pythonanywhere.com/school/download-course-material/1">
+ <span class="dropdown-text">Python 3 Beginner</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="http://dataidea.pythonanywhere.com/school/download-course-material/2">
+ <span class="dropdown-text">Python Data Analysis</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="http://dataidea.pythonanywhere.com/school/download-course-material/3">
+ <span class="dropdown-text">Pytorch</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-subjects" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Subjects</span>
+    </a>
+    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="nav-menu-subjects">    
+        <li>
+    <a class="dropdown-item" href="https://blog.dataidea.org">
+ <span class="dropdown-text">Data Science</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="https://web.dataidea.org">
+ <span class="dropdown-text">Web Development</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-resources" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Resources</span>
+    </a>
+    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="nav-menu-resources">    
+        <li>
+    <a class="dropdown-item" href="https://blog.dataidea.org">
+ <span class="dropdown-text">Blog</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="https://chat.whatsapp.com/GuCZRyJICgO3Y7MPvDQKhi">
+ <span class="dropdown-text">Forum</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="https://french.dataidea.org">
+ <span class="dropdown-text">French</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="https://football.dataidea.org">
+ <span class="dropdown-text">Football</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="https://movies.dataidea.org">
+ <span class="dropdown-text">Movies</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="https://www.dataidea.org/#contact"> 
+<span class="menu-text">Contact</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+          <div class="quarto-navbar-tools">
+  <a href="" class="quarto-reader-toggle quarto-navigation-tool px-1" onclick="window.quartoToggleReader(); return false;" title="Toggle reader mode">
+  <div class="quarto-reader-toggle-btn">
+  <i class="bi"></i>
+  </div>
+</a>
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../Pytorch/pytorch_outline.html">Pytorch</a></li><li class="breadcrumb-item"><a href="../../Pytorch/Vision/01_torchvision_tutorial.html">Vision</a></li><li class="breadcrumb-item"><a href="../../Pytorch/Vision/torchvision_finetuning_instance_segmentation.html">TorchVision Instance Segmentation Finetuning Tutorial</a></li></ol></nav>
+        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Welcome to DATAIDEA</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../404.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Page Not Found</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+ <span class="menu-text">Python</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Python/00_outline.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Python Course Outline</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Python/01_basics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Basics</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Python/02_variables.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Python Variables</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Python/03_numbers.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Numbers</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Python/04_operators.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Operators</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Python/05_containers.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Containers</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Python/06_flow_control.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Flow Control</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Python/07_advanced.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Advanced</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Python/08_modules.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Modules</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Python/09_file_handling.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Python File Handling</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Python/10_exercise.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Exercise</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Python/11_python_objective_quiz.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Python Objective Quiz</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Python/12_true_or_false_quiz.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">True or False</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Python/miscellaneous_exerise.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Miscellaneous Exercise</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
+ <span class="menu-text">Python-Data-Analysis</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Python-Data-Analysis/outline.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Data Analysis Outline</span></a>
+  </div>
+</li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="false">
+ <span class="menu-text">Week1-Intro</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Python-Data-Analysis/Week1-Intro/11_python_tutorial.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Python Quick Review</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Python-Data-Analysis/Week1-Intro/12_numpy.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Numpy</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Python-Data-Analysis/Week1-Intro/pandas.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Pandas</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="false">
+ <span class="menu-text">Week2-Cleaning-Intro</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Python-Data-Analysis/Week2-Cleaning-Intro/21_weather_data.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Cleaning the weather dataset</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Python-Data-Analysis/Week2-Cleaning-Intro/pandas-puzzles.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">60 pandas puzzles</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="false">
+ <span class="menu-text">Week3-Visualization</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Python-Data-Analysis/Week3-Visualization/31_matplotlib_refined.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Matplotlib</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Python-Data-Analysis/Week3-Visualization/32_data_exploration_and_cleaning_exercise.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Data Exploration and Cleaning Exercise</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Python-Data-Analysis/Week3-Visualization/nobel_prize_laureates_exercise.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Nobel Prize Laureates Exercise:</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Python-Data-Analysis/Week3-Visualization/visualization_quiz.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Data Viz Quiz</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="false">
+ <span class="menu-text">Week4-ML-Intro</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Python-Data-Analysis/Week4-ML-Intro/41_overview_of_machine_learning.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Overview of Machine Learning</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Python-Data-Analysis/Week4-ML-Intro/42_training_models_meaning.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Training a model: Meaning</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Python-Data-Analysis/Week4-ML-Intro/43_sklearn-unsupervised-learning.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Unsupervised Learning using Scikit Learn</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Python-Data-Analysis/Week4-ML-Intro/43_sklearn-unsupervised-learning2.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Unsupervised Learning using Scikit Learn Part 2</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" aria-expanded="false">
+ <span class="menu-text">Week5-Statistics</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Python-Data-Analysis/Week5-Statistics/51_descriptive_statistics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Descriptive Statistics</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Python-Data-Analysis/Week5-Statistics/52_inferencial_statistics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Inferencial Statistics</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Python-Data-Analysis/Week5-Statistics/53_implementing_statistical_models.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Statistical Models</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Python-Data-Analysis/Week5-Statistics/hypothesis_testing.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Hypothesis Testing Quiz</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" aria-expanded="false">
+ <span class="menu-text">Week6-Visualization2</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-8" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Python-Data-Analysis/Week6-Visualization2/61_matplotlib.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Matplotlib</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Python-Data-Analysis/Week6-Visualization2/62_seaborn_part1.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Seaborn Part 1</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Python-Data-Analysis/Week6-Visualization2/62_seaborn_part2.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Seaborn Part 2</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Python-Data-Analysis/Week6-Visualization2/63.visual_eda.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Visual EDA</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-9" aria-expanded="false">
+ <span class="menu-text">Week7-Preprocessing</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-9" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-9" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Python-Data-Analysis/Week7-Preprocessing/71_feature_selection.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Feature Selection</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Python-Data-Analysis/Week7-Preprocessing/72_why_scaling.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Why re-scaling (Iris)?</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Python-Data-Analysis/Week7-Preprocessing/72_why_scaling_fpl.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Why re-scale data (fpl)?</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Python-Data-Analysis/Week7-Preprocessing/73_normalization_and_standardization.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Normalization vs Standardization</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Python-Data-Analysis/Week7-Preprocessing/75_bonus.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">ANOVA for Feature Selection</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Python-Data-Analysis/Week7-Preprocessing/76_handling_missing_data.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Handling Missing Data</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Python-Data-Analysis/Week7-Preprocessing/handling_missing_data_quiz.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Handling Missing Data Quiz</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-10" aria-expanded="false">
+ <span class="menu-text">Week8-More-ML</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-10" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-10" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Python-Data-Analysis/Week8-More-ML/80_classification_metrics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">SciKit-Learn Classification Metrics</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Python-Data-Analysis/Week8-More-ML/81_regression_metrics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Regression Metrics</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Python-Data-Analysis/Week8-More-ML/82_sklearn_pipeline.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Pipeline</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Python-Data-Analysis/Week8-More-ML/83_GridSearchCV.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">GridSearchCV</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-11" aria-expanded="false">
+ <span class="menu-text">Week9-Time-Series</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-11" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-11" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Python-Data-Analysis/Week9-Time-Series/90_introduction.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">What is Time Series</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Python-Data-Analysis/Week9-Time-Series/91_analysis.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Time Series Analysis</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Python-Data-Analysis/Week9-Time-Series/92_forecasting.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Time Series Forecasting</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Python-Data-Analysis/Week9-Time-Series/93_python_example.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Time Series Analysis</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-12" aria-expanded="false">
+ <span class="menu-text">WeekX-Extras</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-12" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-12" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Python-Data-Analysis/WeekX-Extras/handling_imbalanced_data.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Imbalanced Datasets</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-13" aria-expanded="true">
+ <span class="menu-text">Pytorch</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-13" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-13" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Pytorch/pytorch_outline.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Pytorch Course Outline</span></a>
+  </div>
+</li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-14" aria-expanded="false">
+ <span class="menu-text">Introduction</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-14" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-14" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Pytorch/Introduction/0.quickstart_tutorial.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Quickstart</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Pytorch/Introduction/1.tensorqs_tutorial.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Tensors</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Pytorch/Introduction/2.data_tutorial.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Datasets &amp; DataLoaders</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Pytorch/Introduction/3.transforms_tutorial.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Transforms</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Pytorch/Introduction/4.buildmodel_tutorial.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Get Device for Training</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Pytorch/Introduction/5.autogradqs_tutorial.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Tensors, Functions and Computational graph</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Pytorch/Introduction/6.optimization_tutorial.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Optimizing Model Parameters</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Pytorch/Introduction/7.saveloadrun_tutorial.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Save and Load the Model</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-15" aria-expanded="false">
+ <span class="menu-text">Text</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-15" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-15" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Pytorch/Text/better_transformer_with_torchtext_demo.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">System Information</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Pytorch/Text/02_char_rnn_classification_tutorial.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">NLP From Scratch: Classifying Names with a Character-Level RNN</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Pytorch/Text/03_char_rnn_generation_tutorial.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">NLP From Scratch: Generating Names with a Character-Level RNN</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Pytorch/Text/04_seq2seq_translation_tutorial.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">NLP From Scratch: Translation with a Sequence to Sequence Network and Attention</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Pytorch/Text/05_seq2seq_translation_tutorial.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">NLP From Scratch: Translation with a Sequence to Sequence Network and Attention</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Pytorch/Text/06_seq2seq_translation_tutorial.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">NLP From Scratch: Translation with a Sequence to Sequence Network and Attention</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Pytorch/Text/07_torchtext_custom_dataset_tutorial.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Preprocess custom text dataset using Torchtext</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-16" aria-expanded="true">
+ <span class="menu-text">Vision</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-16" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-16" class="collapse list-unstyled sidebar-section depth2 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Pytorch/Vision/01_torchvision_tutorial.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">TorchVision Object Detection Finetuning Tutorial</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Pytorch/Vision/transfer_learning_tutorial.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Transfer Learning for Computer Vision Tutorial</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Pytorch/Vision/fgsm_tutorial.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Adversarial Example Generation</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Pytorch/Vision/dcgan_faces_tutorial.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">DCGAN Tutorial</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Pytorch/Vision/spatial_transformer_tutorial.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Spatial Transformer Networks Tutorial</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Pytorch/Vision/vt_tutorial.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Optimizing Vision Transformer Model for Deployment</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Pytorch/Vision/torchvision_finetuning_instance_segmentation.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">TorchVision Instance Segmentation Finetuning Tutorial</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-17" aria-expanded="true">
+ <span class="menu-text">dataidea</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-17" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-17" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../dataidea/quickstart.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">DATAIDEA Quickstart</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#defining-the-dataset" id="toc-defining-the-dataset" class="nav-link active" data-scroll-target="#defining-the-dataset">Defining the Dataset</a>
+  <ul class="collapse">
+  <li><a href="#writing-a-custom-dataset-for-penn-fudan" id="toc-writing-a-custom-dataset-for-penn-fudan" class="nav-link" data-scroll-target="#writing-a-custom-dataset-for-penn-fudan">Writing a custom dataset for Penn-Fudan</a></li>
+  </ul></li>
+  <li><a href="#defining-your-model" id="toc-defining-your-model" class="nav-link" data-scroll-target="#defining-your-model">Defining your model</a>
+  <ul class="collapse">
+  <li><a href="#finetuning-from-a-pretrained-model" id="toc-finetuning-from-a-pretrained-model" class="nav-link" data-scroll-target="#finetuning-from-a-pretrained-model">1 - Finetuning from a pretrained model</a></li>
+  <li><a href="#modifying-the-model-to-add-a-different-backbone" id="toc-modifying-the-model-to-add-a-different-backbone" class="nav-link" data-scroll-target="#modifying-the-model-to-add-a-different-backbone">2 - Modifying the model to add a different backbone</a></li>
+  <li><a href="#an-instance-segmentation-model-for-pennfudan-dataset" id="toc-an-instance-segmentation-model-for-pennfudan-dataset" class="nav-link" data-scroll-target="#an-instance-segmentation-model-for-pennfudan-dataset">An Instance segmentation model for PennFudan Dataset</a></li>
+  </ul></li>
+  <li><a href="#training-and-evaluation-functions" id="toc-training-and-evaluation-functions" class="nav-link" data-scroll-target="#training-and-evaluation-functions">Training and evaluation functions</a>
+  <ul class="collapse">
+  <li><a href="#putting-everything-together" id="toc-putting-everything-together" class="nav-link" data-scroll-target="#putting-everything-together">Putting everything together</a></li>
+  </ul></li>
+  <li><a href="#wrapping-up" id="toc-wrapping-up" class="nav-link" data-scroll-target="#wrapping-up">Wrapping up</a></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/dataidea/dataidea-science/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../Pytorch/pytorch_outline.html">Pytorch</a></li><li class="breadcrumb-item"><a href="../../Pytorch/Vision/01_torchvision_tutorial.html">Vision</a></li><li class="breadcrumb-item"><a href="../../Pytorch/Vision/torchvision_finetuning_instance_segmentation.html">TorchVision Instance Segmentation Finetuning Tutorial</a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title">TorchVision Instance Segmentation Finetuning Tutorial</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<!-- WARNING: THIS FILE WAS AUTOGENERATED! DO NOT EDIT! -->
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="../assets/banner4.png" class="img-fluid figure-img"></p>
+<figcaption>Photo by DATAIDEA</figcaption>
+</figure>
+</div>
+<div id="cell-3" class="cell" data-executioninfo="{&quot;elapsed&quot;:21389,&quot;status&quot;:&quot;ok&quot;,&quot;timestamp&quot;:1684395439943,&quot;user&quot;:{&quot;displayName&quot;:&quot;Kibekityo Juma Shafara&quot;,&quot;userId&quot;:&quot;08975876454975369108&quot;},&quot;user_tz&quot;:-180}" data-outputid="660c7346-b0ce-46a5-af9e-1c3ad3065d84" data-execution_count="2">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>pip install cython</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Install pycocotools, the version by default in Colab</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co"># has a bug fixed in https://github.com/cocodataset/cocoapi/pull/354</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>pip install <span class="op">-</span>U <span class="st">'git+https://github.com/cocodataset/cocoapi.git#subdirectory=PythonAPI'</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Looking in indexes: https://pypi.org/simple, https://us-python.pkg.dev/colab-wheels/public/simple/
+Requirement already satisfied: cython in /usr/local/lib/python3.10/dist-packages (0.29.34)
+Looking in indexes: https://pypi.org/simple, https://us-python.pkg.dev/colab-wheels/public/simple/
+Collecting git+https://github.com/cocodataset/cocoapi.git#subdirectory=PythonAPI
+  Cloning https://github.com/cocodataset/cocoapi.git to /tmp/pip-req-build-6wfz80da
+  Running command git clone --filter=blob:none --quiet https://github.com/cocodataset/cocoapi.git /tmp/pip-req-build-6wfz80da
+  Resolved https://github.com/cocodataset/cocoapi.git to commit 8c9bcc3cf640524c4c20a9c40e89cb6a2f2fa0e9
+  Preparing metadata (setup.py) ... done
+Requirement already satisfied: setuptools&gt;=18.0 in /usr/local/lib/python3.10/dist-packages (from pycocotools==2.0) (67.7.2)
+Requirement already satisfied: cython&gt;=0.27.3 in /usr/local/lib/python3.10/dist-packages (from pycocotools==2.0) (0.29.34)
+Requirement already satisfied: matplotlib&gt;=2.1.0 in /usr/local/lib/python3.10/dist-packages (from pycocotools==2.0) (3.7.1)
+Requirement already satisfied: contourpy&gt;=1.0.1 in /usr/local/lib/python3.10/dist-packages (from matplotlib&gt;=2.1.0-&gt;pycocotools==2.0) (1.0.7)
+Requirement already satisfied: cycler&gt;=0.10 in /usr/local/lib/python3.10/dist-packages (from matplotlib&gt;=2.1.0-&gt;pycocotools==2.0) (0.11.0)
+Requirement already satisfied: fonttools&gt;=4.22.0 in /usr/local/lib/python3.10/dist-packages (from matplotlib&gt;=2.1.0-&gt;pycocotools==2.0) (4.39.3)
+Requirement already satisfied: kiwisolver&gt;=1.0.1 in /usr/local/lib/python3.10/dist-packages (from matplotlib&gt;=2.1.0-&gt;pycocotools==2.0) (1.4.4)
+Requirement already satisfied: numpy&gt;=1.20 in /usr/local/lib/python3.10/dist-packages (from matplotlib&gt;=2.1.0-&gt;pycocotools==2.0) (1.22.4)
+Requirement already satisfied: packaging&gt;=20.0 in /usr/local/lib/python3.10/dist-packages (from matplotlib&gt;=2.1.0-&gt;pycocotools==2.0) (23.1)
+Requirement already satisfied: pillow&gt;=6.2.0 in /usr/local/lib/python3.10/dist-packages (from matplotlib&gt;=2.1.0-&gt;pycocotools==2.0) (8.4.0)
+Requirement already satisfied: pyparsing&gt;=2.3.1 in /usr/local/lib/python3.10/dist-packages (from matplotlib&gt;=2.1.0-&gt;pycocotools==2.0) (3.0.9)
+Requirement already satisfied: python-dateutil&gt;=2.7 in /usr/local/lib/python3.10/dist-packages (from matplotlib&gt;=2.1.0-&gt;pycocotools==2.0) (2.8.2)
+Requirement already satisfied: six&gt;=1.5 in /usr/local/lib/python3.10/dist-packages (from python-dateutil&gt;=2.7-&gt;matplotlib&gt;=2.1.0-&gt;pycocotools==2.0) (1.16.0)
+Building wheels for collected packages: pycocotools
+  Building wheel for pycocotools (setup.py) ... done
+  Created wheel for pycocotools: filename=pycocotools-2.0-cp310-cp310-linux_x86_64.whl size=386204 sha256=7ccd4688aec01da06f419b238484385985a87bcd3faf2dde64f31acce9f5f767
+  Stored in directory: /tmp/pip-ephem-wheel-cache-i0vt6v36/wheels/39/61/b4/480fbddb4d3d6bc34083e7397bc6f5d1381f79acc68e9f3511
+Successfully built pycocotools
+Installing collected packages: pycocotools
+  Attempting uninstall: pycocotools
+    Found existing installation: pycocotools 2.0.6
+    Uninstalling pycocotools-2.0.6:
+      Successfully uninstalled pycocotools-2.0.6
+Successfully installed pycocotools-2.0</code></pre>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="2">
+<pre><code></code></pre>
+</div>
+</div>
+<section id="defining-the-dataset" class="level2">
+<h2 class="anchored" data-anchor-id="defining-the-dataset">Defining the Dataset</h2>
+<p>The <a href="https://github.com/pytorch/vision/tree/v0.3.0/references/detection">torchvision reference scripts for training object detection, instance segmentation and person keypoint detection</a> allows for easily supporting adding new custom datasets. The dataset should inherit from the standard <code>torch.utils.data.Dataset</code> class, and implement <code>__len__</code> and <code>__getitem__</code>.</p>
+<p>The only specificity that we require is that the dataset <code>__getitem__</code> should return:</p>
+<ul>
+<li>image: a PIL Image of size (H, W)</li>
+<li>target: a dict containing the following fields
+<ul>
+<li><code>boxes</code> (<code>FloatTensor[N, 4]</code>): the coordinates of the <code>N</code> bounding boxes in <code>[x0, y0, x1, y1]</code> format, ranging from <code>0</code> to <code>W</code> and <code>0</code> to <code>H</code></li>
+<li><code>labels</code> (<code>Int64Tensor[N]</code>): the label for each bounding box</li>
+<li><code>image_id</code> (<code>Int64Tensor[1]</code>): an image identifier. It should be unique between all the images in the dataset, and is used during evaluation</li>
+<li><code>area</code> (<code>Tensor[N]</code>): The area of the bounding box. This is used during evaluation with the COCO metric, to separate the metric scores between small, medium and large boxes.</li>
+<li><code>iscrowd</code> (<code>UInt8Tensor[N]</code>): instances with <code>iscrowd=True</code> will be ignored during evaluation.</li>
+<li>(optionally) <code>masks</code> (<code>UInt8Tensor[N, H, W]</code>): The segmentation masks for each one of the objects</li>
+<li>(optionally) <code>keypoints</code> (<code>FloatTensor[N, K, 3]</code>): For each one of the <code>N</code> objects, it contains the <code>K</code> keypoints in <code>[x, y, visibility]</code> format, defining the object. <code>visibility=0</code> means that the keypoint is not visible. Note that for data augmentation, the notion of flipping a keypoint is dependent on the data representation, and you should probably adapt <code>references/detection/transforms.py</code> for your new keypoint representation</li>
+</ul></li>
+</ul>
+<p>If your model returns the above methods, they will make it work for both training and evaluation, and will use the evaluation scripts from pycocotools.</p>
+<p>One note on the labels. The model considers class 0 as background. If your dataset does not contain the background class, you should not have 0 in your labels. For example, assuming you have just two classes, cat and dog, you can define 1 (not 0) to represent cats and 2 to represent dogs. So, for instance, if one of the images has both classes, your labels tensor should look like [1,2].</p>
+<p>Additionally, if you want to use aspect ratio grouping during training (so that each batch only contains images with similar aspect ratio), then it is recommended to also implement a <code>get_height_and_width</code> method, which returns the height and the width of the image. If this method is not provided, we query all elements of the dataset via <code>__getitem__</code> , which loads the image in memory and is slower than if a custom method is provided.</p>
+<section id="writing-a-custom-dataset-for-penn-fudan" class="level3">
+<h3 class="anchored" data-anchor-id="writing-a-custom-dataset-for-penn-fudan">Writing a custom dataset for Penn-Fudan</h3>
+<p>Let’s write a dataset for the Penn-Fudan dataset.</p>
+<p>First, let’s download and extract the data, present in a zip file at https://www.cis.upenn.edu/~jshi/ped_html/PennFudanPed.zip</p>
+<div id="cell-6" class="cell" data-executioninfo="{&quot;elapsed&quot;:2730,&quot;status&quot;:&quot;ok&quot;,&quot;timestamp&quot;:1683728183947,&quot;user&quot;:{&quot;displayName&quot;:&quot;Kibekityo Juma Shafara&quot;,&quot;userId&quot;:&quot;08975876454975369108&quot;},&quot;user_tz&quot;:-180}" data-outputid="423cc035-8d30-4326-9150-e58556d36a24">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># download the Penn-Fudan dataset</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>wget https:<span class="op">//</span>www.cis.upenn.edu<span class="op">/~</span>jshi<span class="op">/</span>ped_html<span class="op">/</span>PennFudanPed.<span class="bu">zip</span> .</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="co"># extract it in the current folder</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>unzip PennFudanPed.<span class="bu">zip</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>--2023-05-10 14:19:23--  https://www.cis.upenn.edu/~jshi/ped_html/PennFudanPed.zip
+Resolving www.cis.upenn.edu (www.cis.upenn.edu)... 158.130.69.163, 2607:f470:8:64:5ea5::d
+Connecting to www.cis.upenn.edu (www.cis.upenn.edu)|158.130.69.163|:443... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 53723336 (51M) [application/zip]
+Saving to: ‘PennFudanPed.zip’
+
+PennFudanPed.zip    100%[===================&gt;]  51.23M  62.6MB/s    in 0.8s    
+
+2023-05-10 14:19:24 (62.6 MB/s) - ‘PennFudanPed.zip’ saved [53723336/53723336]
+
+--2023-05-10 14:19:24--  http://./
+Resolving . (.)... failed: No address associated with hostname.
+wget: unable to resolve host address ‘.’
+FINISHED --2023-05-10 14:19:24--
+Total wall clock time: 1.0s
+Downloaded: 1 files, 51M in 0.8s (62.6 MB/s)
+Archive:  PennFudanPed.zip
+   creating: PennFudanPed/
+  inflating: PennFudanPed/added-object-list.txt  
+   creating: PennFudanPed/Annotation/
+  inflating: PennFudanPed/Annotation/FudanPed00001.txt  
+  inflating: PennFudanPed/Annotation/FudanPed00002.txt  
+  inflating: PennFudanPed/Annotation/FudanPed00003.txt  
+  inflating: PennFudanPed/Annotation/FudanPed00004.txt  
+  inflating: PennFudanPed/Annotation/FudanPed00005.txt  
+  inflating: PennFudanPed/Annotation/FudanPed00006.txt  
+  inflating: PennFudanPed/Annotation/FudanPed00007.txt  
+  inflating: PennFudanPed/Annotation/FudanPed00008.txt  
+  inflating: PennFudanPed/Annotation/FudanPed00009.txt  
+  inflating: PennFudanPed/Annotation/FudanPed00010.txt  
+  inflating: PennFudanPed/Annotation/FudanPed00011.txt  
+  inflating: PennFudanPed/Annotation/FudanPed00012.txt  
+  inflating: PennFudanPed/Annotation/FudanPed00013.txt  
+  inflating: PennFudanPed/Annotation/FudanPed00014.txt  
+  inflating: PennFudanPed/Annotation/FudanPed00015.txt  
+  inflating: PennFudanPed/Annotation/FudanPed00016.txt  
+  inflating: PennFudanPed/Annotation/FudanPed00017.txt  
+  inflating: PennFudanPed/Annotation/FudanPed00018.txt  
+  inflating: PennFudanPed/Annotation/FudanPed00019.txt  
+  inflating: PennFudanPed/Annotation/FudanPed00020.txt  
+  inflating: PennFudanPed/Annotation/FudanPed00021.txt  
+  inflating: PennFudanPed/Annotation/FudanPed00022.txt  
+  inflating: PennFudanPed/Annotation/FudanPed00023.txt  
+  inflating: PennFudanPed/Annotation/FudanPed00024.txt  
+  inflating: PennFudanPed/Annotation/FudanPed00025.txt  
+  inflating: PennFudanPed/Annotation/FudanPed00026.txt  
+  inflating: PennFudanPed/Annotation/FudanPed00027.txt  
+  inflating: PennFudanPed/Annotation/FudanPed00028.txt  
+  inflating: PennFudanPed/Annotation/FudanPed00029.txt  
+  inflating: PennFudanPed/Annotation/FudanPed00030.txt  
+  inflating: PennFudanPed/Annotation/FudanPed00031.txt  
+  inflating: PennFudanPed/Annotation/FudanPed00032.txt  
+  inflating: PennFudanPed/Annotation/FudanPed00033.txt  
+  inflating: PennFudanPed/Annotation/FudanPed00034.txt  
+  inflating: PennFudanPed/Annotation/FudanPed00035.txt  
+  inflating: PennFudanPed/Annotation/FudanPed00036.txt  
+  inflating: PennFudanPed/Annotation/FudanPed00037.txt  
+  inflating: PennFudanPed/Annotation/FudanPed00038.txt  
+  inflating: PennFudanPed/Annotation/FudanPed00039.txt  
+  inflating: PennFudanPed/Annotation/FudanPed00040.txt  
+  inflating: PennFudanPed/Annotation/FudanPed00041.txt  
+  inflating: PennFudanPed/Annotation/FudanPed00042.txt  
+  inflating: PennFudanPed/Annotation/FudanPed00043.txt  
+  inflating: PennFudanPed/Annotation/FudanPed00044.txt  
+  inflating: PennFudanPed/Annotation/FudanPed00045.txt  
+  inflating: PennFudanPed/Annotation/FudanPed00046.txt  
+  inflating: PennFudanPed/Annotation/FudanPed00047.txt  
+  inflating: PennFudanPed/Annotation/FudanPed00048.txt  
+  inflating: PennFudanPed/Annotation/FudanPed00049.txt  
+  inflating: PennFudanPed/Annotation/FudanPed00050.txt  
+  inflating: PennFudanPed/Annotation/FudanPed00051.txt  
+  inflating: PennFudanPed/Annotation/FudanPed00052.txt  
+  inflating: PennFudanPed/Annotation/FudanPed00053.txt  
+  inflating: PennFudanPed/Annotation/FudanPed00054.txt  
+  inflating: PennFudanPed/Annotation/FudanPed00055.txt  
+  inflating: PennFudanPed/Annotation/FudanPed00056.txt  
+  inflating: PennFudanPed/Annotation/FudanPed00057.txt  
+  inflating: PennFudanPed/Annotation/FudanPed00058.txt  
+  inflating: PennFudanPed/Annotation/FudanPed00059.txt  
+  inflating: PennFudanPed/Annotation/FudanPed00060.txt  
+  inflating: PennFudanPed/Annotation/FudanPed00061.txt  
+  inflating: PennFudanPed/Annotation/FudanPed00062.txt  
+  inflating: PennFudanPed/Annotation/FudanPed00063.txt  
+  inflating: PennFudanPed/Annotation/FudanPed00064.txt  
+  inflating: PennFudanPed/Annotation/FudanPed00065.txt  
+  inflating: PennFudanPed/Annotation/FudanPed00066.txt  
+  inflating: PennFudanPed/Annotation/FudanPed00067.txt  
+  inflating: PennFudanPed/Annotation/FudanPed00068.txt  
+  inflating: PennFudanPed/Annotation/FudanPed00069.txt  
+  inflating: PennFudanPed/Annotation/FudanPed00070.txt  
+  inflating: PennFudanPed/Annotation/FudanPed00071.txt  
+  inflating: PennFudanPed/Annotation/FudanPed00072.txt  
+  inflating: PennFudanPed/Annotation/FudanPed00073.txt  
+  inflating: PennFudanPed/Annotation/FudanPed00074.txt  
+  inflating: PennFudanPed/Annotation/PennPed00001.txt  
+  inflating: PennFudanPed/Annotation/PennPed00002.txt  
+  inflating: PennFudanPed/Annotation/PennPed00003.txt  
+  inflating: PennFudanPed/Annotation/PennPed00004.txt  
+  inflating: PennFudanPed/Annotation/PennPed00005.txt  
+  inflating: PennFudanPed/Annotation/PennPed00006.txt  
+  inflating: PennFudanPed/Annotation/PennPed00007.txt  
+  inflating: PennFudanPed/Annotation/PennPed00008.txt  
+  inflating: PennFudanPed/Annotation/PennPed00009.txt  
+  inflating: PennFudanPed/Annotation/PennPed00010.txt  
+  inflating: PennFudanPed/Annotation/PennPed00011.txt  
+  inflating: PennFudanPed/Annotation/PennPed00012.txt  
+  inflating: PennFudanPed/Annotation/PennPed00013.txt  
+  inflating: PennFudanPed/Annotation/PennPed00014.txt  
+  inflating: PennFudanPed/Annotation/PennPed00015.txt  
+  inflating: PennFudanPed/Annotation/PennPed00016.txt  
+  inflating: PennFudanPed/Annotation/PennPed00017.txt  
+  inflating: PennFudanPed/Annotation/PennPed00018.txt  
+  inflating: PennFudanPed/Annotation/PennPed00019.txt  
+  inflating: PennFudanPed/Annotation/PennPed00020.txt  
+  inflating: PennFudanPed/Annotation/PennPed00021.txt  
+  inflating: PennFudanPed/Annotation/PennPed00022.txt  
+  inflating: PennFudanPed/Annotation/PennPed00023.txt  
+  inflating: PennFudanPed/Annotation/PennPed00024.txt  
+  inflating: PennFudanPed/Annotation/PennPed00025.txt  
+  inflating: PennFudanPed/Annotation/PennPed00026.txt  
+  inflating: PennFudanPed/Annotation/PennPed00027.txt  
+  inflating: PennFudanPed/Annotation/PennPed00028.txt  
+  inflating: PennFudanPed/Annotation/PennPed00029.txt  
+  inflating: PennFudanPed/Annotation/PennPed00030.txt  
+  inflating: PennFudanPed/Annotation/PennPed00031.txt  
+  inflating: PennFudanPed/Annotation/PennPed00032.txt  
+  inflating: PennFudanPed/Annotation/PennPed00033.txt  
+  inflating: PennFudanPed/Annotation/PennPed00034.txt  
+  inflating: PennFudanPed/Annotation/PennPed00035.txt  
+  inflating: PennFudanPed/Annotation/PennPed00036.txt  
+  inflating: PennFudanPed/Annotation/PennPed00037.txt  
+  inflating: PennFudanPed/Annotation/PennPed00038.txt  
+  inflating: PennFudanPed/Annotation/PennPed00039.txt  
+  inflating: PennFudanPed/Annotation/PennPed00040.txt  
+  inflating: PennFudanPed/Annotation/PennPed00041.txt  
+  inflating: PennFudanPed/Annotation/PennPed00042.txt  
+  inflating: PennFudanPed/Annotation/PennPed00043.txt  
+  inflating: PennFudanPed/Annotation/PennPed00044.txt  
+  inflating: PennFudanPed/Annotation/PennPed00045.txt  
+  inflating: PennFudanPed/Annotation/PennPed00046.txt  
+  inflating: PennFudanPed/Annotation/PennPed00047.txt  
+  inflating: PennFudanPed/Annotation/PennPed00048.txt  
+  inflating: PennFudanPed/Annotation/PennPed00049.txt  
+  inflating: PennFudanPed/Annotation/PennPed00050.txt  
+  inflating: PennFudanPed/Annotation/PennPed00051.txt  
+  inflating: PennFudanPed/Annotation/PennPed00052.txt  
+  inflating: PennFudanPed/Annotation/PennPed00053.txt  
+  inflating: PennFudanPed/Annotation/PennPed00054.txt  
+  inflating: PennFudanPed/Annotation/PennPed00055.txt  
+  inflating: PennFudanPed/Annotation/PennPed00056.txt  
+  inflating: PennFudanPed/Annotation/PennPed00057.txt  
+  inflating: PennFudanPed/Annotation/PennPed00058.txt  
+  inflating: PennFudanPed/Annotation/PennPed00059.txt  
+  inflating: PennFudanPed/Annotation/PennPed00060.txt  
+  inflating: PennFudanPed/Annotation/PennPed00061.txt  
+  inflating: PennFudanPed/Annotation/PennPed00062.txt  
+  inflating: PennFudanPed/Annotation/PennPed00063.txt  
+  inflating: PennFudanPed/Annotation/PennPed00064.txt  
+  inflating: PennFudanPed/Annotation/PennPed00065.txt  
+  inflating: PennFudanPed/Annotation/PennPed00066.txt  
+  inflating: PennFudanPed/Annotation/PennPed00067.txt  
+  inflating: PennFudanPed/Annotation/PennPed00068.txt  
+  inflating: PennFudanPed/Annotation/PennPed00069.txt  
+  inflating: PennFudanPed/Annotation/PennPed00070.txt  
+  inflating: PennFudanPed/Annotation/PennPed00071.txt  
+  inflating: PennFudanPed/Annotation/PennPed00072.txt  
+  inflating: PennFudanPed/Annotation/PennPed00073.txt  
+  inflating: PennFudanPed/Annotation/PennPed00074.txt  
+  inflating: PennFudanPed/Annotation/PennPed00075.txt  
+  inflating: PennFudanPed/Annotation/PennPed00076.txt  
+  inflating: PennFudanPed/Annotation/PennPed00077.txt  
+  inflating: PennFudanPed/Annotation/PennPed00078.txt  
+  inflating: PennFudanPed/Annotation/PennPed00079.txt  
+  inflating: PennFudanPed/Annotation/PennPed00080.txt  
+  inflating: PennFudanPed/Annotation/PennPed00081.txt  
+  inflating: PennFudanPed/Annotation/PennPed00082.txt  
+  inflating: PennFudanPed/Annotation/PennPed00083.txt  
+  inflating: PennFudanPed/Annotation/PennPed00084.txt  
+  inflating: PennFudanPed/Annotation/PennPed00085.txt  
+  inflating: PennFudanPed/Annotation/PennPed00086.txt  
+  inflating: PennFudanPed/Annotation/PennPed00087.txt  
+  inflating: PennFudanPed/Annotation/PennPed00088.txt  
+  inflating: PennFudanPed/Annotation/PennPed00089.txt  
+  inflating: PennFudanPed/Annotation/PennPed00090.txt  
+  inflating: PennFudanPed/Annotation/PennPed00091.txt  
+  inflating: PennFudanPed/Annotation/PennPed00092.txt  
+  inflating: PennFudanPed/Annotation/PennPed00093.txt  
+  inflating: PennFudanPed/Annotation/PennPed00094.txt  
+  inflating: PennFudanPed/Annotation/PennPed00095.txt  
+  inflating: PennFudanPed/Annotation/PennPed00096.txt  
+   creating: PennFudanPed/PedMasks/
+  inflating: PennFudanPed/PedMasks/FudanPed00001_mask.png  
+  inflating: PennFudanPed/PedMasks/FudanPed00002_mask.png  
+  inflating: PennFudanPed/PedMasks/FudanPed00003_mask.png  
+  inflating: PennFudanPed/PedMasks/FudanPed00004_mask.png  
+  inflating: PennFudanPed/PedMasks/FudanPed00005_mask.png  
+  inflating: PennFudanPed/PedMasks/FudanPed00006_mask.png  
+  inflating: PennFudanPed/PedMasks/FudanPed00007_mask.png  
+  inflating: PennFudanPed/PedMasks/FudanPed00008_mask.png  
+  inflating: PennFudanPed/PedMasks/FudanPed00009_mask.png  
+  inflating: PennFudanPed/PedMasks/FudanPed00010_mask.png  
+  inflating: PennFudanPed/PedMasks/FudanPed00011_mask.png  
+  inflating: PennFudanPed/PedMasks/FudanPed00012_mask.png  
+  inflating: PennFudanPed/PedMasks/FudanPed00013_mask.png  
+  inflating: PennFudanPed/PedMasks/FudanPed00014_mask.png  
+ extracting: PennFudanPed/PedMasks/FudanPed00015_mask.png  
+  inflating: PennFudanPed/PedMasks/FudanPed00016_mask.png  
+  inflating: PennFudanPed/PedMasks/FudanPed00017_mask.png  
+ extracting: PennFudanPed/PedMasks/FudanPed00018_mask.png  
+  inflating: PennFudanPed/PedMasks/FudanPed00019_mask.png  
+  inflating: PennFudanPed/PedMasks/FudanPed00020_mask.png  
+  inflating: PennFudanPed/PedMasks/FudanPed00021_mask.png  
+  inflating: PennFudanPed/PedMasks/FudanPed00022_mask.png  
+  inflating: PennFudanPed/PedMasks/FudanPed00023_mask.png  
+  inflating: PennFudanPed/PedMasks/FudanPed00024_mask.png  
+  inflating: PennFudanPed/PedMasks/FudanPed00025_mask.png  
+  inflating: PennFudanPed/PedMasks/FudanPed00026_mask.png  
+  inflating: PennFudanPed/PedMasks/FudanPed00027_mask.png  
+ extracting: PennFudanPed/PedMasks/FudanPed00028_mask.png  
+  inflating: PennFudanPed/PedMasks/FudanPed00029_mask.png  
+  inflating: PennFudanPed/PedMasks/FudanPed00030_mask.png  
+  inflating: PennFudanPed/PedMasks/FudanPed00031_mask.png  
+  inflating: PennFudanPed/PedMasks/FudanPed00032_mask.png  
+  inflating: PennFudanPed/PedMasks/FudanPed00033_mask.png  
+  inflating: PennFudanPed/PedMasks/FudanPed00034_mask.png  
+  inflating: PennFudanPed/PedMasks/FudanPed00035_mask.png  
+  inflating: PennFudanPed/PedMasks/FudanPed00036_mask.png  
+  inflating: PennFudanPed/PedMasks/FudanPed00037_mask.png  
+  inflating: PennFudanPed/PedMasks/FudanPed00038_mask.png  
+  inflating: PennFudanPed/PedMasks/FudanPed00039_mask.png  
+  inflating: PennFudanPed/PedMasks/FudanPed00040_mask.png  
+  inflating: PennFudanPed/PedMasks/FudanPed00041_mask.png  
+  inflating: PennFudanPed/PedMasks/FudanPed00042_mask.png  
+  inflating: PennFudanPed/PedMasks/FudanPed00043_mask.png  
+  inflating: PennFudanPed/PedMasks/FudanPed00044_mask.png  
+  inflating: PennFudanPed/PedMasks/FudanPed00045_mask.png  
+  inflating: PennFudanPed/PedMasks/FudanPed00046_mask.png  
+  inflating: PennFudanPed/PedMasks/FudanPed00047_mask.png  
+  inflating: PennFudanPed/PedMasks/FudanPed00048_mask.png  
+  inflating: PennFudanPed/PedMasks/FudanPed00049_mask.png  
+  inflating: PennFudanPed/PedMasks/FudanPed00050_mask.png  
+  inflating: PennFudanPed/PedMasks/FudanPed00051_mask.png  
+  inflating: PennFudanPed/PedMasks/FudanPed00052_mask.png  
+  inflating: PennFudanPed/PedMasks/FudanPed00053_mask.png  
+  inflating: PennFudanPed/PedMasks/FudanPed00054_mask.png  
+  inflating: PennFudanPed/PedMasks/FudanPed00055_mask.png  
+  inflating: PennFudanPed/PedMasks/FudanPed00056_mask.png  
+  inflating: PennFudanPed/PedMasks/FudanPed00057_mask.png  
+  inflating: PennFudanPed/PedMasks/FudanPed00058_mask.png  
+  inflating: PennFudanPed/PedMasks/FudanPed00059_mask.png  
+  inflating: PennFudanPed/PedMasks/FudanPed00060_mask.png  
+  inflating: PennFudanPed/PedMasks/FudanPed00061_mask.png  
+  inflating: PennFudanPed/PedMasks/FudanPed00062_mask.png  
+  inflating: PennFudanPed/PedMasks/FudanPed00063_mask.png  
+  inflating: PennFudanPed/PedMasks/FudanPed00064_mask.png  
+  inflating: PennFudanPed/PedMasks/FudanPed00065_mask.png  
+  inflating: PennFudanPed/PedMasks/FudanPed00066_mask.png  
+  inflating: PennFudanPed/PedMasks/FudanPed00067_mask.png  
+  inflating: PennFudanPed/PedMasks/FudanPed00068_mask.png  
+  inflating: PennFudanPed/PedMasks/FudanPed00069_mask.png  
+  inflating: PennFudanPed/PedMasks/FudanPed00070_mask.png  
+  inflating: PennFudanPed/PedMasks/FudanPed00071_mask.png  
+  inflating: PennFudanPed/PedMasks/FudanPed00072_mask.png  
+  inflating: PennFudanPed/PedMasks/FudanPed00073_mask.png  
+  inflating: PennFudanPed/PedMasks/FudanPed00074_mask.png  
+  inflating: PennFudanPed/PedMasks/PennPed00001_mask.png  
+  inflating: PennFudanPed/PedMasks/PennPed00002_mask.png  
+  inflating: PennFudanPed/PedMasks/PennPed00003_mask.png  
+  inflating: PennFudanPed/PedMasks/PennPed00004_mask.png  
+  inflating: PennFudanPed/PedMasks/PennPed00005_mask.png  
+  inflating: PennFudanPed/PedMasks/PennPed00006_mask.png  
+  inflating: PennFudanPed/PedMasks/PennPed00007_mask.png  
+  inflating: PennFudanPed/PedMasks/PennPed00008_mask.png  
+  inflating: PennFudanPed/PedMasks/PennPed00009_mask.png  
+  inflating: PennFudanPed/PedMasks/PennPed00010_mask.png  
+  inflating: PennFudanPed/PedMasks/PennPed00011_mask.png  
+  inflating: PennFudanPed/PedMasks/PennPed00012_mask.png  
+  inflating: PennFudanPed/PedMasks/PennPed00013_mask.png  
+  inflating: PennFudanPed/PedMasks/PennPed00014_mask.png  
+  inflating: PennFudanPed/PedMasks/PennPed00015_mask.png  
+  inflating: PennFudanPed/PedMasks/PennPed00016_mask.png  
+  inflating: PennFudanPed/PedMasks/PennPed00017_mask.png  
+  inflating: PennFudanPed/PedMasks/PennPed00018_mask.png  
+  inflating: PennFudanPed/PedMasks/PennPed00019_mask.png  
+  inflating: PennFudanPed/PedMasks/PennPed00020_mask.png  
+  inflating: PennFudanPed/PedMasks/PennPed00021_mask.png  
+  inflating: PennFudanPed/PedMasks/PennPed00022_mask.png  
+  inflating: PennFudanPed/PedMasks/PennPed00023_mask.png  
+  inflating: PennFudanPed/PedMasks/PennPed00024_mask.png  
+  inflating: PennFudanPed/PedMasks/PennPed00025_mask.png  
+  inflating: PennFudanPed/PedMasks/PennPed00026_mask.png  
+  inflating: PennFudanPed/PedMasks/PennPed00027_mask.png  
+  inflating: PennFudanPed/PedMasks/PennPed00028_mask.png  
+  inflating: PennFudanPed/PedMasks/PennPed00029_mask.png  
+  inflating: PennFudanPed/PedMasks/PennPed00030_mask.png  
+  inflating: PennFudanPed/PedMasks/PennPed00031_mask.png  
+  inflating: PennFudanPed/PedMasks/PennPed00032_mask.png  
+  inflating: PennFudanPed/PedMasks/PennPed00033_mask.png  
+  inflating: PennFudanPed/PedMasks/PennPed00034_mask.png  
+  inflating: PennFudanPed/PedMasks/PennPed00035_mask.png  
+  inflating: PennFudanPed/PedMasks/PennPed00036_mask.png  
+  inflating: PennFudanPed/PedMasks/PennPed00037_mask.png  
+  inflating: PennFudanPed/PedMasks/PennPed00038_mask.png  
+  inflating: PennFudanPed/PedMasks/PennPed00039_mask.png  
+  inflating: PennFudanPed/PedMasks/PennPed00040_mask.png  
+  inflating: PennFudanPed/PedMasks/PennPed00041_mask.png  
+  inflating: PennFudanPed/PedMasks/PennPed00042_mask.png  
+  inflating: PennFudanPed/PedMasks/PennPed00043_mask.png  
+  inflating: PennFudanPed/PedMasks/PennPed00044_mask.png  
+  inflating: PennFudanPed/PedMasks/PennPed00045_mask.png  
+  inflating: PennFudanPed/PedMasks/PennPed00046_mask.png  
+  inflating: PennFudanPed/PedMasks/PennPed00047_mask.png  
+  inflating: PennFudanPed/PedMasks/PennPed00048_mask.png  
+  inflating: PennFudanPed/PedMasks/PennPed00049_mask.png  
+  inflating: PennFudanPed/PedMasks/PennPed00050_mask.png  
+  inflating: PennFudanPed/PedMasks/PennPed00051_mask.png  
+  inflating: PennFudanPed/PedMasks/PennPed00052_mask.png  
+ extracting: PennFudanPed/PedMasks/PennPed00053_mask.png  
+  inflating: PennFudanPed/PedMasks/PennPed00054_mask.png  
+  inflating: PennFudanPed/PedMasks/PennPed00055_mask.png  
+  inflating: PennFudanPed/PedMasks/PennPed00056_mask.png  
+  inflating: PennFudanPed/PedMasks/PennPed00057_mask.png  
+  inflating: PennFudanPed/PedMasks/PennPed00058_mask.png  
+  inflating: PennFudanPed/PedMasks/PennPed00059_mask.png  
+  inflating: PennFudanPed/PedMasks/PennPed00060_mask.png  
+  inflating: PennFudanPed/PedMasks/PennPed00061_mask.png  
+ extracting: PennFudanPed/PedMasks/PennPed00062_mask.png  
+  inflating: PennFudanPed/PedMasks/PennPed00063_mask.png  
+  inflating: PennFudanPed/PedMasks/PennPed00064_mask.png  
+  inflating: PennFudanPed/PedMasks/PennPed00065_mask.png  
+ extracting: PennFudanPed/PedMasks/PennPed00066_mask.png  
+  inflating: PennFudanPed/PedMasks/PennPed00067_mask.png  
+  inflating: PennFudanPed/PedMasks/PennPed00068_mask.png  
+ extracting: PennFudanPed/PedMasks/PennPed00069_mask.png  
+ extracting: PennFudanPed/PedMasks/PennPed00070_mask.png  
+  inflating: PennFudanPed/PedMasks/PennPed00071_mask.png  
+ extracting: PennFudanPed/PedMasks/PennPed00072_mask.png  
+  inflating: PennFudanPed/PedMasks/PennPed00073_mask.png  
+ extracting: PennFudanPed/PedMasks/PennPed00074_mask.png  
+  inflating: PennFudanPed/PedMasks/PennPed00075_mask.png  
+  inflating: PennFudanPed/PedMasks/PennPed00076_mask.png  
+  inflating: PennFudanPed/PedMasks/PennPed00077_mask.png  
+  inflating: PennFudanPed/PedMasks/PennPed00078_mask.png  
+  inflating: PennFudanPed/PedMasks/PennPed00079_mask.png  
+  inflating: PennFudanPed/PedMasks/PennPed00080_mask.png  
+  inflating: PennFudanPed/PedMasks/PennPed00081_mask.png  
+  inflating: PennFudanPed/PedMasks/PennPed00082_mask.png  
+ extracting: PennFudanPed/PedMasks/PennPed00083_mask.png  
+ extracting: PennFudanPed/PedMasks/PennPed00084_mask.png  
+  inflating: PennFudanPed/PedMasks/PennPed00085_mask.png  
+ extracting: PennFudanPed/PedMasks/PennPed00086_mask.png  
+  inflating: PennFudanPed/PedMasks/PennPed00087_mask.png  
+  inflating: PennFudanPed/PedMasks/PennPed00088_mask.png  
+ extracting: PennFudanPed/PedMasks/PennPed00089_mask.png  
+ extracting: PennFudanPed/PedMasks/PennPed00090_mask.png  
+  inflating: PennFudanPed/PedMasks/PennPed00091_mask.png  
+  inflating: PennFudanPed/PedMasks/PennPed00092_mask.png  
+  inflating: PennFudanPed/PedMasks/PennPed00093_mask.png  
+  inflating: PennFudanPed/PedMasks/PennPed00094_mask.png  
+  inflating: PennFudanPed/PedMasks/PennPed00095_mask.png  
+ extracting: PennFudanPed/PedMasks/PennPed00096_mask.png  
+   creating: PennFudanPed/PNGImages/
+  inflating: PennFudanPed/PNGImages/FudanPed00001.png  
+  inflating: PennFudanPed/PNGImages/FudanPed00002.png  
+  inflating: PennFudanPed/PNGImages/FudanPed00003.png  
+  inflating: PennFudanPed/PNGImages/FudanPed00004.png  
+  inflating: PennFudanPed/PNGImages/FudanPed00005.png  
+  inflating: PennFudanPed/PNGImages/FudanPed00006.png  
+  inflating: PennFudanPed/PNGImages/FudanPed00007.png  
+  inflating: PennFudanPed/PNGImages/FudanPed00008.png  
+  inflating: PennFudanPed/PNGImages/FudanPed00009.png  
+  inflating: PennFudanPed/PNGImages/FudanPed00010.png  
+  inflating: PennFudanPed/PNGImages/FudanPed00011.png  
+  inflating: PennFudanPed/PNGImages/FudanPed00012.png  
+  inflating: PennFudanPed/PNGImages/FudanPed00013.png  
+  inflating: PennFudanPed/PNGImages/FudanPed00014.png  
+  inflating: PennFudanPed/PNGImages/FudanPed00015.png  
+  inflating: PennFudanPed/PNGImages/FudanPed00016.png  
+  inflating: PennFudanPed/PNGImages/FudanPed00017.png  
+  inflating: PennFudanPed/PNGImages/FudanPed00018.png  
+  inflating: PennFudanPed/PNGImages/FudanPed00019.png  
+  inflating: PennFudanPed/PNGImages/FudanPed00020.png  
+  inflating: PennFudanPed/PNGImages/FudanPed00021.png  
+  inflating: PennFudanPed/PNGImages/FudanPed00022.png  
+  inflating: PennFudanPed/PNGImages/FudanPed00023.png  
+  inflating: PennFudanPed/PNGImages/FudanPed00024.png  
+  inflating: PennFudanPed/PNGImages/FudanPed00025.png  
+  inflating: PennFudanPed/PNGImages/FudanPed00026.png  
+  inflating: PennFudanPed/PNGImages/FudanPed00027.png  
+  inflating: PennFudanPed/PNGImages/FudanPed00028.png  
+  inflating: PennFudanPed/PNGImages/FudanPed00029.png  
+  inflating: PennFudanPed/PNGImages/FudanPed00030.png  
+  inflating: PennFudanPed/PNGImages/FudanPed00031.png  
+  inflating: PennFudanPed/PNGImages/FudanPed00032.png  
+  inflating: PennFudanPed/PNGImages/FudanPed00033.png  
+  inflating: PennFudanPed/PNGImages/FudanPed00034.png  
+  inflating: PennFudanPed/PNGImages/FudanPed00035.png  
+  inflating: PennFudanPed/PNGImages/FudanPed00036.png  
+  inflating: PennFudanPed/PNGImages/FudanPed00037.png  
+  inflating: PennFudanPed/PNGImages/FudanPed00038.png  
+  inflating: PennFudanPed/PNGImages/FudanPed00039.png  
+  inflating: PennFudanPed/PNGImages/FudanPed00040.png  
+  inflating: PennFudanPed/PNGImages/FudanPed00041.png  
+  inflating: PennFudanPed/PNGImages/FudanPed00042.png  
+  inflating: PennFudanPed/PNGImages/FudanPed00043.png  
+  inflating: PennFudanPed/PNGImages/FudanPed00044.png  
+  inflating: PennFudanPed/PNGImages/FudanPed00045.png  
+  inflating: PennFudanPed/PNGImages/FudanPed00046.png  
+  inflating: PennFudanPed/PNGImages/FudanPed00047.png  
+  inflating: PennFudanPed/PNGImages/FudanPed00048.png  
+  inflating: PennFudanPed/PNGImages/FudanPed00049.png  
+  inflating: PennFudanPed/PNGImages/FudanPed00050.png  
+  inflating: PennFudanPed/PNGImages/FudanPed00051.png  
+  inflating: PennFudanPed/PNGImages/FudanPed00052.png  
+  inflating: PennFudanPed/PNGImages/FudanPed00053.png  
+  inflating: PennFudanPed/PNGImages/FudanPed00054.png  
+  inflating: PennFudanPed/PNGImages/FudanPed00055.png  
+  inflating: PennFudanPed/PNGImages/FudanPed00056.png  
+  inflating: PennFudanPed/PNGImages/FudanPed00057.png  
+  inflating: PennFudanPed/PNGImages/FudanPed00058.png  
+  inflating: PennFudanPed/PNGImages/FudanPed00059.png  
+  inflating: PennFudanPed/PNGImages/FudanPed00060.png  
+  inflating: PennFudanPed/PNGImages/FudanPed00061.png  
+  inflating: PennFudanPed/PNGImages/FudanPed00062.png  
+  inflating: PennFudanPed/PNGImages/FudanPed00063.png  
+  inflating: PennFudanPed/PNGImages/FudanPed00064.png  
+  inflating: PennFudanPed/PNGImages/FudanPed00065.png  
+  inflating: PennFudanPed/PNGImages/FudanPed00066.png  
+  inflating: PennFudanPed/PNGImages/FudanPed00067.png  
+  inflating: PennFudanPed/PNGImages/FudanPed00068.png  
+  inflating: PennFudanPed/PNGImages/FudanPed00069.png  
+  inflating: PennFudanPed/PNGImages/FudanPed00070.png  
+  inflating: PennFudanPed/PNGImages/FudanPed00071.png  
+  inflating: PennFudanPed/PNGImages/FudanPed00072.png  
+  inflating: PennFudanPed/PNGImages/FudanPed00073.png  
+  inflating: PennFudanPed/PNGImages/FudanPed00074.png  
+  inflating: PennFudanPed/PNGImages/PennPed00001.png  
+  inflating: PennFudanPed/PNGImages/PennPed00002.png  
+  inflating: PennFudanPed/PNGImages/PennPed00003.png  
+  inflating: PennFudanPed/PNGImages/PennPed00004.png  
+  inflating: PennFudanPed/PNGImages/PennPed00005.png  
+  inflating: PennFudanPed/PNGImages/PennPed00006.png  
+  inflating: PennFudanPed/PNGImages/PennPed00007.png  
+  inflating: PennFudanPed/PNGImages/PennPed00008.png  
+  inflating: PennFudanPed/PNGImages/PennPed00009.png  
+  inflating: PennFudanPed/PNGImages/PennPed00010.png  
+  inflating: PennFudanPed/PNGImages/PennPed00011.png  
+  inflating: PennFudanPed/PNGImages/PennPed00012.png  
+  inflating: PennFudanPed/PNGImages/PennPed00013.png  
+  inflating: PennFudanPed/PNGImages/PennPed00014.png  
+  inflating: PennFudanPed/PNGImages/PennPed00015.png  
+  inflating: PennFudanPed/PNGImages/PennPed00016.png  
+  inflating: PennFudanPed/PNGImages/PennPed00017.png  
+  inflating: PennFudanPed/PNGImages/PennPed00018.png  
+  inflating: PennFudanPed/PNGImages/PennPed00019.png  
+  inflating: PennFudanPed/PNGImages/PennPed00020.png  
+  inflating: PennFudanPed/PNGImages/PennPed00021.png  
+  inflating: PennFudanPed/PNGImages/PennPed00022.png  
+  inflating: PennFudanPed/PNGImages/PennPed00023.png  
+  inflating: PennFudanPed/PNGImages/PennPed00024.png  
+  inflating: PennFudanPed/PNGImages/PennPed00025.png  
+  inflating: PennFudanPed/PNGImages/PennPed00026.png  
+  inflating: PennFudanPed/PNGImages/PennPed00027.png  
+  inflating: PennFudanPed/PNGImages/PennPed00028.png  
+  inflating: PennFudanPed/PNGImages/PennPed00029.png  
+  inflating: PennFudanPed/PNGImages/PennPed00030.png  
+  inflating: PennFudanPed/PNGImages/PennPed00031.png  
+  inflating: PennFudanPed/PNGImages/PennPed00032.png  
+  inflating: PennFudanPed/PNGImages/PennPed00033.png  
+  inflating: PennFudanPed/PNGImages/PennPed00034.png  
+  inflating: PennFudanPed/PNGImages/PennPed00035.png  
+  inflating: PennFudanPed/PNGImages/PennPed00036.png  
+  inflating: PennFudanPed/PNGImages/PennPed00037.png  
+  inflating: PennFudanPed/PNGImages/PennPed00038.png  
+  inflating: PennFudanPed/PNGImages/PennPed00039.png  
+  inflating: PennFudanPed/PNGImages/PennPed00040.png  
+  inflating: PennFudanPed/PNGImages/PennPed00041.png  
+  inflating: PennFudanPed/PNGImages/PennPed00042.png  
+  inflating: PennFudanPed/PNGImages/PennPed00043.png  
+  inflating: PennFudanPed/PNGImages/PennPed00044.png  
+  inflating: PennFudanPed/PNGImages/PennPed00045.png  
+  inflating: PennFudanPed/PNGImages/PennPed00046.png  
+  inflating: PennFudanPed/PNGImages/PennPed00047.png  
+  inflating: PennFudanPed/PNGImages/PennPed00048.png  
+  inflating: PennFudanPed/PNGImages/PennPed00049.png  
+  inflating: PennFudanPed/PNGImages/PennPed00050.png  
+  inflating: PennFudanPed/PNGImages/PennPed00051.png  
+  inflating: PennFudanPed/PNGImages/PennPed00052.png  
+  inflating: PennFudanPed/PNGImages/PennPed00053.png  
+  inflating: PennFudanPed/PNGImages/PennPed00054.png  
+  inflating: PennFudanPed/PNGImages/PennPed00055.png  
+  inflating: PennFudanPed/PNGImages/PennPed00056.png  
+  inflating: PennFudanPed/PNGImages/PennPed00057.png  
+  inflating: PennFudanPed/PNGImages/PennPed00058.png  
+  inflating: PennFudanPed/PNGImages/PennPed00059.png  
+  inflating: PennFudanPed/PNGImages/PennPed00060.png  
+  inflating: PennFudanPed/PNGImages/PennPed00061.png  
+  inflating: PennFudanPed/PNGImages/PennPed00062.png  
+  inflating: PennFudanPed/PNGImages/PennPed00063.png  
+  inflating: PennFudanPed/PNGImages/PennPed00064.png  
+  inflating: PennFudanPed/PNGImages/PennPed00065.png  
+  inflating: PennFudanPed/PNGImages/PennPed00066.png  
+  inflating: PennFudanPed/PNGImages/PennPed00067.png  
+  inflating: PennFudanPed/PNGImages/PennPed00068.png  
+  inflating: PennFudanPed/PNGImages/PennPed00069.png  
+  inflating: PennFudanPed/PNGImages/PennPed00070.png  
+  inflating: PennFudanPed/PNGImages/PennPed00071.png  
+  inflating: PennFudanPed/PNGImages/PennPed00072.png  
+  inflating: PennFudanPed/PNGImages/PennPed00073.png  
+  inflating: PennFudanPed/PNGImages/PennPed00074.png  
+  inflating: PennFudanPed/PNGImages/PennPed00075.png  
+  inflating: PennFudanPed/PNGImages/PennPed00076.png  
+  inflating: PennFudanPed/PNGImages/PennPed00077.png  
+  inflating: PennFudanPed/PNGImages/PennPed00078.png  
+  inflating: PennFudanPed/PNGImages/PennPed00079.png  
+  inflating: PennFudanPed/PNGImages/PennPed00080.png  
+  inflating: PennFudanPed/PNGImages/PennPed00081.png  
+  inflating: PennFudanPed/PNGImages/PennPed00082.png  
+  inflating: PennFudanPed/PNGImages/PennPed00083.png  
+  inflating: PennFudanPed/PNGImages/PennPed00084.png  
+  inflating: PennFudanPed/PNGImages/PennPed00085.png  
+  inflating: PennFudanPed/PNGImages/PennPed00086.png  
+  inflating: PennFudanPed/PNGImages/PennPed00087.png  
+  inflating: PennFudanPed/PNGImages/PennPed00088.png  
+  inflating: PennFudanPed/PNGImages/PennPed00089.png  
+  inflating: PennFudanPed/PNGImages/PennPed00090.png  
+  inflating: PennFudanPed/PNGImages/PennPed00091.png  
+  inflating: PennFudanPed/PNGImages/PennPed00092.png  
+  inflating: PennFudanPed/PNGImages/PennPed00093.png  
+  inflating: PennFudanPed/PNGImages/PennPed00094.png  
+  inflating: PennFudanPed/PNGImages/PennPed00095.png  
+  inflating: PennFudanPed/PNGImages/PennPed00096.png  
+  inflating: PennFudanPed/readme.txt  </code></pre>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="2">
+<pre><code></code></pre>
+</div>
+</div>
+<p>Let’s have a look at the dataset and how it is layed down.</p>
+<p>The data is structured as follows</p>
+<pre><code>PennFudanPed/
+  PedMasks/
+    FudanPed00001_mask.png
+    FudanPed00002_mask.png
+    FudanPed00003_mask.png
+    FudanPed00004_mask.png
+    ...
+  PNGImages/
+    FudanPed00001.png
+    FudanPed00002.png
+    FudanPed00003.png
+    FudanPed00004.png</code></pre>
+<p>Here is one example of an image in the dataset, with its corresponding instance segmentation mask</p>
+<div id="cell-8" class="cell" data-executioninfo="{&quot;elapsed&quot;:14,&quot;status&quot;:&quot;ok&quot;,&quot;timestamp&quot;:1683728189277,&quot;user&quot;:{&quot;displayName&quot;:&quot;Kibekityo Juma Shafara&quot;,&quot;userId&quot;:&quot;08975876454975369108&quot;},&quot;user_tz&quot;:-180}" data-outputid="8084f2e3-38e1-4016-c260-53177851b936">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> PIL <span class="im">import</span> Image</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>Image.<span class="bu">open</span>(<span class="st">'PennFudanPed/PNGImages/FudanPed00001.png'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="3">
+<div>
+<figure class="figure">
+<p><img src="torchvision_finetuning_instance_segmentation_files/figure-html/cell-4-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<div id="cell-9" class="cell" data-executioninfo="{&quot;elapsed&quot;:7,&quot;status&quot;:&quot;ok&quot;,&quot;timestamp&quot;:1683728191330,&quot;user&quot;:{&quot;displayName&quot;:&quot;Kibekityo Juma Shafara&quot;,&quot;userId&quot;:&quot;08975876454975369108&quot;},&quot;user_tz&quot;:-180}" data-outputid="6a10f636-85cb-48b6-b23b-a0f73ce1d45f">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>mask <span class="op">=</span> Image.<span class="bu">open</span>(<span class="st">'PennFudanPed/PedMasks/FudanPed00001_mask.png'</span>)</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="co"># each mask instance has a different color, from zero to N, where</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="co"># N is the number of instances. In order to make visualization easier,</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="co"># let's adda color palette to the mask.</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>mask <span class="op">=</span> mask.convert(<span class="st">'P'</span>)</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>mask.putpalette([</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>    <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="co"># black background</span></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>    <span class="dv">255</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="co"># index 1 is red</span></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>    <span class="dv">255</span>, <span class="dv">255</span>, <span class="dv">0</span>, <span class="co"># index 2 is yellow</span></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>    <span class="dv">255</span>, <span class="dv">153</span>, <span class="dv">0</span>, <span class="co"># index 3 is orange</span></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>])</span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>mask</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="4">
+<div>
+<figure class="figure">
+<p><img src="torchvision_finetuning_instance_segmentation_files/figure-html/cell-5-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>So each image has a corresponding segmentation mask, where each color correspond to a different instance. Let’s write a <code>torch.utils.data.Dataset</code> class for this dataset.</p>
+<div id="cell-11" class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torch</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torch.utils.data</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> PIL <span class="im">import</span> Image</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> PennFudanDataset(torch.utils.data.Dataset):</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, root, transforms<span class="op">=</span><span class="va">None</span>):</span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.root <span class="op">=</span> root</span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.transforms <span class="op">=</span> transforms</span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>        <span class="co"># load all image files, sorting them to</span></span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>        <span class="co"># ensure that they are aligned</span></span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.imgs <span class="op">=</span> <span class="bu">list</span>(<span class="bu">sorted</span>(os.listdir(os.path.join(root, <span class="st">"PNGImages"</span>))))</span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.masks <span class="op">=</span> <span class="bu">list</span>(<span class="bu">sorted</span>(os.listdir(os.path.join(root, <span class="st">"PedMasks"</span>))))</span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__getitem__</span>(<span class="va">self</span>, idx):</span>
+<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a>        <span class="co"># load images ad masks</span></span>
+<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a>        img_path <span class="op">=</span> os.path.join(<span class="va">self</span>.root, <span class="st">"PNGImages"</span>, <span class="va">self</span>.imgs[idx])</span>
+<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a>        mask_path <span class="op">=</span> os.path.join(<span class="va">self</span>.root, <span class="st">"PedMasks"</span>, <span class="va">self</span>.masks[idx])</span>
+<span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a>        img <span class="op">=</span> Image.<span class="bu">open</span>(img_path).convert(<span class="st">"RGB"</span>)</span>
+<span id="cb10-22"><a href="#cb10-22" aria-hidden="true" tabindex="-1"></a>        <span class="co"># note that we haven't converted the mask to RGB,</span></span>
+<span id="cb10-23"><a href="#cb10-23" aria-hidden="true" tabindex="-1"></a>        <span class="co"># because each color corresponds to a different instance</span></span>
+<span id="cb10-24"><a href="#cb10-24" aria-hidden="true" tabindex="-1"></a>        <span class="co"># with 0 being background</span></span>
+<span id="cb10-25"><a href="#cb10-25" aria-hidden="true" tabindex="-1"></a>        mask <span class="op">=</span> Image.<span class="bu">open</span>(mask_path)</span>
+<span id="cb10-26"><a href="#cb10-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-27"><a href="#cb10-27" aria-hidden="true" tabindex="-1"></a>        mask <span class="op">=</span> np.array(mask)</span>
+<span id="cb10-28"><a href="#cb10-28" aria-hidden="true" tabindex="-1"></a>        <span class="co"># instances are encoded as different colors</span></span>
+<span id="cb10-29"><a href="#cb10-29" aria-hidden="true" tabindex="-1"></a>        obj_ids <span class="op">=</span> np.unique(mask)</span>
+<span id="cb10-30"><a href="#cb10-30" aria-hidden="true" tabindex="-1"></a>        <span class="co"># first id is the background, so remove it</span></span>
+<span id="cb10-31"><a href="#cb10-31" aria-hidden="true" tabindex="-1"></a>        obj_ids <span class="op">=</span> obj_ids[<span class="dv">1</span>:]</span>
+<span id="cb10-32"><a href="#cb10-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-33"><a href="#cb10-33" aria-hidden="true" tabindex="-1"></a>        <span class="co"># split the color-encoded mask into a set</span></span>
+<span id="cb10-34"><a href="#cb10-34" aria-hidden="true" tabindex="-1"></a>        <span class="co"># of binary masks</span></span>
+<span id="cb10-35"><a href="#cb10-35" aria-hidden="true" tabindex="-1"></a>        masks <span class="op">=</span> mask <span class="op">==</span> obj_ids[:, <span class="va">None</span>, <span class="va">None</span>]</span>
+<span id="cb10-36"><a href="#cb10-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-37"><a href="#cb10-37" aria-hidden="true" tabindex="-1"></a>        <span class="co"># get bounding box coordinates for each mask</span></span>
+<span id="cb10-38"><a href="#cb10-38" aria-hidden="true" tabindex="-1"></a>        num_objs <span class="op">=</span> <span class="bu">len</span>(obj_ids)</span>
+<span id="cb10-39"><a href="#cb10-39" aria-hidden="true" tabindex="-1"></a>        boxes <span class="op">=</span> []</span>
+<span id="cb10-40"><a href="#cb10-40" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(num_objs):</span>
+<span id="cb10-41"><a href="#cb10-41" aria-hidden="true" tabindex="-1"></a>            pos <span class="op">=</span> np.where(masks[i])</span>
+<span id="cb10-42"><a href="#cb10-42" aria-hidden="true" tabindex="-1"></a>            xmin <span class="op">=</span> np.<span class="bu">min</span>(pos[<span class="dv">1</span>])</span>
+<span id="cb10-43"><a href="#cb10-43" aria-hidden="true" tabindex="-1"></a>            xmax <span class="op">=</span> np.<span class="bu">max</span>(pos[<span class="dv">1</span>])</span>
+<span id="cb10-44"><a href="#cb10-44" aria-hidden="true" tabindex="-1"></a>            ymin <span class="op">=</span> np.<span class="bu">min</span>(pos[<span class="dv">0</span>])</span>
+<span id="cb10-45"><a href="#cb10-45" aria-hidden="true" tabindex="-1"></a>            ymax <span class="op">=</span> np.<span class="bu">max</span>(pos[<span class="dv">0</span>])</span>
+<span id="cb10-46"><a href="#cb10-46" aria-hidden="true" tabindex="-1"></a>            boxes.append([xmin, ymin, xmax, ymax])</span>
+<span id="cb10-47"><a href="#cb10-47" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-48"><a href="#cb10-48" aria-hidden="true" tabindex="-1"></a>        boxes <span class="op">=</span> torch.as_tensor(boxes, dtype<span class="op">=</span>torch.float32)</span>
+<span id="cb10-49"><a href="#cb10-49" aria-hidden="true" tabindex="-1"></a>        <span class="co"># there is only one class</span></span>
+<span id="cb10-50"><a href="#cb10-50" aria-hidden="true" tabindex="-1"></a>        labels <span class="op">=</span> torch.ones((num_objs,), dtype<span class="op">=</span>torch.int64)</span>
+<span id="cb10-51"><a href="#cb10-51" aria-hidden="true" tabindex="-1"></a>        masks <span class="op">=</span> torch.as_tensor(masks, dtype<span class="op">=</span>torch.uint8)</span>
+<span id="cb10-52"><a href="#cb10-52" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-53"><a href="#cb10-53" aria-hidden="true" tabindex="-1"></a>        image_id <span class="op">=</span> torch.tensor([idx])</span>
+<span id="cb10-54"><a href="#cb10-54" aria-hidden="true" tabindex="-1"></a>        area <span class="op">=</span> (boxes[:, <span class="dv">3</span>] <span class="op">-</span> boxes[:, <span class="dv">1</span>]) <span class="op">*</span> (boxes[:, <span class="dv">2</span>] <span class="op">-</span> boxes[:, <span class="dv">0</span>])</span>
+<span id="cb10-55"><a href="#cb10-55" aria-hidden="true" tabindex="-1"></a>        <span class="co"># suppose all instances are not crowd</span></span>
+<span id="cb10-56"><a href="#cb10-56" aria-hidden="true" tabindex="-1"></a>        iscrowd <span class="op">=</span> torch.zeros((num_objs,), dtype<span class="op">=</span>torch.int64)</span>
+<span id="cb10-57"><a href="#cb10-57" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-58"><a href="#cb10-58" aria-hidden="true" tabindex="-1"></a>        target <span class="op">=</span> {}</span>
+<span id="cb10-59"><a href="#cb10-59" aria-hidden="true" tabindex="-1"></a>        target[<span class="st">"boxes"</span>] <span class="op">=</span> boxes</span>
+<span id="cb10-60"><a href="#cb10-60" aria-hidden="true" tabindex="-1"></a>        target[<span class="st">"labels"</span>] <span class="op">=</span> labels</span>
+<span id="cb10-61"><a href="#cb10-61" aria-hidden="true" tabindex="-1"></a>        target[<span class="st">"masks"</span>] <span class="op">=</span> masks</span>
+<span id="cb10-62"><a href="#cb10-62" aria-hidden="true" tabindex="-1"></a>        target[<span class="st">"image_id"</span>] <span class="op">=</span> image_id</span>
+<span id="cb10-63"><a href="#cb10-63" aria-hidden="true" tabindex="-1"></a>        target[<span class="st">"area"</span>] <span class="op">=</span> area</span>
+<span id="cb10-64"><a href="#cb10-64" aria-hidden="true" tabindex="-1"></a>        target[<span class="st">"iscrowd"</span>] <span class="op">=</span> iscrowd</span>
+<span id="cb10-65"><a href="#cb10-65" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-66"><a href="#cb10-66" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="va">self</span>.transforms <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span>:</span>
+<span id="cb10-67"><a href="#cb10-67" aria-hidden="true" tabindex="-1"></a>            img, target <span class="op">=</span> <span class="va">self</span>.transforms(img, target)</span>
+<span id="cb10-68"><a href="#cb10-68" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-69"><a href="#cb10-69" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> img, target</span>
+<span id="cb10-70"><a href="#cb10-70" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-71"><a href="#cb10-71" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__len__</span>(<span class="va">self</span>):</span>
+<span id="cb10-72"><a href="#cb10-72" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="bu">len</span>(<span class="va">self</span>.imgs)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>That’s all for the dataset. Let’s see how the outputs are structured for this dataset</p>
+<div id="cell-13" class="cell" data-executioninfo="{&quot;elapsed&quot;:344,&quot;status&quot;:&quot;ok&quot;,&quot;timestamp&quot;:1683728209173,&quot;user&quot;:{&quot;displayName&quot;:&quot;Kibekityo Juma Shafara&quot;,&quot;userId&quot;:&quot;08975876454975369108&quot;},&quot;user_tz&quot;:-180}" data-outputid="9074557c-7a79-421d-b08b-37414908c96a">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>dataset <span class="op">=</span> PennFudanDataset(<span class="st">'PennFudanPed/'</span>)</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>dataset[<span class="dv">0</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="6">
+<pre><code>(&lt;PIL.Image.Image image mode=RGB size=559x536 at 0x7FD2682FFD90&gt;,
+ {'boxes': tensor([[159., 181., 301., 430.],
+          [419., 170., 534., 485.]]),
+  'labels': tensor([1, 1]),
+  'masks': tensor([[[0, 0, 0,  ..., 0, 0, 0],
+           [0, 0, 0,  ..., 0, 0, 0],
+           [0, 0, 0,  ..., 0, 0, 0],
+           ...,
+           [0, 0, 0,  ..., 0, 0, 0],
+           [0, 0, 0,  ..., 0, 0, 0],
+           [0, 0, 0,  ..., 0, 0, 0]],
+  
+          [[0, 0, 0,  ..., 0, 0, 0],
+           [0, 0, 0,  ..., 0, 0, 0],
+           [0, 0, 0,  ..., 0, 0, 0],
+           ...,
+           [0, 0, 0,  ..., 0, 0, 0],
+           [0, 0, 0,  ..., 0, 0, 0],
+           [0, 0, 0,  ..., 0, 0, 0]]], dtype=torch.uint8),
+  'image_id': tensor([0]),
+  'area': tensor([35358., 36225.]),
+  'iscrowd': tensor([0, 0])})</code></pre>
+</div>
+</div>
+<p>So we can see that by default, the dataset returns a <code>PIL.Image</code> and a dictionary containing several fields, including <code>boxes</code>, <code>labels</code> and <code>masks</code>.</p>
+</section>
+</section>
+<section id="defining-your-model" class="level2">
+<h2 class="anchored" data-anchor-id="defining-your-model">Defining your model</h2>
+<p>In this tutorial, we will be using <a href="https://arxiv.org/abs/1703.06870">Mask R-CNN</a>, which is based on top of <a href="https://arxiv.org/abs/1506.01497">Faster R-CNN</a>. Faster R-CNN is a model that predicts both bounding boxes and class scores for potential objects in the image.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://raw.githubusercontent.com/pytorch/vision/temp-tutorial/tutorials/tv_image03.png" class="img-fluid figure-img"></p>
+<figcaption>Faster R-CNN</figcaption>
+</figure>
+</div>
+<p>Mask R-CNN adds an extra branch into Faster R-CNN, which also predicts segmentation masks for each instance.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://raw.githubusercontent.com/pytorch/vision/temp-tutorial/tutorials/tv_image04.png" class="img-fluid figure-img"></p>
+<figcaption>Mask R-CNN</figcaption>
+</figure>
+</div>
+<p>There are two common situations where one might want to modify one of the available models in torchvision modelzoo. The first is when we want to start from a pre-trained model, and just finetune the last layer. The other is when we want to replace the backbone of the model with a different one (for faster predictions, for example).</p>
+<p>Let’s go see how we would do one or another in the following sections.</p>
+<section id="finetuning-from-a-pretrained-model" class="level3">
+<h3 class="anchored" data-anchor-id="finetuning-from-a-pretrained-model">1 - Finetuning from a pretrained model</h3>
+<p>Let’s suppose that you want to start from a model pre-trained on COCO and want to finetune it for your particular classes. Here is a possible way of doing it:</p>
+<pre><code>import torchvision
+from torchvision.models.detection.faster_rcnn import FastRCNNPredictor
+
+# load a model pre-trained pre-trained on COCO
+model = torchvision.models.detection.fasterrcnn_resnet50_fpn(pretrained=True)
+
+# replace the classifier with a new one, that has
+# num_classes which is user-defined
+num_classes = 2  # 1 class (person) + background
+# get number of input features for the classifier
+in_features = model.roi_heads.box_predictor.cls_score.in_features
+# replace the pre-trained head with a new one
+model.roi_heads.box_predictor = FastRCNNPredictor(in_features, num_classes) </code></pre>
+</section>
+<section id="modifying-the-model-to-add-a-different-backbone" class="level3">
+<h3 class="anchored" data-anchor-id="modifying-the-model-to-add-a-different-backbone">2 - Modifying the model to add a different backbone</h3>
+<p>Another common situation arises when the user wants to replace the backbone of a detection model with a different one. For example, the current default backbone (ResNet-50) might be too big for some applications, and smaller models might be necessary.</p>
+<p>Here is how we would go into leveraging the functions provided by torchvision to modify a backbone.</p>
+<pre><code>import torchvision
+from torchvision.models.detection import FasterRCNN
+from torchvision.models.detection.rpn import AnchorGenerator
+
+# load a pre-trained model for classification and return
+# only the features
+backbone = torchvision.models.mobilenet_v2(pretrained=True).features
+# FasterRCNN needs to know the number of
+# output channels in a backbone. For mobilenet_v2, it's 1280
+# so we need to add it here
+backbone.out_channels = 1280
+
+# let's make the RPN generate 5 x 3 anchors per spatial
+# location, with 5 different sizes and 3 different aspect
+# ratios. We have a Tuple[Tuple[int]] because each feature
+# map could potentially have different sizes and
+# aspect ratios 
+anchor_generator = AnchorGenerator(sizes=((32, 64, 128, 256, 512),),
+                                   aspect_ratios=((0.5, 1.0, 2.0),))
+
+# let's define what are the feature maps that we will
+# use to perform the region of interest cropping, as well as
+# the size of the crop after rescaling.
+# if your backbone returns a Tensor, featmap_names is expected to
+# be [0]. More generally, the backbone should return an
+# OrderedDict[Tensor], and in featmap_names you can choose which
+# feature maps to use.
+roi_pooler = torchvision.ops.MultiScaleRoIAlign(featmap_names=[0],
+                                                output_size=7,
+                                                sampling_ratio=2)
+
+# put the pieces together inside a FasterRCNN model
+model = FasterRCNN(backbone,
+                   num_classes=2,
+                   rpn_anchor_generator=anchor_generator,
+                   box_roi_pool=roi_pooler)</code></pre>
+</section>
+<section id="an-instance-segmentation-model-for-pennfudan-dataset" class="level3">
+<h3 class="anchored" data-anchor-id="an-instance-segmentation-model-for-pennfudan-dataset">An Instance segmentation model for PennFudan Dataset</h3>
+<p>In our case, we want to fine-tune from a pre-trained model, given that our dataset is very small. So we will be following approach number 1.</p>
+<p>Here we want to also compute the instance segmentation masks, so we will be using Mask R-CNN:</p>
+<div id="cell-16" class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torchvision</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> torchvision.models.detection.faster_rcnn <span class="im">import</span> FastRCNNPredictor</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> torchvision.models.detection.mask_rcnn <span class="im">import</span> MaskRCNNPredictor</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>      </span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> get_instance_segmentation_model(num_classes):</span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>    <span class="co"># load an instance segmentation model pre-trained on COCO</span></span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>    model <span class="op">=</span> torchvision.models.detection.maskrcnn_resnet50_fpn(pretrained<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a>    <span class="co"># get the number of input features for the classifier</span></span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a>    in_features <span class="op">=</span> model.roi_heads.box_predictor.cls_score.in_features</span>
+<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a>    <span class="co"># replace the pre-trained head with a new one</span></span>
+<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a>    model.roi_heads.box_predictor <span class="op">=</span> FastRCNNPredictor(in_features, num_classes)</span>
+<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-15"><a href="#cb15-15" aria-hidden="true" tabindex="-1"></a>    <span class="co"># now get the number of input features for the mask classifier</span></span>
+<span id="cb15-16"><a href="#cb15-16" aria-hidden="true" tabindex="-1"></a>    in_features_mask <span class="op">=</span> model.roi_heads.mask_predictor.conv5_mask.in_channels</span>
+<span id="cb15-17"><a href="#cb15-17" aria-hidden="true" tabindex="-1"></a>    hidden_layer <span class="op">=</span> <span class="dv">256</span></span>
+<span id="cb15-18"><a href="#cb15-18" aria-hidden="true" tabindex="-1"></a>    <span class="co"># and replace the mask predictor with a new one</span></span>
+<span id="cb15-19"><a href="#cb15-19" aria-hidden="true" tabindex="-1"></a>    model.roi_heads.mask_predictor <span class="op">=</span> MaskRCNNPredictor(in_features_mask,</span>
+<span id="cb15-20"><a href="#cb15-20" aria-hidden="true" tabindex="-1"></a>                                                       hidden_layer,</span>
+<span id="cb15-21"><a href="#cb15-21" aria-hidden="true" tabindex="-1"></a>                                                       num_classes)</span>
+<span id="cb15-22"><a href="#cb15-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-23"><a href="#cb15-23" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> model</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>That’s it, this will make model be ready to be trained and evaluated on our custom dataset.</p>
+</section>
+</section>
+<section id="training-and-evaluation-functions" class="level2">
+<h2 class="anchored" data-anchor-id="training-and-evaluation-functions">Training and evaluation functions</h2>
+<p>In <code>references/detection/,</code> we have a number of helper functions to simplify training and evaluating detection models. Here, we will use <code>references/detection/engine.py</code>, <code>references/detection/utils.py</code> and <code>references/detection/transforms.py</code>.</p>
+<p>Let’s copy those files (and their dependencies) in here so that they are available in the notebook</p>
+<div id="cell-18" class="cell" data-executioninfo="{&quot;elapsed&quot;:346,&quot;status&quot;:&quot;ok&quot;,&quot;timestamp&quot;:1683730044170,&quot;user&quot;:{&quot;displayName&quot;:&quot;Kibekityo Juma Shafara&quot;,&quot;userId&quot;:&quot;08975876454975369108&quot;},&quot;user_tz&quot;:-180}" data-outputid="b9033d8c-b86d-4eeb-ee15-67104cd186ec">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Download TorchVision repo to use some files from</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="co"># references/detection</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>git clone https:<span class="op">//</span>github.com<span class="op">/</span>pytorch<span class="op">/</span>vision.git</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>cd vision</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>git checkout v0<span class="fl">.8.2</span></span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>cp references<span class="op">/</span>detection<span class="op">/</span>utils.py ..<span class="op">/</span></span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>cp references<span class="op">/</span>detection<span class="op">/</span>transforms.py ..<span class="op">/</span></span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>cp references<span class="op">/</span>detection<span class="op">/</span>coco_eval.py ..<span class="op">/</span></span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>cp references<span class="op">/</span>detection<span class="op">/</span>engine.py ..<span class="op">/</span></span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a>cp references<span class="op">/</span>detection<span class="op">/</span>coco_utils.py ..<span class="op">/</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>fatal: destination path 'vision' already exists and is not an empty directory.
+HEAD is now at 2f40a483d7 [v0.8.X] .circleci: Add Python 3.9 to CI (#3063)</code></pre>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="14">
+<pre><code></code></pre>
+</div>
+</div>
+<p>Let’s write some helper functions for data augmentation / transformation, which leverages the functions in <code>refereces/detection</code> that we have just copied:</p>
+<div id="cell-20" class="cell" data-executioninfo="{&quot;elapsed&quot;:6,&quot;status&quot;:&quot;error&quot;,&quot;timestamp&quot;:1683730051464,&quot;user&quot;:{&quot;displayName&quot;:&quot;Kibekityo Juma Shafara&quot;,&quot;userId&quot;:&quot;08975876454975369108&quot;},&quot;user_tz&quot;:-180}" data-outputid="1189517c-e75a-4884-a7ce-7f6f6bb8e79d">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> engine <span class="im">import</span> train_one_epoch, evaluate</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> utils</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> transforms <span class="im">as</span> T</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> get_transform(train):</span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>    transforms <span class="op">=</span> []</span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>    <span class="co"># converts the image, a PIL image, into a PyTorch Tensor</span></span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>    transforms.append(T.ToTensor())</span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> train:</span>
+<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a>        <span class="co"># during training, randomly flip the training images</span></span>
+<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a>        <span class="co"># and ground-truth for data augmentation</span></span>
+<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a>        transforms.append(T.RandomHorizontalFlip(<span class="fl">0.5</span>))</span>
+<span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> T.Compose(transforms)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-error">
+<pre><code>ModuleNotFoundError: ignored</code></pre>
+</div>
+</div>
+<section id="testing-forward-method" class="level4">
+<h4 class="anchored" data-anchor-id="testing-forward-method">Testing forward() method</h4>
+<p>Before iterating over the dataset, it’s good to see what the model expects during training and inference time on sample data.</p>
+<div id="cell-22" class="cell" data-executioninfo="{&quot;elapsed&quot;:1551,&quot;status&quot;:&quot;error&quot;,&quot;timestamp&quot;:1683730260080,&quot;user&quot;:{&quot;displayName&quot;:&quot;Kibekityo Juma Shafara&quot;,&quot;userId&quot;:&quot;08975876454975369108&quot;},&quot;user_tz&quot;:-180}" data-outputid="14db4bd5-7565-4601-d450-976e30278db0">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> torchvision.models.detection.fasterrcnn_resnet50_fpn(pretrained<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>dataset <span class="op">=</span> PennFudanDataset(<span class="st">'PennFudanPed'</span>, get_transform(train<span class="op">=</span><span class="va">True</span>))</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>data_loader <span class="op">=</span> torch.utils.data.DataLoader(</span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>    dataset, batch_size<span class="op">=</span><span class="dv">2</span>, shuffle<span class="op">=</span><span class="va">True</span>, num_workers<span class="op">=</span><span class="dv">4</span>,</span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>    collate_fn<span class="op">=</span>utils.collate_fn</span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a><span class="co"># For Training</span></span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>images,targets <span class="op">=</span> <span class="bu">next</span>(<span class="bu">iter</span>(data_loader))</span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a>images <span class="op">=</span> <span class="bu">list</span>(image <span class="cf">for</span> image <span class="kw">in</span> images)</span>
+<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a>targets <span class="op">=</span> [{k: v <span class="cf">for</span> k, v <span class="kw">in</span> t.items()} <span class="cf">for</span> t <span class="kw">in</span> targets]</span>
+<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a>output <span class="op">=</span> model(images,targets)   <span class="co"># Returns losses and detections</span></span>
+<span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a><span class="co"># For inference</span></span>
+<span id="cb21-13"><a href="#cb21-13" aria-hidden="true" tabindex="-1"></a>model.<span class="bu">eval</span>()</span>
+<span id="cb21-14"><a href="#cb21-14" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> [torch.rand(<span class="dv">3</span>, <span class="dv">300</span>, <span class="dv">400</span>), torch.rand(<span class="dv">3</span>, <span class="dv">500</span>, <span class="dv">400</span>)]</span>
+<span id="cb21-15"><a href="#cb21-15" aria-hidden="true" tabindex="-1"></a>predictions <span class="op">=</span> model(x)           <span class="co"># Returns predictions</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>/usr/local/lib/python3.10/dist-packages/torch/utils/data/dataloader.py:561: UserWarning: This DataLoader will create 4 worker processes in total. Our suggested max number of worker in current system is 2, which is smaller than what this DataLoader is going to create. Please be aware that excessive worker creation might get DataLoader running slow or even freeze, lower the worker number to avoid potential slowness/freeze if necessary.
+  max_num_worker_suggest,</code></pre>
+</div>
+<div class="cell-output cell-output-error">
+<pre><code>TypeError: ignored</code></pre>
+</div>
+</div>
+</section>
+<section id="note-that-we-do-not-need-to-add-a-meanstd-normalization-nor-image-rescaling-in-the-data-transforms-as-those-are-handled-internally-by-the-mask-r-cnn-model." class="level4">
+<h4 class="anchored" data-anchor-id="note-that-we-do-not-need-to-add-a-meanstd-normalization-nor-image-rescaling-in-the-data-transforms-as-those-are-handled-internally-by-the-mask-r-cnn-model.">Note that we do not need to add a mean/std normalization nor image rescaling in the data transforms, as those are handled internally by the Mask R-CNN model.</h4>
+</section>
+<section id="putting-everything-together" class="level3">
+<h3 class="anchored" data-anchor-id="putting-everything-together">Putting everything together</h3>
+<p>We now have the dataset class, the models and the data transforms. Let’s instantiate them</p>
+<div id="cell-25" class="cell" data-executioninfo="{&quot;elapsed&quot;:462,&quot;status&quot;:&quot;error&quot;,&quot;timestamp&quot;:1683730128354,&quot;user&quot;:{&quot;displayName&quot;:&quot;Kibekityo Juma Shafara&quot;,&quot;userId&quot;:&quot;08975876454975369108&quot;},&quot;user_tz&quot;:-180}" data-outputid="a0f0ee6f-77a7-48af-b96b-713733da29ae">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># use our dataset and defined transformations</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>dataset <span class="op">=</span> PennFudanDataset(<span class="st">'PennFudanPed'</span>, get_transform(train<span class="op">=</span><span class="va">True</span>))</span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>dataset_test <span class="op">=</span> PennFudanDataset(<span class="st">'PennFudanPed'</span>, get_transform(train<span class="op">=</span><span class="va">False</span>))</span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a><span class="co"># split the dataset in train and test set</span></span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>torch.manual_seed(<span class="dv">1</span>)</span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>indices <span class="op">=</span> torch.randperm(<span class="bu">len</span>(dataset)).tolist()</span>
+<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a>dataset <span class="op">=</span> torch.utils.data.Subset(dataset, indices[:<span class="op">-</span><span class="dv">50</span>])</span>
+<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a>dataset_test <span class="op">=</span> torch.utils.data.Subset(dataset_test, indices[<span class="op">-</span><span class="dv">50</span>:])</span>
+<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a><span class="co"># define training and validation data loaders</span></span>
+<span id="cb24-12"><a href="#cb24-12" aria-hidden="true" tabindex="-1"></a>data_loader <span class="op">=</span> torch.utils.data.DataLoader(</span>
+<span id="cb24-13"><a href="#cb24-13" aria-hidden="true" tabindex="-1"></a>    dataset, batch_size<span class="op">=</span><span class="dv">2</span>, shuffle<span class="op">=</span><span class="va">True</span>, num_workers<span class="op">=</span><span class="dv">4</span>,</span>
+<span id="cb24-14"><a href="#cb24-14" aria-hidden="true" tabindex="-1"></a>    collate_fn<span class="op">=</span>utils.collate_fn)</span>
+<span id="cb24-15"><a href="#cb24-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-16"><a href="#cb24-16" aria-hidden="true" tabindex="-1"></a>data_loader_test <span class="op">=</span> torch.utils.data.DataLoader(</span>
+<span id="cb24-17"><a href="#cb24-17" aria-hidden="true" tabindex="-1"></a>    dataset_test, batch_size<span class="op">=</span><span class="dv">1</span>, shuffle<span class="op">=</span><span class="va">False</span>, num_workers<span class="op">=</span><span class="dv">4</span>,</span>
+<span id="cb24-18"><a href="#cb24-18" aria-hidden="true" tabindex="-1"></a>    collate_fn<span class="op">=</span>utils.collate_fn)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-error">
+<pre><code>NameError: ignored</code></pre>
+</div>
+</div>
+<p>Now let’s instantiate the model and the optimizer</p>
+<div id="cell-27" class="cell" data-executioninfo="{&quot;elapsed&quot;:8383,&quot;status&quot;:&quot;ok&quot;,&quot;timestamp&quot;:1683730141233,&quot;user&quot;:{&quot;displayName&quot;:&quot;Kibekityo Juma Shafara&quot;,&quot;userId&quot;:&quot;08975876454975369108&quot;},&quot;user_tz&quot;:-180}" data-outputid="337608c6-1a51-434c-ee6f-5712944a3203">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>device <span class="op">=</span> torch.device(<span class="st">'cuda'</span>) <span class="cf">if</span> torch.cuda.is_available() <span class="cf">else</span> torch.device(<span class="st">'cpu'</span>)</span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a><span class="co"># our dataset has two classes only - background and person</span></span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>num_classes <span class="op">=</span> <span class="dv">2</span></span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a><span class="co"># get the model using our helper function</span></span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> get_instance_segmentation_model(num_classes)</span>
+<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a><span class="co"># move model to the right device</span></span>
+<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a>model.to(device)</span>
+<span id="cb26-10"><a href="#cb26-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-11"><a href="#cb26-11" aria-hidden="true" tabindex="-1"></a><span class="co"># construct an optimizer</span></span>
+<span id="cb26-12"><a href="#cb26-12" aria-hidden="true" tabindex="-1"></a>params <span class="op">=</span> [p <span class="cf">for</span> p <span class="kw">in</span> model.parameters() <span class="cf">if</span> p.requires_grad]</span>
+<span id="cb26-13"><a href="#cb26-13" aria-hidden="true" tabindex="-1"></a>optimizer <span class="op">=</span> torch.optim.SGD(params, lr<span class="op">=</span><span class="fl">0.005</span>,</span>
+<span id="cb26-14"><a href="#cb26-14" aria-hidden="true" tabindex="-1"></a>                            momentum<span class="op">=</span><span class="fl">0.9</span>, weight_decay<span class="op">=</span><span class="fl">0.0005</span>)</span>
+<span id="cb26-15"><a href="#cb26-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-16"><a href="#cb26-16" aria-hidden="true" tabindex="-1"></a><span class="co"># and a learning rate scheduler which decreases the learning rate by</span></span>
+<span id="cb26-17"><a href="#cb26-17" aria-hidden="true" tabindex="-1"></a><span class="co"># 10x every 3 epochs</span></span>
+<span id="cb26-18"><a href="#cb26-18" aria-hidden="true" tabindex="-1"></a>lr_scheduler <span class="op">=</span> torch.optim.lr_scheduler.StepLR(optimizer,</span>
+<span id="cb26-19"><a href="#cb26-19" aria-hidden="true" tabindex="-1"></a>                                               step_size<span class="op">=</span><span class="dv">3</span>,</span>
+<span id="cb26-20"><a href="#cb26-20" aria-hidden="true" tabindex="-1"></a>                                               gamma<span class="op">=</span><span class="fl">0.1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>/usr/local/lib/python3.10/dist-packages/torchvision/models/_utils.py:223: UserWarning: Arguments other than a weight enum or `None` for 'weights' are deprecated since 0.13 and may be removed in the future. The current behavior is equivalent to passing `weights=MaskRCNN_ResNet50_FPN_Weights.COCO_V1`. You can also use `weights=MaskRCNN_ResNet50_FPN_Weights.DEFAULT` to get the most up-to-date weights.
+  warnings.warn(msg)
+Downloading: "https://download.pytorch.org/models/maskrcnn_resnet50_fpn_coco-bf2d0c1e.pth" to /root/.cache/torch/hub/checkpoints/maskrcnn_resnet50_fpn_coco-bf2d0c1e.pth
+100%|██████████| 170M/170M [00:00&lt;00:00, 186MB/s]</code></pre>
+</div>
+</div>
+<p>And now let’s train the model for 10 epochs, evaluating at the end of every epoch.</p>
+<div id="cell-29" class="cell" data-executioninfo="{&quot;elapsed&quot;:370,&quot;status&quot;:&quot;error&quot;,&quot;timestamp&quot;:1683730169272,&quot;user&quot;:{&quot;displayName&quot;:&quot;Kibekityo Juma Shafara&quot;,&quot;userId&quot;:&quot;08975876454975369108&quot;},&quot;user_tz&quot;:-180}" data-outputid="80e1feb2-b1ca-4373-bd43-0c7118b99108">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="co"># let's train it for 10 epochs</span></span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> torch.optim.lr_scheduler <span class="im">import</span> StepLR</span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>num_epochs <span class="op">=</span> <span class="dv">10</span></span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> epoch <span class="kw">in</span> <span class="bu">range</span>(num_epochs):</span>
+<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a>    <span class="co"># train for one epoch, printing every 10 iterations</span></span>
+<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a>    train_one_epoch(model, optimizer, data_loader, device, epoch, print_freq<span class="op">=</span><span class="dv">10</span>)</span>
+<span id="cb28-8"><a href="#cb28-8" aria-hidden="true" tabindex="-1"></a>    <span class="co"># update the learning rate</span></span>
+<span id="cb28-9"><a href="#cb28-9" aria-hidden="true" tabindex="-1"></a>    lr_scheduler.step()</span>
+<span id="cb28-10"><a href="#cb28-10" aria-hidden="true" tabindex="-1"></a>    <span class="co"># evaluate on the test dataset</span></span>
+<span id="cb28-11"><a href="#cb28-11" aria-hidden="true" tabindex="-1"></a>    evaluate(model, data_loader_test, device<span class="op">=</span>device)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-error">
+<pre><code>NameError: ignored</code></pre>
+</div>
+</div>
+<p>Now that training has finished, let’s have a look at what it actually predicts in a test image</p>
+<div id="cell-31" class="cell" data-executioninfo="{&quot;elapsed&quot;:454,&quot;status&quot;:&quot;error&quot;,&quot;timestamp&quot;:1683730331269,&quot;user&quot;:{&quot;displayName&quot;:&quot;Kibekityo Juma Shafara&quot;,&quot;userId&quot;:&quot;08975876454975369108&quot;},&quot;user_tz&quot;:-180}" data-outputid="54b60354-e44d-4dde-d95d-d471bc8441f0">
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="co"># pick one image from the test set</span></span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>img, _ <span class="op">=</span> dataset_test[<span class="dv">0</span>]</span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a><span class="co"># put the model in evaluation mode</span></span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>model.<span class="bu">eval</span>()</span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> torch.no_grad():</span>
+<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a>    prediction <span class="op">=</span> model([img.to(device)])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-error">
+<pre><code>NameError: ignored</code></pre>
+</div>
+</div>
+<p>Printing the prediction shows that we have a list of dictionaries. Each element of the list corresponds to a different image. As we have a single image, there is a single dictionary in the list. The dictionary contains the predictions for the image we passed. In this case, we can see that it contains <code>boxes</code>, <code>labels</code>, <code>masks</code> and <code>scores</code> as fields.</p>
+<div id="cell-33" class="cell" data-outputid="7e876402-3a0f-4696-a13e-6ddcabb5fb77">
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>prediction</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="15">
+<pre><code>[{'boxes': tensor([[ 62.4634,  41.9885, 194.4252, 324.7122],
+          [276.3589,  23.3166, 291.1442,  74.5785]], device='cuda:0'),
+  'labels': tensor([1, 1], device='cuda:0'),
+  'masks': tensor([[[[0., 0., 0.,  ..., 0., 0., 0.],
+            [0., 0., 0.,  ..., 0., 0., 0.],
+            [0., 0., 0.,  ..., 0., 0., 0.],
+            ...,
+            [0., 0., 0.,  ..., 0., 0., 0.],
+            [0., 0., 0.,  ..., 0., 0., 0.],
+            [0., 0., 0.,  ..., 0., 0., 0.]]],
+  
+  
+          [[[0., 0., 0.,  ..., 0., 0., 0.],
+            [0., 0., 0.,  ..., 0., 0., 0.],
+            [0., 0., 0.,  ..., 0., 0., 0.],
+            ...,
+            [0., 0., 0.,  ..., 0., 0., 0.],
+            [0., 0., 0.,  ..., 0., 0., 0.],
+            [0., 0., 0.,  ..., 0., 0., 0.]]]], device='cuda:0'),
+  'scores': tensor([0.9969, 0.7550], device='cuda:0')}]</code></pre>
+</div>
+</div>
+<p>Let’s inspect the image and the predicted segmentation masks.</p>
+<p>For that, we need to convert the image, which has been rescaled to 0-1 and had the channels flipped so that we have it in <code>[C, H, W]</code> format.</p>
+<div id="cell-35" class="cell" data-outputid="b998eca7-5e3c-4ea6-ccfc-052fef26c5a0">
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>Image.fromarray(img.mul(<span class="dv">255</span>).permute(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">0</span>).byte().numpy())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="16">
+<div>
+<figure class="figure">
+<p><img src="torchvision_finetuning_instance_segmentation_files/figure-html/cell-17-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>And let’s now visualize the top predicted segmentation mask. The masks are predicted as <code>[N, 1, H, W]</code>, where <code>N</code> is the number of predictions, and are probability maps between 0-1.</p>
+<div id="cell-37" class="cell" data-outputid="89e92ecd-dbca-4939-fb94-8d2f1b3a7cc1">
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>Image.fromarray(prediction[<span class="dv">0</span>][<span class="st">'masks'</span>][<span class="dv">0</span>, <span class="dv">0</span>].mul(<span class="dv">255</span>).byte().cpu().numpy())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="17">
+<div>
+<figure class="figure">
+<p><img src="torchvision_finetuning_instance_segmentation_files/figure-html/cell-18-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Looks pretty good!</p>
+</section>
+</section>
+<section id="wrapping-up" class="level2">
+<h2 class="anchored" data-anchor-id="wrapping-up">Wrapping up</h2>
+<p>In this tutorial, you have learned how to create your own training pipeline for instance segmentation models, on a custom dataset. For that, you wrote a <code>torch.utils.data.Dataset</code> class that returns the images and the ground truth boxes and segmentation masks. You also leveraged a Mask R-CNN model pre-trained on COCO train2017 in order to perform transfer learning on this new dataset.</p>
+<p>For a more complete example, which includes multi-machine / multi-gpu training, check <code>references/detection/train.py</code>, which is present in the <a href="https://github.com/pytorch/vision/tree/v0.8.2/references/detection">torchvision GitHub repo</a>.</p>
+A few ads maybe displayed for income as resources are now offered freely. 🤝🤝🤝 <!-- Insert AdSense script dynamically -->
+<script>
+    (function() {
+        var adScript = document.createElement('script');
+        adScript.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8076040302380238';
+        adScript.async = true;
+        adScript.crossorigin="anonymous"
+        document.head.appendChild(adScript);
+    })();
+</script>
+
+
+</section>
+
+<a onclick="window.scrollTo(0, 0); return false;" role="button" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Back to top</a></main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp("https:\/\/science\.dataidea\.org");
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../../Pytorch/Vision/vt_tutorial.html" class="pagination-link" aria-label="Optimizing Vision Transformer Model for Deployment">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Optimizing Vision Transformer Model for Deployment</span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../../dataidea/quickstart.html" class="pagination-link" aria-label="DATAIDEA Quickstart">
+        <span class="nav-page-text">DATAIDEA Quickstart</span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/dataidea/dataidea-science/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div></div></div></footer></body></html>
